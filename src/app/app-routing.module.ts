@@ -13,6 +13,7 @@ import {StudentComponent} from "./student/student.component";
 import {SubjectComponent} from "./subject/subject.component";
 import {TeacherComponent} from "./teacher/teacher.component";
 import {ClassComponent} from "./class/class.component";
+import {AuthComponent} from "./auth/auth.component";
 
 const routes: Routes = [
   {path: '', redirectTo: '/students', pathMatch: 'full'},
@@ -26,7 +27,7 @@ const routes: Routes = [
   },
   {
     path: 'subjects', component: SubjectComponent, children: [
-      {path:  '', component: SubjectListComponent},
+      {path: '', component: SubjectListComponent},
       {path: 'new', component: SubjectEditComponent},
       {path: ':id', component: SubjectEditComponent},
       {path: ':id/edit', component: SubjectEditComponent}
@@ -34,7 +35,7 @@ const routes: Routes = [
   },
   {
     path: 'teachers', component: TeacherComponent, children: [
-      {path:  '', component: TeacherListComponent},
+      {path: '', component: TeacherListComponent},
       {path: ':new', component: TeacherEditComponent},
       {path: ':id', component: TeacherEditComponent},
       {path: ':id/edit', component: TeacherEditComponent}
@@ -42,12 +43,13 @@ const routes: Routes = [
   },
   {
     path: 'classes', component: ClassComponent, children: [
-      {path:  '', component: ClassListComponent},
+      {path: '', component: ClassListComponent},
       {path: ':new', component: ClassEditComponent},
       {path: ':id', component: ClassEditComponent},
       {path: ':id/edit', component: ClassEditComponent}
     ]
-  }
+  },
+  {path: 'auth', component: AuthComponent}
 ];
 
 @NgModule({
