@@ -1,6 +1,11 @@
-import { NgModule } from '@angular/core'
-import { BrowserModule } from '@angular/platform-browser'
+import { NgModule } from '@angular/core';
+import { BrowserModule } from '@angular/platform-browser';
+import { FormsModule} from "@angular/forms";
 
+
+
+import {HTTP_INTERCEPTORS, HttpClientModule} from "@angular/common/http";
+import {AuthInterceptor} from "./auth/auth.interceptor";
 import { AppRoutingModule } from './app-routing.module'
 import { AppComponent } from './app.component'
 import { StudentEditComponent } from './student/student-edit/student-edit.component'
@@ -56,10 +61,16 @@ import { MathIconComponent } from './shared/icons/math-icon/math-icon.component'
     DashboardIconComponent,
     UsersIconComponent,
     ChalkboardIconComponent,
-    MathIconComponent
+    MathIconComponent,
   ],
-  imports: [BrowserModule, AppRoutingModule, FontAwesomeModule],
-  providers: [],
+  imports: [
+    BrowserModule,
+    AppRoutingModule,
+    FontAwesomeModule,
+    FormsModule,
+    HttpClientModule
+  ],
+  providers: [{ provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true }],
   bootstrap: [AppComponent]
 })
 export class AppModule {}
