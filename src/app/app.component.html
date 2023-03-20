@@ -1,5 +1,19 @@
-<h1 class="text-3xl font-bold underline">
-  Hello world!
-</h1>
+<div class="{{ classes }}">
+  <!-- Header -->
+  <app-header (clickMenuIconEvent)="onClickMenuIcon()"></app-header>
 
-<router-outlet></router-outlet>
+  <!-- Sidebar -->
+  <app-sidebar></app-sidebar>
+
+  <!-- Overlay -->
+  <div
+    class="fixed top-header right-0 bottom-0 left-0 bg-black/40 lg:hidden cursor-pointer"
+    [ngClass]="{ hidden: isMiniSidebar }"
+    (click)="onClickOverlay()"
+  ></div>
+
+  <!-- Content -->
+  <div class="main-content">
+    <router-outlet></router-outlet>
+  </div>
+</div>
