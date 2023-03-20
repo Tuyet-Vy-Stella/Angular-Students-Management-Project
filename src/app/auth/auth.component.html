@@ -1,1 +1,51 @@
-<p>auth works!</p>
+<div class="min-h-screen flex justify-center items-center">
+  <!--  Image-->
+  <div></div>
+  <!-- -->
+  <div>
+    <h1>Welcome to Preskool</h1>
+    <p>Need an account? <a href="#">Sign up</a></p>
+
+    <h3>Sign in</h3>
+    <form>
+      <div>
+        <label for="email">
+          Username
+        </label>
+        <input type="text" id="email">
+        <span>
+          <fa-icon [icon]="userCircleIcon"></fa-icon>
+        </span>
+      </div>
+      <div>
+        <label for="password">
+          Password
+        </label>
+        <input type="password" id="password">
+        <span>
+          <fa-icon [icon]="slashIcon"></fa-icon>
+        </span>
+      </div>
+      <div>
+        <div>
+          <span></span>
+          <input type="checkbox" id="isRemember">
+          <label for="isRemember">
+            Remember
+          </label>
+        </div>
+        <a href="#">Forgot Password ?</a>
+      </div>
+      <button>Login</button>
+      <div class="login-or">
+          <span></span>
+          <span>OR</span>
+      </div>
+      <div>
+        <a href="#">
+          <i></i>
+        </a>
+      </div>
+    </form>
+  </div>
+</div>
