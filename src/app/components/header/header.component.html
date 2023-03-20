@@ -1,1 +1,40 @@
-<p>header works!</p>
+<div class="fixed top-0 left-0 right-0 z-[999] flex h-header items-center justify-between bg-light">
+  <!-- Logo -->
+  <div class="header-logo order-2 lg:order-1 flex-1 lg:flex-none px-0 lg:px-5 flex w-auto lg:w-sidebar justify-start transition-all duration-200 ease-in-out">
+    <img class="header-full-logo w-[156px] opacity-100 block" src="../assets/images/logo.png" alt="" />
+    <img class='header-small-logo w-[2.625rem] h-[40px] hidden opacity-0' src="../assets/images/logo-small.png" alt="">
+  </div>
+
+  <!-- Menu button -->
+  <div class="grow-0 lg:grow order-1 lg:order-2 mx-5 lg:mx-0">
+    <button class="btn primary rounded-lg" (click)="onClickMenuIcon()">
+      <app-menu-icon />
+    </button>
+  </div>
+
+  <!-- Right section -->
+  <div class="h-full flex items-center px-5 order-3">
+    <button class="btn secondary rounded-full border-transparent mr-4">
+      <app-bell-icon />
+    </button>
+
+    <button class="btn secondary rounded-full border-transparent mr-4 hidden lg:block">
+      <app-zoom-icon />
+    </button>
+
+    <div class="h-full flex items-center cursor-pointer group">
+      <div class="w-[40px] h-[40px] rounded-full p-[0.125rem] border-2 border-secondary mr-2 group-hover:border-primary transition duration-200 ease-in-out">
+        <img class="w-full rounded-full" src="../assets/images/avt.jpg" alt="">
+      </div>
+
+      <div class="mr-2 hidden lg:block">
+        <p class="text-dark text-sm font-medium">D.Beckham</p>
+        <p class="text-active text-xs font-medium">Administrator</p>
+      </div>
+
+      <span class="hidden lg:block">
+        <app-chevron-down-icon />
+      </span>
+    </div>
+  </div>
+</div>

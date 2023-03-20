@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { Subject } from 'rxjs'
+import { Component, Output } from '@angular/core'
 
 @Component({
   selector: 'app-header',
@@ -6,5 +7,9 @@ import { Component } from '@angular/core';
   styleUrls: ['./header.component.scss']
 })
 export class HeaderComponent {
+  @Output() clickMenuIconEvent = new Subject<void>()
 
+  onClickMenuIcon() {
+    this.clickMenuIconEvent.next()
+  }
 }
