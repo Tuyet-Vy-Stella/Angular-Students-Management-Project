@@ -17,6 +17,8 @@ import { TeacherComponent } from './teacher/teacher.component';
 import { ClassComponent } from './class/class.component';
 import { AuthComponent } from './auth/auth.component';
 import { FontAwesomeModule } from "@fortawesome/angular-fontawesome";
+import { HeaderComponent } from './components/header/header.component';
+import { FooterComponent } from './components/footer/footer.component';
 
 @NgModule({
   declarations: [
@@ -34,6 +36,8 @@ import { FontAwesomeModule } from "@fortawesome/angular-fontawesome";
     TeacherComponent,
     ClassComponent,
     AuthComponent,
+    HeaderComponent,
+    FooterComponent,
   ],
   imports: [
     BrowserModule,
