@@ -6,5 +6,7 @@ import { Component } from '@angular/core';
   styleUrls: ['./subject-edit.component.scss']
 })
 export class SubjectEditComponent {
-
+  onClick(){
+    alert('Clicked!')
+  }
 }

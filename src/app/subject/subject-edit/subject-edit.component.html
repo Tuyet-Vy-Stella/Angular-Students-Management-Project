@@ -1,1 +1,22 @@
-<p>subject-edit works!</p>
+<div class="p-[30px] ">
+    <div class="lg:flex lg:items-center lg:justify-between">
+        <h3 class="font-[550] text-[32px] text-[#2c323f] mb-5">Edit Subject</h3>
+        <div class="lg:flex lg:items-center text-[24px] text-[#2c323f]">
+            <div class="hidden lg:block">
+                <a routerLink="/subjects">Subject/</a>
+            </div>
+            <div class="ml-2 text-gray-400 hidden lg:block">Edit Subject</div>
+        </div>
+    </div>
+    <div class="bg-white p-4">
+        <div class="lg:flex">
+            <input class="block my-[28px] w-full p-[12px] text-[20px] rounded-[6px] border border-gray-400 outline-blue-500 lg:w-[318px]" type="text" placeholder="Subject ID ..." disabled/>
+            <input class="block my-[28px] w-full p-[12px] text-[20px] rounded-[6px] border border-gray-400 outline-blue-500 lg:w-[318px] lg:mx-[32px]" type="text" placeholder="Name Subject ..." required />
+        </div>
+        <button type="submit" (click)="onClick()"
+            class="border rounded-[8px] mb-[24px] text-[22px] font-semibold py-[16px] px-[48px] cursor-pointer hover:bg-[#18aefa] bg-[#3d5ee1]  text-[white] uppercase lg:ml-[24px] lg:px-[24px] lg:py-[12px] lg:self-end lg:font-[500] lg:ml-[-4px]">
+            Submit
+        </button>
+    </div>
+   
+</div>
