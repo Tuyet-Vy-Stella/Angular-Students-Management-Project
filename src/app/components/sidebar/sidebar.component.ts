@@ -43,6 +43,10 @@ export class SidebarComponent {
         {
           id: 2,
           name: 'Student Edit'
+        },
+        {
+          id: 3,
+          name: 'Student Add'
         }
       ]
     },
@@ -58,6 +62,10 @@ export class SidebarComponent {
         {
           id: 2,
           name: 'Teacher Edit'
+        },
+        {
+          id: 3,
+          name: 'Teacher Add'
         }
       ]
     },
@@ -69,6 +77,14 @@ export class SidebarComponent {
         {
           id: 1,
           name: 'Subject List'
+        },
+        {
+          id: 2,
+          name: 'Subject Edit'
+        },
+        {
+          id: 3,
+          name: 'Subject Add'
         }
       ]
     }
