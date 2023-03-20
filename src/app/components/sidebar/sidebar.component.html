@@ -15,7 +15,7 @@
         </span>
 
         <ul class="child-list">
-          <li class="child-item" [ngClass]="{ active: childTabSelected === children.id}" class="child-item" *ngFor="let children of tab.children" (click)="setChildTabSelected(children.id)">{{children.name}}</li>
+          <li class="child-item" [ngClass]="{active: childTabSelected === children.id}" class="child-item" *ngFor="let children of tab.children" (click)="setChildTabSelected(children.id)">{{children.name}}</li>
         </ul>
       </li>
     </ul>

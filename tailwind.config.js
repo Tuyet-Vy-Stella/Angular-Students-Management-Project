@@ -9,11 +9,15 @@ module.exports = {
       fontFamily: {
         roboto: ['Roboto', 'sans-serif']
       },
+      fontSize:{
+        // footer: '14px'
+      },
       colors: {
         sidebar: '#6f6f6f',
         dark: '#161823',
         light: '#ffffff',
-        active: '#3D5EE1'
+        active: '#3D5EE1',
+        footer: '#808191'
       },
       borderColor: {
         primary: '#3D5EE1',

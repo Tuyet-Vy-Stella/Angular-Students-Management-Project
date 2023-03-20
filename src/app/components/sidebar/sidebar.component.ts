@@ -17,18 +17,18 @@ export class SidebarComponent {
       name: 'Dashboard',
       icon: DashboardIconComponent,
       children: [
-        {
-          id: 1,
-          name: 'Admin Dashboard'
-        },
-        {
-          id: 2,
-          name: 'Teacher Dashboard'
-        },
-        {
-          id: 3,
-          name: 'Student Dashboard'
-        }
+        // {
+        //   id: 1,
+        //   name: 'Admin Dashboard'
+        // },
+        // {
+        //   id: 2,
+        //   name: 'Teacher Dashboard'
+        // },
+        // {
+        //   id: 3,
+        //   name: 'Student Dashboard'
+        // }
       ]
     },
     {
@@ -39,6 +39,10 @@ export class SidebarComponent {
         {
           id: 1,
           name: 'Student List'
+        },
+        {
+          id: 2,
+          name: 'Student Edit'
         }
       ]
     },
@@ -50,6 +54,10 @@ export class SidebarComponent {
         {
           id: 1,
           name: 'Teacher List'
+        },
+        {
+          id: 2,
+          name: 'Teacher Edit'
         }
       ]
     },
