@@ -12,24 +12,25 @@ module.exports = {
       colors: {
         sidebar: '#6f6f6f',
         dark: '#161823',
+        // dark: '#333333',
         light: '#ffffff',
         active: '#3D5EE1'
       },
       borderColor: {
         primary: '#3D5EE1',
-        secondary: '#e3e3e3',
-        'hover-primary': '#18aefa'
+        secondary: '#e3e3e3'
       },
       backgroundColor: {
         light: '#ffffff',
         content: '#F7F7FA',
-        primary: '#3D5EE1',
-        'hover-primary': '#18aefa',
-        'hover-secondary': '#f7f7f7'
+        primary: '#3D5EE1'
       },
       height: {
         header: '3.75rem', // Header height - 60px
         sidebar: 'calc(100vh - 3.75rem)' // Sidebar height
+      },
+      minHeight: {
+        'screen-except-header': 'calc(100vh - 3.75rem)'
       },
       spacing: {
         header: '3.75rem', // Header height

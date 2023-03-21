@@ -1,6 +1,6 @@
 <div class="sidebar z-[999]" style="overflow-y: overlay">
   <div>
-    <ul>
+    <ul class="select-none">
       <li class="tab-item" *ngFor="let tab of tabs" [ngClass]="{ active: parentTabSelected === tab.id, 'show-child': showChild && parentTabSelected === tab.id}">
         <span class="parent-item"  (click)="setParentTabSelected(tab.id)">
           <span class="w-8">

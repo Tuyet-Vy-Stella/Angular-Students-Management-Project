@@ -64,17 +64,29 @@ html *::-webkit-scrollbar-track {
   }
 
   .btn {
-    @apply px-[8px] py-[8px] transition-200-ease-in-out border-2 border-solid border-transparent;
+    @apply p-2 text-dark bg-light transition-200-ease-in-out border-2 border-solid border-transparent hover:bg-primary hover:border-primary hover:text-light;
 
     &.primary {
-      @apply text-light bg-primary border-primary hover:text-light hover:bg-hover-primary hover:border-hover-primary;
+      @apply text-light bg-primary border-primary;
     }
 
     &.secondary {
-      @apply text-dark bg-content  hover:text-light hover:bg-hover-primary hover:border-hover-primary;
+      @apply bg-content hover:text-light hover:bg-primary hover:border-primary;
 
       &.outlined {
-        @apply border-secondary hover:border-hover-primary;
+        @apply border-secondary hover:border-primary;
+      }
+    }
+
+    &:disabled {
+      @apply opacity-40 pointer-events-none hover:bg-light hover:border-transparent hover:text-dark;
+    }
+
+    &.sm {
+      @apply p-[0.375rem];
+
+      svg {
+        @apply w-4 h-4;
       }
     }
   }
@@ -90,7 +102,7 @@ html *::-webkit-scrollbar-track {
 
     &.mini-sidebar {
       .sidebar {
-        @apply -translate-x-full lg:-translate-x-0 w-sidebar lg:w-mini-sidebar hover:w-sidebar;
+        @apply -translate-x-full lg:-translate-x-0 w-sidebar lg:w-mini-sidebar hover:w-sidebar z-[999];
 
         .parent-item {
           @apply justify-center;

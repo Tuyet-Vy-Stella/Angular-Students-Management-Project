@@ -1,21 +1,36 @@
 import { NgModule } from '@angular/core'
 import { BrowserModule } from '@angular/platform-browser'
+import { ReactiveFormsModule } from '@angular/forms'
 
 import { AppRoutingModule } from './app-routing.module'
 import { AppComponent } from './app.component'
-import { StudentEditComponent } from './student/student-edit/student-edit.component'
+
+// Students
+import { StudentListComponent } from './students/student-list/student-list.component'
+import { StudentDetailComponent } from './students/student-detail/student-detail.component'
+import { CreatingStudentComponent } from './students/creating-student/creating-student.component'
+
+// Teachers
 import { TeacherEditComponent } from './teacher/teacher-edit/teacher-edit.component'
+import { TeacherListComponent } from './teacher/teacher-list/teacher-list.component'
+import { TeacherComponent } from './teacher/teacher.component'
+
+// Subjects
 import { SubjectListComponent } from './subject/subject-list/subject-list.component'
 import { SubjectEditComponent } from './subject/subject-edit/subject-edit.component'
-import { StudentListComponent } from './student/student-list/student-list.component'
-import { TeacherListComponent } from './teacher/teacher-list/teacher-list.component'
+import { SubjectComponent } from './subject/subject.component'
+
+// Dashboard
+
+// Class
 import { ClassListComponent } from './class/class-list/class-list.component'
 import { ClassEditComponent } from './class/class-edit/class-edit.component'
-import { StudentComponent } from './student/student.component'
-import { SubjectComponent } from './subject/subject.component'
-import { TeacherComponent } from './teacher/teacher.component'
 import { ClassComponent } from './class/class.component'
+
+// Auth
 import { AuthComponent } from './auth/auth.component'
+
+// Common
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome'
 import { HeaderComponent } from './header/header.component'
 import { SidebarComponent } from './sidebar/sidebar.component'
@@ -33,15 +48,12 @@ import { MathIconComponent } from './shared/icons/math-icon/math-icon.component'
 @NgModule({
   declarations: [
     AppComponent,
-    StudentEditComponent,
     TeacherEditComponent,
     SubjectListComponent,
     SubjectEditComponent,
-    StudentListComponent,
     TeacherListComponent,
     ClassListComponent,
     ClassEditComponent,
-    StudentComponent,
     SubjectComponent,
     TeacherComponent,
     ClassComponent,
@@ -56,9 +68,12 @@ import { MathIconComponent } from './shared/icons/math-icon/math-icon.component'
     DashboardIconComponent,
     UsersIconComponent,
     ChalkboardIconComponent,
-    MathIconComponent
+    MathIconComponent,
+    StudentListComponent,
+    StudentDetailComponent,
+    CreatingStudentComponent
   ],
-  imports: [BrowserModule, AppRoutingModule, FontAwesomeModule],
+  imports: [BrowserModule, AppRoutingModule, FontAwesomeModule, ReactiveFormsModule],
   providers: [],
   bootstrap: [AppComponent]
 })

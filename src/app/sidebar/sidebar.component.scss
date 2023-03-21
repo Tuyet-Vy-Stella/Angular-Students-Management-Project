@@ -7,7 +7,7 @@
     @apply text-active relative;
 
     &::before {
-      @apply content-[''] absolute left-0 -top-[0.125rem] -bottom-[0.125rem] w-[0.375rem] rounded-r-md bg-primary;
+      @apply content-[''] absolute left-0 -top-[0.125rem] -bottom-[0.125rem] w-[0.375rem] rounded-r-lg bg-primary;
     }
   }
 
@@ -35,7 +35,7 @@
 }
 
 .child-item {
-  @apply py-2 pl-7 rounded-md cursor-pointer transition-all duration-200 ease-in-out hover:bg-primary hover:text-light;
+  @apply py-2 pl-7 rounded-lg cursor-pointer transition-all duration-200 ease-in-out hover:bg-primary hover:text-light;
 
   & + & {
     @apply mt-1;

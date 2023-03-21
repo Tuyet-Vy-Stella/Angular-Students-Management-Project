@@ -1,0 +1,32 @@
+.field-item {
+  @apply h-[46px] relative flex items-center border border-solid border-secondary rounded-lg;
+
+  label {
+    @apply absolute -top-1/4 left-2 px-2 bg-white text-[#ababab] text-sm;
+  }
+
+  input,
+  select {
+    @apply text-sm w-full border border-none outline-none px-4 py-2;
+  }
+
+  &:has(> input:focus, select:focus) {
+    @apply border-primary;
+
+    label {
+      @apply text-active;
+    }
+  }
+
+  &:has(> input.ng-invalid.ng-touched, select.ng-invalid.ng-tounched) {
+    @apply border-red-600;
+
+    label {
+      @apply text-red-600;
+    }
+  }
+
+  .error-message {
+    @apply text-red-600 text-sm absolute -bottom-1/2;
+  }
+}
