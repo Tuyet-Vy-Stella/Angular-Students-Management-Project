@@ -16,7 +16,7 @@ export class HeaderComponent {
 
   ngOnInit() {
     this.renderer.listen('window', 'click', (e: Event) => {
-      if (!this.userMenu.nativeElement.contains(e.target) && e.target !== this.dropdown.nativeElement) {
+      if (!this.userMenu.nativeElement.contains(e.target) && !this.dropdown.nativeElement.contains(e.target)) {
         this.showDropdown = false
       }
     })
