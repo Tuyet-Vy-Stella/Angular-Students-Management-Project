@@ -14,21 +14,29 @@ export class StudentListComponent {
   numberOfEntriesPerPage: number = 10
   currentPage: number = 1
   pageNumbers: number[] = []
+  isLoading = false
 
   constructor(private studentService: StudentService) {}
 
   ngOnInit() {
-    this.studentService.getStudentList().subscribe((response) => {
-      if (response) {
-        // Update student list
-        this.studentList = response
+    this.isLoading = true
+    this.studentService.getStudentList().subscribe({
+      next: (response) => {
+        if (response) {
+          // Update student list
+          this.studentList = response
 
-        // Update student list to show
-        this.studentListToShow = this.studentList.slice(0, this.numberOfEntriesPerPage)
+          // Update student list to show
+          this.studentListToShow = this.studentList.slice(0, this.numberOfEntriesPerPage)
 
-        // Update page numbers
-        this.updatePageNumbers()
-      }
+          // Update page numbers
+          this.updatePageNumbers()
+        }
+      },
+      error: (error) => {
+        console.log(error)
+      },
+      complete: () => (this.isLoading = false)
     })
   }
 
@@ -62,6 +70,9 @@ export class StudentListComponent {
 
       // Update page numbers array
       this.updatePageNumbers()
+
+      // Update current page
+      this.currentPage = 1
     }
   }
 

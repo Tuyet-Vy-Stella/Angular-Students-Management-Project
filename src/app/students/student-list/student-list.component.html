@@ -36,7 +36,7 @@
   </div>
 
   <!-- Table -->
-  <div class="mt-6 min-h-[600px] bg-light rounded-lg">
+  <div class="mt-6 bg-light rounded-lg">
     <!-- Header -->
     <div
       class="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 md:gap-0 p-6 border-b border-secondary border-solid"
@@ -126,9 +126,14 @@
       </div>
     </div>
 
+    <!-- Skeleton for get student list -->
+    <div *ngIf="isLoading" class="p-6">
+      <app-skeleton />
+    </div>
+
     <!-- Table data -->
     <div class="overflow-x-auto max-h-[400px] overflow-y-scroll">
-      <table class="w-full text-sm text-dark">
+      <table *ngIf="!isLoading" class="w-full text-sm text-dark">
         <thead>
           <tr>
             <th><input type="checkbox" /></th>
@@ -142,7 +147,13 @@
           </tr>
         </thead>
 
-        <tbody class="">
+        <tbody *ngIf="studentListToShow.length === 0">
+          <tr>
+            <td colspan="7" rowspan="2" class="!text-center">Empty</td>
+          </tr>
+        </tbody>
+
+        <tbody *ngIf="studentListToShow.length > 0">
           <tr *ngFor="let student of studentListToShow">
             <td><input type="checkbox" /></td>
             <td>{{ student.id }}</td>
@@ -156,7 +167,7 @@
             <td>{{ student.email }}</td>
             <td>
               <div class="flex items-center gap-2">
-                <button class="btn secondary rounded-full sm">
+                <a class="btn secondary rounded-full sm" type="button" [routerLink]="[ student.id, 'update']">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     class="icon icon-tabler icon-tabler-edit"
@@ -174,7 +185,7 @@
                     <path d="M20.385 6.585a2.1 2.1 0 0 0 -2.97 -2.97l-8.415 8.385v3h3l8.385 -8.415z"></path>
                     <path d="M16 5l3 3"></path>
                   </svg>
-                </button>
+                </a>
                 <button class="btn secondary rounded-full sm">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -204,13 +215,19 @@
 
     <!-- Footer -->
     <div
+      *ngIf="!isLoading && studentListToShow.length > 0"
       class="flex flex-col md:flex-row items-center justify-between p-6 gap-4 md:gap-0 border-t border-secondary border-solid"
     >
       <span class="text-sm md:text-base"
         >Showing {{ (this.currentPage - 1) * this.numberOfEntriesPerPage + 1 }} to
-        {{ this.currentPage * this.numberOfEntriesPerPage }} of {{ studentList.length }} entries</span
+        {{
+          this.currentPage * this.numberOfEntriesPerPage > studentList.length
+            ? studentList.length
+            : this.currentPage * this.numberOfEntriesPerPage
+        }}
+        of {{ studentList.length }} entries</span
       >
-      <div class="flex items-center gap-4 lg:gap-2">
+      <div class="flex items-center gap-4 lg:gap-2 select-none">
         <button class="btn rounded-lg" [disabled]="currentPage === 1" (click)="onClickPreviousPage()">
           <svg
             xmlns="http://www.w3.org/2000/svg"

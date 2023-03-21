@@ -1,12 +1,29 @@
 <div class="p-6 min-h-screen-except-header">
+  <!-- Spinner -->
+  <div *ngIf="isFetchingToCreateOrUpdateStudent" class="spinner">
+    <div class="lds-ripple">
+      <div></div>
+      <div></div>
+    </div>
+  </div>
+
   <!-- Title -->
-  <h4 class="font-medium text-xl md:text-2xl">Create Student</h4>
+  <h4 class="font-medium text-xl md:text-2xl">
+    <span *ngIf="createMode">Create Student</span>
+    <span *ngIf="!createMode">Update Student</span>
+  </h4>
+
+  <!-- Skeleton for get student data -->
+  <div *ngIf="isFetchingToGetStudent" class="mt-6">
+    <app-skeleton />
+  </div>
 
   <!-- Form -->
   <form
+  *ngIf="!isFetchingToGetStudent"
     class="mt-6 bg-light rounded-lg p-6"
-    [formGroup]="createStudentForm"
-    (ngSubmit)="createStudentForm.valid && onSubmitCreateStudent()"
+    [formGroup]="studentForm"
+    (ngSubmit)="studentForm.valid && onSubmit()"
   >
     <div class="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-12">
       <!-- Name -->
@@ -14,12 +31,12 @@
         <label>Name</label>
         <input type="text" formControlName="name" />
         <span
-          *ngIf="!createStudentForm.get('name')?.valid && createStudentForm.get('name')?.touched"
+          *ngIf="!studentForm.get('name')?.valid && studentForm.get('name')?.touched"
           class="error-message"
         >
-          <span *ngIf="createStudentForm.get('name')?.errors?.['required']; else empty">This field is required!</span>
+          <span *ngIf="studentForm.get('name')?.errors?.['required']; else empty">This field is required!</span>
           <ng-template #empty
-            ><span *ngIf="createStudentForm.get('name')?.errors?.['empty']"
+            ><span *ngIf="studentForm.get('name')?.errors?.['empty']"
               >This field must not be empty!</span
             ></ng-template
           >
@@ -35,7 +52,7 @@
         </select>
         <span
           class="error-message"
-          *ngIf="!createStudentForm.get('gender')?.valid && createStudentForm.get('gender')?.touched"
+          *ngIf="!studentForm.get('gender')?.valid && studentForm.get('gender')?.touched"
           >Gender is required!</span
         >
       </div>
@@ -46,7 +63,7 @@
         <input type="date" formControlName="birthday" />
         <span
           class="error-message"
-          *ngIf="!createStudentForm.get('birthday')?.valid && createStudentForm.get('birthday')?.touched"
+          *ngIf="!studentForm.get('birthday')?.valid && studentForm.get('birthday')?.touched"
         >
           This field is required!
         </span>
@@ -58,13 +75,13 @@
         <input type="text" formControlName="address" />
         <span
           class="error-message"
-          *ngIf="!createStudentForm.get('address')?.valid && createStudentForm.get('address')?.touched"
+          *ngIf="!studentForm.get('address')?.valid && studentForm.get('address')?.touched"
         >
-          <span *ngIf="createStudentForm.get('address')?.errors?.['required']; else empty"
+          <span *ngIf="studentForm.get('address')?.errors?.['required']; else empty"
             >This field is required!</span
           >
           <ng-template #empty
-            ><span *ngIf="createStudentForm.get('address')?.errors?.['empty']"
+            ><span *ngIf="studentForm.get('address')?.errors?.['empty']"
               >This field must not be empty!</span
             ></ng-template
           >
@@ -74,15 +91,15 @@
       <!-- Phone -->
       <div class="field-item">
         <label>Phone Number</label>
-        <input type="text" formControlName="phoneNumber" />
+        <input type="text" formControlName="phone" />
         <span
           class="error-message"
-          *ngIf="!createStudentForm.get('phoneNumber')?.valid && createStudentForm.get('phoneNumber')?.touched"
+          *ngIf="!studentForm.get('phone')?.valid && studentForm.get('phone')?.touched"
         >
-          <span *ngIf="createStudentForm.get('phoneNumber')?.errors?.['required']; else emptyError"
+          <span *ngIf="studentForm.get('phone')?.errors?.['required']; else notFormattedError"
             >Phone number is required!</span
           >
-          <ng-template #emptyError>Phone number must not be empty!</ng-template>
+          <ng-template #notFormattedError>Phone number is not right formatted!</ng-template>
         </span>
       </div>
 
@@ -92,11 +109,11 @@
         <input type="text" formControlName="email" />
         <span
           class="error-message"
-          *ngIf="!createStudentForm.get('email')?.valid && createStudentForm.get('email')?.touched"
+          *ngIf="!studentForm.get('email')?.valid && studentForm.get('email')?.touched"
         >
-          <span *ngIf="createStudentForm.get('email')?.errors?.['required']; else emailError">Email is required!</span>
+          <span *ngIf="studentForm.get('email')?.errors?.['required']; else emailError">Email is required!</span>
           <ng-template #emailError>
-            <span *ngIf="createStudentForm.get('email')?.errors?.['email']">Email is not right formatted!</span>
+            <span *ngIf="studentForm.get('email')?.errors?.['email']">Email is not right formatted!</span>
           </ng-template>
         </span>
       </div>
@@ -112,7 +129,7 @@
           </select>
           <span
             class="error-message"
-            *ngIf="!createStudentForm.get('grade')?.valid && createStudentForm.get('grade')?.touched"
+            *ngIf="!studentForm.get('grade')?.valid && studentForm.get('grade')?.touched"
             >Gender is required!</span
           >
         </div>
@@ -121,14 +138,14 @@
         <div class="field-item w-1/2">
           <label>Section</label>
           <select formControlName="section">
-            <option value="a">A</option>
-            <option value="b">B</option>
-            <option value="c">C</option>
-            <option value="d">D</option>
+            <option value="A">A</option>
+            <option value="B">B</option>
+            <option value="C">C</option>
+            <option value="D">D</option>
           </select>
           <span
             class="error-message"
-            *ngIf="!createStudentForm.get('section')?.valid && createStudentForm.get('section')?.touched"
+            *ngIf="!studentForm.get('section')?.valid && studentForm.get('section')?.touched"
             >Gender is required!</span
           >
         </div>
@@ -138,14 +155,16 @@
       <div class="flex gap-8">
         <div class="">
           <p class="font-medium mb-4">Upload photo</p>
-          <label class="btn primary rounded-lg cursor-pointer" for="photo-upload"> Choose File </label>
-          <input type="file" id="photo-upload" accept="image/*" hidden formControlName="photo" />
+          <label class="btn primary rounded-lg cursor-pointer select-none" for="photo-upload"> Choose File </label>
+          <input type="file" id="photo-upload" accept="image/*" hidden />
         </div>
 
-        <img src="../assets/images/avt.jpg" alt="" class="w-[100px] h-[100px] rounded-full" />
+        <img src="../assets/images/avt.jpg" alt="" class="w-[100px] h-[100px] rounded-full select-none" />
       </div>
     </div>
 
-    <button type="submit" [disabled]="!createStudentForm.valid" class="btn primary rounded-lg mt-6">Submit</button>
+    <button type="submit" [disabled]="!studentForm.valid" class="btn primary rounded-lg mt-6 select-none">
+      Submit
+    </button>
   </form>
 </div>

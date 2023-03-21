@@ -8,5 +8,7 @@ export interface Student {
   email: string
   address: string
   birthday: string
-  createdAt: string
+  created_at: string
 }
+
+export type CreateStudentModel = Omit<Student, 'id' | 'createdAt'>

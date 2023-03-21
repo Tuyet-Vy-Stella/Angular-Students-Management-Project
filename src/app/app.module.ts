@@ -1,8 +1,10 @@
 import { AuthInterceptorService } from './auth/auth-interceptor.service'
 import { NgModule } from '@angular/core'
 import { BrowserModule } from '@angular/platform-browser'
-import { FormsModule, ReactiveFormsModule } from '@angular/forms'
+import { ReactiveFormsModule } from '@angular/forms'
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http'
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations'
+import { ToastrModule } from 'ngx-toastr'
 
 import { AppRoutingModule } from './app-routing.module'
 import { AppComponent } from './app.component'
@@ -45,7 +47,8 @@ import { ChevronRightComponent } from './shared/icons/chevron-right-icon/chevron
 import { DashboardIconComponent } from './shared/icons/dashboard-icon/dashboard-icon.component'
 import { UsersIconComponent } from './shared/icons/users-icon/users-icon.component'
 import { ChalkboardIconComponent } from './shared/icons/chalkboard-icon/chalkboard-icon.component'
-import { MathIconComponent } from './shared/icons/math-icon/math-icon.component'
+import { MathIconComponent } from './shared/icons/math-icon/math-icon.component';
+import { SkeletonComponent } from './skeleton/skeleton.component'
 
 @NgModule({
   declarations: [
@@ -73,9 +76,23 @@ import { MathIconComponent } from './shared/icons/math-icon/math-icon.component'
     MathIconComponent,
     StudentListComponent,
     StudentDetailComponent,
-    CreatingStudentComponent
+    CreatingStudentComponent,
+    SkeletonComponent
   ],
-  imports: [BrowserModule, AppRoutingModule, FontAwesomeModule, ReactiveFormsModule, HttpClientModule],
+  imports: [
+    BrowserModule,
+    AppRoutingModule,
+    FontAwesomeModule,
+    ReactiveFormsModule,
+    HttpClientModule,
+    BrowserAnimationsModule,
+    ToastrModule.forRoot({
+      timeOut: 4000,
+      positionClass: 'toast-top-right',
+      preventDuplicates: false,
+      easing: 'ease-in-out'
+    })
+  ],
   providers: [
     {
       provide: HTTP_INTERCEPTORS,

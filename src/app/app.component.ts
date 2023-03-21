@@ -11,6 +11,12 @@ export class AppComponent {
   classes = 'main'
   clickMenuIconSubscription!: Subscription
 
+  ngOnInit() {
+    if (window.screen.width < 1024) {
+      this.onClickOverlay()
+    }
+  }
+
   ngOnDestroy() {
     this.clickMenuIconSubscription.unsubscribe()
   }

@@ -18,16 +18,19 @@ export class SidebarComponent {
       icon: DashboardIconComponent,
       children: [
         {
-          id: 1,
-          name: 'Admin Dashboard'
+          id: 11,
+          name: 'Admin Dashboard',
+          link: ''
         },
         {
-          id: 2,
-          name: 'Teacher Dashboard'
+          id: 12,
+          name: 'Teacher Dashboard',
+          link: ''
         },
         {
-          id: 3,
-          name: 'Student Dashboard'
+          id: 13,
+          name: 'Student Dashboard',
+          link: ''
         }
       ]
     },
@@ -37,8 +40,14 @@ export class SidebarComponent {
       icon: UsersIconComponent,
       children: [
         {
-          id: 1,
-          name: 'Student List'
+          id: 21,
+          name: 'Student List',
+          link: 'students'
+        },
+        {
+          id: 22,
+          name: 'Create Student',
+          link: 'students/create'
         }
       ]
     },
@@ -48,8 +57,9 @@ export class SidebarComponent {
       icon: ChalkboardIconComponent,
       children: [
         {
-          id: 1,
-          name: 'Teacher List'
+          id: 31,
+          name: 'Teacher List',
+          link: ''
         }
       ]
     },
@@ -59,28 +69,38 @@ export class SidebarComponent {
       icon: MathIconComponent,
       children: [
         {
-          id: 1,
-          name: 'Subject List'
+          id: 41,
+          name: 'Subject List',
+          link: ''
         }
       ]
     }
   ]
+  parentTabClicked = 1
   parentTabSelected = 1
-  childTabSelected = 1
+  childTabSelected = 11
   showChild = true
 
-  setParentTabSelected(id: number) {
-    if (this.parentTabSelected === id) {
+  // On click parent tab item
+  onClickParentTab(parentId: number) {
+    if (this.parentTabClicked === parentId) {
+      // Similar parent tab => hide child list
       this.showChild = !this.showChild
     } else {
+      // Else parent tab => show child list
       this.showChild = true
-      this.parentTabSelected = id
-      const parentTab = this.tabs.find((tab) => tab.id === id)
-      parentTab && (this.childTabSelected = parentTab.children[0].id)
+
+      // Set parent tab clicked
+      this.parentTabClicked = parentId
     }
   }
 
-  setChildTabSelected(id: number) {
-    this.childTabSelected = id
+  // On click child tab item
+  onClickChildTab(parentId: number, childId: number) {
+    // Set parent tab selected
+    this.parentTabSelected = parentId
+
+    // Set child tab selected
+    this.childTabSelected = childId
   }
 }
