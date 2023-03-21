@@ -13,7 +13,7 @@
   </div>
 
   <!-- Right section -->
-  <div class="h-full flex items-center px-5 order-3">
+  <div class="h-full flex items-center px-6 order-3 relative select-none">
     <button class="btn secondary rounded-full border-transparent mr-4">
       <app-bell-icon />
     </button>
@@ -22,19 +22,35 @@
       <app-zoom-icon />
     </button>
 
-    <div class="h-full flex items-center cursor-pointer group">
+    <div #userMenu class="h-full flex items-center cursor-pointer group" (click)="onClickUserMenu()">
       <div class="w-[40px] h-[40px] rounded-full p-[0.125rem] border-2 border-secondary mr-2 group-hover:border-primary transition duration-200 ease-in-out">
         <img class="w-full rounded-full" src="../assets/images/avt.jpg" alt="">
       </div>
 
       <div class="mr-2 hidden lg:block">
-        <p class="text-dark text-sm font-medium">D.Beckham</p>
+        <p class="text-dark text-sm font-medium">{{ name }}</p>
         <p class="text-active text-xs font-medium">Administrator</p>
       </div>
 
       <span class="hidden lg:block">
         <app-chevron-down-icon />
       </span>
+    </div>
+
+    <!-- Dropdown -->
+    <div #dropdown class="absolute top-full right-[20px] w-[200px] border border-solid border-secondary transition-200-ease-in-out" [ngClass]="showDropdown ? 'visible translate-y-0 opacity-100' : 'opacity-0 translate-y-4 invisible'">
+      <div class="flex items-center gap-2 bg-[#f9f9f9] px-4 py-2">
+        <img class="w-[40px] h-[40px] rounded-full" src="../assets/images/avt.jpg" alt="">
+        <div class="grow">
+          <p class="text-dark text-base font-medium">{{ name }}</p>
+          <p class="text-sidebar text-sm">Administrator</p>
+        </div>
+      </div>
+      <ul class="text-sm text-dark bg-light cursor-pointer">
+        <li class="px-4 py-3 border-t border-solid border-secondary hover:text-active hover:bg-[#e9ecef] transition-200-ease-in-out">My Profile</li>
+        <li class="px-4 py-3 border-t border-solid border-secondary hover:text-active hover:bg-[#e9ecef] transition-200-ease-in-out">Inbox</li>
+        <li class="px-4 py-3 border-t border-solid border-secondary hover:text-active hover:bg-[#e9ecef] transition-200-ease-in-out" (click)="onLogout()">Logout</li>
+      </ul>
     </div>
   </div>
 </div>

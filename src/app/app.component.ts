@@ -1,6 +1,8 @@
-import { Component, OnDestroy, OnInit } from '@angular/core'
-import { Subscription } from 'rxjs'
-import { Router, NavigationEnd } from "@angular/router";
+import {Component, OnDestroy, OnInit} from '@angular/core'
+import {Subscription} from 'rxjs'
+import {Router, NavigationEnd} from "@angular/router";
+import {AuthService} from "./auth/auth.service";
+import {CookieService} from 'ngx-cookie-service';
 
 @Component({
   selector: 'app-root',
@@ -12,15 +14,24 @@ export class AppComponent implements OnInit, OnDestroy {
   isMiniSidebar = false
   classes = 'main'
   clickMenuIconSubscription!: Subscription;
+  name: string | undefined = '';
 
-  constructor(private router : Router) {
+  constructor(private router: Router, private authService: AuthService, private cookieService: CookieService) {
   }
+
   ngOnInit(): void {
+    const name = this.cookieService.get('name');
+    if (name) {
+      this.authService.user.next(name);
+    }
+
     this.router.events.subscribe(event => {
-      if(event instanceof NavigationEnd){
+      if (event instanceof NavigationEnd) {
         this.isShowNav = event.url !== '/auth';
       }
     })
+
+    this.authService.setLogoutAuto();
   }
 
   ngOnDestroy() {

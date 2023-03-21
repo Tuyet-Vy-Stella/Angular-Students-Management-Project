@@ -14,6 +14,7 @@ import {SubjectComponent} from "./subject/subject.component";
 import {TeacherComponent} from "./teacher/teacher.component";
 import {ClassComponent} from "./class/class.component";
 import {AuthComponent} from "./auth/auth.component";
+import {LoginGuard} from "./auth/login.guard";
 
 const routes: Routes = [
   {path: '', redirectTo: '/students', pathMatch: 'full'},
@@ -49,7 +50,7 @@ const routes: Routes = [
       {path: ':id/edit', component: ClassEditComponent}
     ]
   },
-  {path: 'auth', component: AuthComponent}
+  {path: 'auth', canActivate : [LoginGuard], component: AuthComponent}
 ];
 
 @NgModule({
