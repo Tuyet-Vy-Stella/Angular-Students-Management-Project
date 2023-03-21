@@ -37,6 +37,9 @@ import { SidebarComponent } from './components/sidebar/sidebar.component'
 import { FooterComponent } from './components/footer/footer.component';
 
 import { HomeComponent } from './home/home.component';
+import { ChartsComponent } from './charts/charts.component';
+import { AnnualLearningKindComponent } from './charts/annual-learning-kind/annual-learning-kind.component';
+import { StudentGenderChartComponent } from './charts/student-gender-chart/student-gender-chart.component';
 
 @NgModule({
   declarations: [
@@ -71,7 +74,10 @@ import { HomeComponent } from './home/home.component';
     UsersIconComponent,
     ChalkboardIconComponent,
     MathIconComponent,
-    HomeComponent
+    HomeComponent,
+    ChartsComponent,
+    AnnualLearningKindComponent,
+    StudentGenderChartComponent
   ],
   imports: [BrowserModule, AppRoutingModule, FontAwesomeModule],
   providers: [],

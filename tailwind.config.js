@@ -5,12 +5,20 @@ module.exports = {
     // fontFamily: {
     //   sans: ['Roboto', 'Helvetica', 'Arial', 'sans-serif']
     // },
+    container:{
+      center: true,
+    },
     extend: {
       fontFamily: {
         roboto: ['Roboto', 'sans-serif']
       },
       fontSize:{
-        text_15: '15px'
+        fs11: '11px',
+        fs12: '12px',
+        fs14:'14px',
+        fs15: '15px',
+        fs18: '18px',
+        fs22: '22px',
       },
       colors: {
         sidebar: '#6f6f6f',
@@ -32,7 +40,15 @@ module.exports = {
         primary: '#3D5EE1',
         'hover-primary': '#18aefa',
         'hover-secondary': '#f7f7f7',
-        button: '#f5f5f5'
+        button: '#f5f5f5',
+        dash: '#edf4ff',
+        lightgray: '#f4f4f4',
+        lightPink: '#fff9ed',
+        facebook: '#1877f2',
+        twitter: '#1d9bf0',
+        instagram: '#fe643b',
+        linkedin: '#0a66c2'
+
       },
       height: {
         header: '3.75rem', // Header height - 60px
