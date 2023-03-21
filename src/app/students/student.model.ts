@@ -6,5 +6,7 @@ export interface Student {
   gender: string
   phone: string
   email: string
-  avatar: string
+  address: string
+  birthday: string
+  createdAt: string
 }

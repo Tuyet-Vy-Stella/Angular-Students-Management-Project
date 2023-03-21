@@ -1,6 +1,6 @@
 <div class="p-6">
   <!-- Header -->
-  <div class="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 md:gap-0">
+  <div class="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 md:gap-0 select-none">
     <!-- Title -->
     <h4 class="font-medium text-xl md:text-2xl">Students Management</h4>
 
@@ -46,6 +46,7 @@
         Show
         <span class="">
           <select
+            (change)="onChangeNumberOfEntriesPerPage($event)"
             name=""
             id="num-per-page"
             class="border border-solid border-secondary outline-none px-2 py-1 rounded-lg"
@@ -104,7 +105,7 @@
           </svg>
         </button>
 
-        <button class="btn primary rounded-lg">
+        <button class="btn primary rounded-lg" routerLink="create">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             class="icon icon-tabler icon-tabler-plus"
@@ -126,7 +127,7 @@
     </div>
 
     <!-- Table data -->
-    <div class="overflow-x-auto max-h-[500px] overflow-y-scroll">
+    <div class="overflow-x-auto max-h-[400px] overflow-y-scroll">
       <table class="w-full text-sm text-dark">
         <thead>
           <tr>
@@ -142,11 +143,11 @@
         </thead>
 
         <tbody class="">
-          <tr *ngFor="let student of studentList">
+          <tr *ngFor="let student of studentListToShow">
             <td><input type="checkbox" /></td>
             <td>{{ student.id }}</td>
             <td class="flex items-center gap-2 w-max">
-              <img class="w-[40px] h-[40px] rounded-full" src="{{ student.avatar }}" alt="" />
+              <img class="w-[40px] h-[40px] rounded-full" src="../assets/images/avt.jpg" alt="" />
               <span class="">{{ student.name }}</span>
             </td>
             <td>{{ student.grade }}{{ student.section | uppercase }}</td>
@@ -205,9 +206,12 @@
     <div
       class="flex flex-col md:flex-row items-center justify-between p-6 gap-4 md:gap-0 border-t border-secondary border-solid"
     >
-      <span class="text-sm md:text-base">Showing 1 to 10 entries</span>
+      <span class="text-sm md:text-base"
+        >Showing {{ (this.currentPage - 1) * this.numberOfEntriesPerPage + 1 }} to
+        {{ this.currentPage * this.numberOfEntriesPerPage }} of {{ studentList.length }} entries</span
+      >
       <div class="flex items-center gap-4 lg:gap-2">
-        <button class="btn disabled rounded-lg" [disabled]="true" (click)="onClickPreviousPage()">
+        <button class="btn rounded-lg" [disabled]="currentPage === 1" (click)="onClickPreviousPage()">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             class="icon icon-tabler icon-tabler-chevron-left"
@@ -224,10 +228,19 @@
             <path d="M15 6l-6 6l6 6"></path>
           </svg>
         </button>
-        <button class="btn primary rounded-lg">1</button>
-        <button class="btn rounded-lg">2</button>
-        <button class="btn rounded-lg">3</button>
-        <button class="btn rounded-lg">
+        <button
+          class="btn rounded-lg"
+          *ngFor="let pageNumber of pageNumbers; index as i"
+          [ngClass]="{ primary: currentPage === i + 1 }"
+          (click)="onClickPageNumber(i + 1)"
+        >
+          {{ pageNumber }}
+        </button>
+        <button
+          class="btn rounded-lg"
+          [disabled]="currentPage === pageNumbers[pageNumbers.length - 1]"
+          (click)="onClickNextPage()"
+        >
           <svg
             xmlns="http://www.w3.org/2000/svg"
             class="icon icon-tabler icon-tabler-chevron-right"
