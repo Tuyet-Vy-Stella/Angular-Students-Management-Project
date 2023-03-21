@@ -1,11 +1,18 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 
 @Component({
   selector: 'app-subject-edit',
   templateUrl: './subject-edit.component.html',
   styleUrls: ['./subject-edit.component.scss']
 })
-export class SubjectEditComponent {
+export class SubjectEditComponent implements OnInit {
+  name:string = ''
+
+  ngOnInit () {
+    
+  }
+
+
   onClick(){
     alert('Clicked!')
   }

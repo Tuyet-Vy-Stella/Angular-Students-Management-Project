@@ -29,6 +29,7 @@ import { DashboardIconComponent } from './shared/icons/dashboard-icon/dashboard-
 import { UsersIconComponent } from './shared/icons/users-icon/users-icon.component'
 import { ChalkboardIconComponent } from './shared/icons/chalkboard-icon/chalkboard-icon.component'
 import { MathIconComponent } from './shared/icons/math-icon/math-icon.component'
+import { FormsModule } from '@angular/forms'
 
 @NgModule({
   declarations: [
@@ -58,7 +59,7 @@ import { MathIconComponent } from './shared/icons/math-icon/math-icon.component'
     ChalkboardIconComponent,
     MathIconComponent
   ],
-  imports: [BrowserModule, AppRoutingModule, FontAwesomeModule],
+  imports: [BrowserModule, AppRoutingModule, FontAwesomeModule, FormsModule],
   providers: [],
   bootstrap: [AppComponent]
 })
