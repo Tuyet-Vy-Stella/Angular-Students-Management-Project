@@ -1,6 +1,11 @@
-import { NgModule } from '@angular/core'
-import { BrowserModule } from '@angular/platform-browser'
+import { NgModule } from '@angular/core';
+import { BrowserModule } from '@angular/platform-browser';
+import { FormsModule} from "@angular/forms";
 
+
+
+import {HTTP_INTERCEPTORS, HttpClientModule} from "@angular/common/http";
+import {AuthInterceptor} from "./auth/auth.interceptor";
 import { AppRoutingModule } from './app-routing.module'
 import { AppComponent } from './app.component'
 import { StudentEditComponent } from './student/student-edit/student-edit.component'
@@ -29,7 +34,6 @@ import { DashboardIconComponent } from './shared/icons/dashboard-icon/dashboard-
 import { UsersIconComponent } from './shared/icons/users-icon/users-icon.component'
 import { ChalkboardIconComponent } from './shared/icons/chalkboard-icon/chalkboard-icon.component'
 import { MathIconComponent } from './shared/icons/math-icon/math-icon.component'
-import { FormsModule } from '@angular/forms'
 
 @NgModule({
   declarations: [
@@ -57,10 +61,16 @@ import { FormsModule } from '@angular/forms'
     DashboardIconComponent,
     UsersIconComponent,
     ChalkboardIconComponent,
-    MathIconComponent
+    MathIconComponent,
   ],
-  imports: [BrowserModule, AppRoutingModule, FontAwesomeModule, FormsModule],
-  providers: [],
+  imports: [
+    BrowserModule,
+    AppRoutingModule,
+    FontAwesomeModule,
+    FormsModule,
+    HttpClientModule
+  ],
+  providers: [{ provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true }],
   bootstrap: [AppComponent]
 })
 export class AppModule {}

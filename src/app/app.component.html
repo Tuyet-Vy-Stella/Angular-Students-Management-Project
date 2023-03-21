@@ -1,12 +1,13 @@
-<div class="{{ classes }}">
+<div class="{{ classes }}" *ngIf="isShowNav; else loginTemplate">
   <!-- Header -->
-  <app-header (clickMenuIconEvent)="onClickMenuIcon()"></app-header>
+  <app-header></app-header>
 
   <!-- Sidebar -->
   <app-sidebar></app-sidebar>
 
   <!-- Overlay -->
   <div
+
     class="fixed top-header right-0 bottom-0 left-0 bg-black/40 lg:hidden cursor-pointer"
     [ngClass]="{ hidden: isMiniSidebar }"
     (click)="onClickOverlay()"
@@ -17,3 +18,8 @@
     <router-outlet></router-outlet>
   </div>
 </div>
+<ng-template #loginTemplate>
+  <div class="bg-content">
+    <router-outlet></router-outlet>
+  </div>
+</ng-template>

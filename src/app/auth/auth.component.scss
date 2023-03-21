@@ -1,0 +1,19 @@
+.image-cover {
+  &:after {
+    content: "";
+    position: absolute;
+    background-image: url("/assets/images/login-2.png");
+    width: 144px;
+    height: 144px;
+    right: 0;
+  }
+
+  &:before {
+    content: "";
+    position: absolute;
+    background-image: url("/assets/images/login-3.png");
+    width: 144px;
+    height: 144px;
+    left: 0;
+  }
+}
