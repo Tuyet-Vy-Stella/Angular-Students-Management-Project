@@ -48,7 +48,7 @@ export class SubjectListComponent implements OnInit {
 
 
   /* Filter by Id */
-  handleFilter(id: number) {
+/*   handleFilter(id: number) {
     if (this.id === '') {
       this.SubjectService.getListSubject().subscribe(res => {
         this.subjectList = res;
@@ -66,10 +66,10 @@ export class SubjectListComponent implements OnInit {
 
 
 
-  }
+  } */
 
   /* Filter by Name */
-  handleFilterByName(name: string) {
+/*   handleFilterByName(name: string) {
     if (name !== '' && this.id !== '') {
       this.SubjectService.getListSubject().subscribe(res => {
         this.subjectList = res.filter((s: any) => {
@@ -87,7 +87,7 @@ export class SubjectListComponent implements OnInit {
       })
     }
 
-  }
+  } */
 
   handleUpdate(name: string) {
     this.SubjectService.setNameEdit(name);
