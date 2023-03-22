@@ -1,10 +1,11 @@
 import {Injectable} from "@angular/core";
-import {HttpClient} from "@angular/common/http";
+import {HttpClient, HttpErrorResponse} from "@angular/common/http";
 import {Request} from "../shared/request";
 import {CookieService} from "ngx-cookie-service";
 import {Router} from "@angular/router";
+import {BehaviorSubject, catchError, throwError} from "rxjs";
 
-interface IResponse {
+export interface IResponse {
   access_token : string,
   token_type : string,
   name : string
@@ -12,8 +13,11 @@ interface IResponse {
 
 @Injectable({providedIn: 'root'})
 export class AuthService {
+  user = new BehaviorSubject<string>('');
+  timer! : number;
 
-  constructor(private http: HttpClient, private cookieService : CookieService, private route : Router) {
+  constructor(private http: HttpClient, private cookieService: CookieService,
+  private router: Router) {
   }
 
   login(email: string, password: string) {
@@ -22,10 +26,38 @@ export class AuthService {
     request.addBodyParams('password', password);
 
 
-    this.http.post<IResponse>('https://qlsv-mu.vercel.app/api/token', request.getBody(), {headers: request.headers})
-      .subscribe(res  => {
-        this.cookieService.set('token', res.access_token);
-        this.route.navigate(['/']);
-      });
+   return this.http.post<IResponse>('https://qlsv-mu.vercel.app/api/token',
+     request.getBody(), {headers: request.headers}).pipe(catchError(this.handlerError));
   }
+
+  private handlerError(error : HttpErrorResponse) {
+    return throwError(error.error.detail);
+  }
+
+  resetAuth(){
+    this.user.next('');
+    this.cookieService.deleteAll('/');
+    this.router.navigate(['auth']);
+    clearTimeout(this.timer);
+  }
+
+  setLogoutAuto() {
+    const jwtToken = this.cookieService.get('token');
+    const jwtTokenExpiration = this.cookieService.get('tokenExp');
+
+    if (jwtToken && jwtTokenExpiration) {
+      const expirationTime = new Date(jwtTokenExpiration);
+      this.timer = setInterval(() => {
+        if (new Date() > expirationTime) {
+
+
+          this.resetAuth();
+        }
+      }, 1000);
+    } else {
+      this.resetAuth();
+    }
+  }
+
 }
+

@@ -1,5 +1,11 @@
-<div class="min-h-screen flex justify-center items-center">
-  <div class="w-[95%] max-w-[450px] mx-auto  shadow-lg lg:flex lg:max-w-[800px] lg:bg-white">
+<div class="min-h-screen flex flex-col justify-center items-center ">
+  <div *ngIf="message" class="w-[95%] max-w-[450px] p-4 flex justify-between mx-auto mb-4 lg:max-w-[800px] bg-red-200 text-red-600 rounded-lg">
+    Incorect name or passwword
+    <span class="underline text-blue-600 cursor-pointer" (click)="onClearMessage()">OK</span>
+  </div>
+  <span *ngIf="isLoading" class="loader"></span>
+
+  <div *ngIf="!isLoading" class="w-[95%] max-w-[450px] mx-auto  shadow-lg lg:flex lg:max-w-[800px] lg:bg-white">
     <!--  Image-->
     <div class="hidden lg:block lg:w-1/2 bg-[#18aefa] relative image-cover rounded-l-lg rounded-r-3xl">
       <img src="./assets/images/login.png" alt="Login-Img" class="h-[439px] object-fill
@@ -75,8 +81,9 @@
         </div>
         <button class="block w-full text-white bg-blue-700 py-2 rounded-md
           hover:bg-blue-500 duration-200 disabled:cursor-not-allowed
-          disabled:bg-blue-400" [disabled]="!f.valid" >Login
+          disabled:bg-blue-400"  >Login
         </button>
+<!--        [disabled]="!f.valid"-->
         <div class="relative h-[1px] text-gray-500" style="margin-top: 2rem; margin-bottom: 2rem">
           <span class="block absolute w-full h-[1px] bg-gray-300
           top-1/2"></span>
