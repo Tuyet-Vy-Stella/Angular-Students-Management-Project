@@ -10,6 +10,8 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome'
 import { AppRoutingModule } from './app-routing.module'
 import { AppComponent } from './app.component'
 
+import { AuthInterceptor } from './auth/auth.interceptor'
+
 // Students
 import { StudentListComponent } from './students/student-list/student-list.component'
 import { StudentDetailComponent } from './students/student-detail/student-detail.component'
@@ -79,6 +81,7 @@ import { SkeletonComponent } from './shared/skeleton/skeleton.component'
     })
   ],
   providers: [
+    [CookieService],
     {
       provide: HTTP_INTERCEPTORS,
       useClass: AuthInterceptorService,

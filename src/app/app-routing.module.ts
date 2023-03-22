@@ -6,6 +6,20 @@ import { RouterModule, Routes } from '@angular/router'
 
 // Students
 
+import { StudentListComponent } from './student/student-list/student-list.component'
+import { StudentEditComponent } from './student/student-edit/student-edit.component'
+import { SubjectListComponent } from './subject/subject-list/subject-list.component'
+import { SubjectEditComponent } from './subject/subject-edit/subject-edit.component'
+import { TeacherListComponent } from './teacher/teacher-list/teacher-list.component'
+import { TeacherEditComponent } from './teacher/teacher-edit/teacher-edit.component'
+import { ClassListComponent } from './class/class-list/class-list.component'
+import { ClassEditComponent } from './class/class-edit/class-edit.component'
+import { StudentComponent } from './student/student.component'
+import { SubjectComponent } from './subject/subject.component'
+import { TeacherComponent } from './teacher/teacher.component'
+import { ClassComponent } from './class/class.component'
+import { AuthComponent } from './auth/auth.component'
+import { LoginGuard } from './auth/login.guard'
 import { SubjectListComponent } from './subject/subject-list/subject-list.component'
 import { SubjectEditComponent } from './subject/subject-edit/subject-edit.component'
 import { TeacherListComponent } from './teacher/teacher-list/teacher-list.component'
@@ -65,7 +79,7 @@ const routes: Routes = [
       { path: ':id/edit', component: ClassEditComponent }
     ]
   },
-  { path: 'auth', component: AuthComponent }
+  { path: 'auth', canActivate: [LoginGuard], component: AuthComponent }
 ]
 
 @NgModule({
