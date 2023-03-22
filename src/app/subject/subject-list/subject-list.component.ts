@@ -1,4 +1,5 @@
 import { Component, ViewChild, ElementRef, OnInit } from '@angular/core';
+import { Title } from '@angular/platform-browser';
 import { SubjectService } from 'src/app/subject/service/subject.service';
 
 @Component({
@@ -18,14 +19,12 @@ export class SubjectListComponent implements OnInit {
     this.inputEl.nativeElement.focus();
   }
   
-  constructor(private SubjectService: SubjectService){}
+  constructor(private SubjectService: SubjectService, private title: Title){}
 
   ngOnInit() {
+    this.title.setTitle('Subject List')
     this.SubjectService.getListSubject().subscribe(res => {
-      this.subjectList = res;
-      console.log(res);
-      
-      
+      this.subjectList = res;      
     })
   }
 
