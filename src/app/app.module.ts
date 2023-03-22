@@ -1,6 +1,6 @@
 import {NgModule} from '@angular/core';
 import {BrowserModule} from '@angular/platform-browser';
-import {FormsModule} from "@angular/forms";
+import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 
 
 import {HTTP_INTERCEPTORS, HttpClientModule} from "@angular/common/http";
@@ -17,7 +17,6 @@ import {ClassListComponent} from './class/class-list/class-list.component'
 import {ClassEditComponent} from './class/class-edit/class-edit.component'
 import {StudentComponent} from './student/student.component'
 import {SubjectComponent} from './subject/subject.component'
-import {TeacherComponent} from './teacher/teacher.component'
 import {ClassComponent} from './class/class.component'
 import {AuthComponent} from './auth/auth.component'
 import {FontAwesomeModule} from '@fortawesome/angular-fontawesome'
@@ -48,7 +47,6 @@ import {CookieService} from "ngx-cookie-service";
     ClassEditComponent,
     StudentComponent,
     SubjectComponent,
-    TeacherComponent,
     ClassComponent,
     AuthComponent,
     HeaderComponent,
@@ -68,6 +66,7 @@ import {CookieService} from "ngx-cookie-service";
     AppRoutingModule,
     FontAwesomeModule,
     FormsModule,
+    ReactiveFormsModule,
     HttpClientModule
   ],
   providers: [[CookieService], {provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true}],
