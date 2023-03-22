@@ -4,7 +4,8 @@
       <li class="tab-item" *ngFor="let tab of tabs" [ngClass]="{ active: parentTabSelected === tab.id, 'show-child': (showChild && parentTabClicked === tab.id)}">
         <span class="parent-item"  (click)="onClickParentTab(tab.id)">
           <span class="w-8">
-            <ng-container *ngComponentOutlet="tab.icon" />
+            <!-- <ng-container *ngComponentOutlet="tab.icon" /> -->
+            <fa-icon [icon]="tab.icon"/>
           </span>
 
           <span class="grow">{{tab.name}}</span>

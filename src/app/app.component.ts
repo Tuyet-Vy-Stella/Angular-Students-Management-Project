@@ -1,5 +1,4 @@
 import { Component } from '@angular/core'
-import { Subscription } from 'rxjs'
 
 @Component({
   selector: 'app-root',
@@ -7,19 +6,8 @@ import { Subscription } from 'rxjs'
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
-  isMiniSidebar = false
-  classes = 'main'
-  clickMenuIconSubscription!: Subscription
-
-  ngOnInit() {
-    if (window.screen.width < 1024) {
-      this.onClickOverlay()
-    }
-  }
-
-  ngOnDestroy() {
-    this.clickMenuIconSubscription.unsubscribe()
-  }
+  isMiniSidebar = true
+  classes = 'main main mini-sidebar'
 
   onClickMenuIcon() {
     this.isMiniSidebar = !this.isMiniSidebar

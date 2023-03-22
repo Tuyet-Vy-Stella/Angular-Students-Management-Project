@@ -1,9 +1,5 @@
 import { Component } from '@angular/core'
-
-import { MathIconComponent } from './../shared/icons/math-icon/math-icon.component'
-import { ChalkboardIconComponent } from './../shared/icons/chalkboard-icon/chalkboard-icon.component'
-import { UsersIconComponent } from './../shared/icons/users-icon/users-icon.component'
-import { DashboardIconComponent } from './../shared/icons/dashboard-icon/dashboard-icon.component'
+import { faGauge, faUsers, faChalkboard, faCalculator } from '@fortawesome/free-solid-svg-icons'
 
 @Component({
   selector: 'app-sidebar',
@@ -15,7 +11,7 @@ export class SidebarComponent {
     {
       id: 1,
       name: 'Dashboard',
-      icon: DashboardIconComponent,
+      icon: faGauge,
       children: [
         {
           id: 11,
@@ -37,7 +33,7 @@ export class SidebarComponent {
     {
       id: 2,
       name: 'Students',
-      icon: UsersIconComponent,
+      icon: faUsers,
       children: [
         {
           id: 21,
@@ -54,7 +50,7 @@ export class SidebarComponent {
     {
       id: 3,
       name: 'Teachers',
-      icon: ChalkboardIconComponent,
+      icon: faChalkboard,
       children: [
         {
           id: 31,
@@ -66,7 +62,7 @@ export class SidebarComponent {
     {
       id: 4,
       name: 'Subjects',
-      icon: MathIconComponent,
+      icon: faCalculator,
       children: [
         {
           id: 41,

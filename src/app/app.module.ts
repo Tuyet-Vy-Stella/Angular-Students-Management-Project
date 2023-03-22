@@ -5,6 +5,7 @@ import { ReactiveFormsModule } from '@angular/forms'
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http'
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations'
 import { ToastrModule } from 'ngx-toastr'
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome'
 
 import { AppRoutingModule } from './app-routing.module'
 import { AppComponent } from './app.component'
@@ -35,9 +36,11 @@ import { ClassComponent } from './class/class.component'
 import { AuthComponent } from './auth/auth.component'
 
 // Common
-import { FontAwesomeModule } from '@fortawesome/angular-fontawesome'
 import { HeaderComponent } from './header/header.component'
 import { SidebarComponent } from './sidebar/sidebar.component'
+import { LoadingSpinnerComponent } from './shared/loading-spinner/loading-spinner.component'
+import { ModalComponent } from './shared/modal/modal.component'
+import { SkeletonComponent } from './shared/skeleton/skeleton.component'
 
 import { MenuIconComponent } from './shared/icons/menu-icon/menu-icon.component'
 import { BellIconComponent } from './shared/icons/bell-icon/bell-icon.component'
@@ -47,8 +50,7 @@ import { ChevronRightComponent } from './shared/icons/chevron-right-icon/chevron
 import { DashboardIconComponent } from './shared/icons/dashboard-icon/dashboard-icon.component'
 import { UsersIconComponent } from './shared/icons/users-icon/users-icon.component'
 import { ChalkboardIconComponent } from './shared/icons/chalkboard-icon/chalkboard-icon.component'
-import { MathIconComponent } from './shared/icons/math-icon/math-icon.component';
-import { SkeletonComponent } from './skeleton/skeleton.component'
+import { MathIconComponent } from './shared/icons/math-icon/math-icon.component'
 
 @NgModule({
   declarations: [
@@ -77,7 +79,9 @@ import { SkeletonComponent } from './skeleton/skeleton.component'
     StudentListComponent,
     StudentDetailComponent,
     CreatingStudentComponent,
-    SkeletonComponent
+    SkeletonComponent,
+    ModalComponent,
+    LoadingSpinnerComponent
   ],
   imports: [
     BrowserModule,

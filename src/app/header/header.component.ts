@@ -1,5 +1,6 @@
 import { Subject } from 'rxjs'
 import { Component, ElementRef, Output, Renderer2, ViewChild } from '@angular/core'
+import { faBell, faBars, faMaximize, faChevronDown } from '@fortawesome/free-solid-svg-icons'
 
 @Component({
   selector: 'app-header',
@@ -8,6 +9,7 @@ import { Component, ElementRef, Output, Renderer2, ViewChild } from '@angular/co
 })
 export class HeaderComponent {
   showDropdown = false
+  icons = { faBars, faBell, faMaximize, faChevronDown }
   @Output() clickMenuIconEvent = new Subject<void>()
   @ViewChild('dropdown') dropdown!: ElementRef
   @ViewChild('userMenu') userMenu!: ElementRef

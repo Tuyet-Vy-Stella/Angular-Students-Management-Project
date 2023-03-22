@@ -42,4 +42,12 @@ export class StudentService {
       }
     })
   }
+
+  deleteStudent(id: number) {
+    return this.http.delete('https://qlsv-mu.vercel.app/api/student/', {
+      params: {
+        student_id: id
+      }
+    })
+  }
 }
