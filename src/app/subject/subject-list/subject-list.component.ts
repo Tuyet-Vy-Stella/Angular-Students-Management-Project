@@ -23,10 +23,13 @@ export class SubjectListComponent implements OnInit {
   ngOnInit() {
     this.SubjectService.getListSubject().subscribe(res => {
       this.subjectList = res;
+      console.log(res);
+      
       
     })
   }
 
+  /* Handle Create */
   handleCreate(name:string){
     this.SubjectService.createSubject(name).subscribe(res => {
         this.subjectList = [...this.subjectList, res];
@@ -70,37 +73,19 @@ export class SubjectListComponent implements OnInit {
     const selectedValue = event.target.value;
     if(selectedValue === 'All'){
       this.SubjectService.getListSubject().subscribe(res => {
-       this.subjectList = res
+       this.subjectList = res;
        
         
       })
+    }else {
+      this.SubjectService.getListSubject().subscribe(res => {
+        this.subjectList = res.slice(0,+selectedValue);
+        
+         
+       })
     }
 
-    // Do something when 5 is selected
-    if (selectedValue === '5') {
-      this.SubjectService.getListSubject().subscribe(res => {
-       this.subjectList = res.slice(0,5)
-       
-        
-      })
-      
 
-    // Do something when 10 is selected
-    } else if (selectedValue === '10') {
-      this.SubjectService.getListSubject().subscribe(res => {
-       this.subjectList = res.slice(0,10)
-       
-        
-      })      
-      // Do something else when 15 is selected
-    } else if (selectedValue === '15') {
-      this.SubjectService.getListSubject().subscribe(res => {
-       this.subjectList = res.slice(0,15)
-       
-        
-      })      
-   
-  }
   }
 
  

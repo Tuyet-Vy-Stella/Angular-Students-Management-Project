@@ -18,7 +18,20 @@ export class SubjectService implements OnInit {
   createSubject(body: string) {
     return this.http.post('https://qlsv-mu.vercel.app/api/subject', {
       name: body,
-      teacher: 'Eddie',
+      teacher: [
+        {
+          address: "8204 Oak Avenue, Newark, NJ, 07104",
+          birthday: "2001-09-11",
+          created_at: "2023-03-20T06:38:00.249710",
+          email: "levanluongk15.com",
+          gender: "male",
+          id: Math.floor(Math.random() * 10000) + 1,
+          joined_date: "2001-05-22",
+          name: "Eddie ",
+          password: "$2b$12$hBcOaOTgk6KOr4UgwEKTJuJlksdLvN4y0Mu39qABWyhSAggzn0B/i",
+          phone: "(973) 555-1212"
+        }
+      ],
 
     })
   }
