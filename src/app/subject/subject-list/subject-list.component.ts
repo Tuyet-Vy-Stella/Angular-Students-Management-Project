@@ -25,6 +25,9 @@ export class SubjectListComponent implements OnInit {
     this.title.setTitle('Subject List')
     this.SubjectService.getListSubject().subscribe(res => {
       this.subjectList = res;
+
+      console.log(res);
+      
     })
   }
 
@@ -40,9 +43,9 @@ export class SubjectListComponent implements OnInit {
 
     }
 
-
-
   }
+
+
 
   /* Filter by Id */
   handleFilter(id: number) {
@@ -89,6 +92,41 @@ export class SubjectListComponent implements OnInit {
   handleUpdate(name: string) {
     this.SubjectService.setNameEdit(name);
   }
+
+  /* Handle Search */
+  handleSearch(){
+
+    /* Handle search if input value of id and value of name not empty */
+    if(this.id.length !== 0 && this.nameSearchText.length !== 0){
+      
+      this.SubjectService.getListSubject().subscribe(res => {
+        this.subjectList = res.filter((sub:any) => sub.id === +this.id && sub.name.toLowerCase().includes(this.nameSearchText.toLowerCase()))
+      })
+
+    }
+
+    /* Handle search if input value of id not empty and name is empty */
+    if(this.id.length !== 0 && this.nameSearchText.length === 0){
+      
+      this.SubjectService.getListSubject().subscribe(res => {
+        this.subjectList = res.filter((sub:any) => sub.id === +this.id)
+      })
+    }
+
+    /* Handle search if input value of id is empty and name is not empty */
+    if(this.id.length === 0 && this.nameSearchText.length !== 0){
+      
+      this.SubjectService.getListSubject().subscribe(res => {
+        this.subjectList = res.filter((sub:any) => sub.name.toLowerCase().includes(this.nameSearchText.toLowerCase()))
+      })
+    }
+
+
+  }
+
+
+
+  /* Handle Search */
 
   onSelect(event: any) {
     const selectedValue = event.target.value;
