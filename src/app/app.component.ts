@@ -32,6 +32,10 @@ export class AppComponent implements OnInit, OnDestroy {
     })
 
     this.authService.setLogoutAuto();
+
+    if (window.screen.width < 1024) {
+      this.onClickOverlay()
+    }
   }
 
   ngOnDestroy() {

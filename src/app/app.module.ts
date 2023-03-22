@@ -1,29 +1,40 @@
+import { AuthInterceptorService } from './auth/auth-interceptor.service'
 import {NgModule} from '@angular/core';
 import {BrowserModule} from '@angular/platform-browser';
 import {FormsModule} from "@angular/forms";
 import {HttpClientModule, HTTP_INTERCEPTORS} from "@angular/common/http";
 import {AuthInterceptor} from "./auth/auth.interceptor";
+import { ReactiveFormsModule } from '@angular/forms'
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations'
+import { ToastrModule } from 'ngx-toastr'
 
 import { AppRoutingModule } from './app-routing.module'
 import { AppComponent } from './app.component'
 
-import { StudentComponent } from './student/student.component'
-import { StudentListComponent } from './student/student-list/student-list.component'
-import { StudentEditComponent } from './student/student-edit/student-edit.component'
+// Students
+import { StudentListComponent } from './students/student-list/student-list.component'
+import { StudentDetailComponent } from './students/student-detail/student-detail.component'
+import { CreatingStudentComponent } from './students/creating-student/creating-student.component'
 
-import { TeacherComponent } from './teacher/teacher.component'
-import { TeacherListComponent } from './teacher/teacher-list/teacher-list.component'
+// Teachers
 import { TeacherEditComponent } from './teacher/teacher-edit/teacher-edit.component'
+import { TeacherListComponent } from './teacher/teacher-list/teacher-list.component'
+import { TeacherComponent } from './teacher/teacher.component'
 
-import { SubjectComponent } from './subject/subject.component'
+// Subjects
 import { SubjectListComponent } from './subject/subject-list/subject-list.component'
 import { SubjectEditComponent } from './subject/subject-edit/subject-edit.component'
+import { SubjectComponent } from './subject/subject.component'
 
-import { ClassComponent } from './class/class.component'
+// Class
 import { ClassListComponent } from './class/class-list/class-list.component'
 import { ClassEditComponent } from './class/class-edit/class-edit.component'
+import { ClassComponent } from './class/class.component'
 
+// Auth
 import { AuthComponent } from './auth/auth.component'
+
+// Common
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome'
 
 import {MenuIconComponent} from './shared/icons/menu-icon/menu-icon.component'
@@ -43,7 +54,8 @@ import { HomeComponent } from './home/home.component';
 import { ChartsComponent } from './charts/charts.component';
 import { AnnualLearningKindComponent } from './charts/annual-learning-kind/annual-learning-kind.component';
 import { StudentGenderChartComponent } from './charts/student-gender-chart/student-gender-chart.component';
-import {CookieService} from "ngx-cookie-service";
+import {CookieService} from "ngx-cookie-service";;
+import { SkeletonComponent } from './skeleton/skeleton.component'
 
 @NgModule({
   declarations: [
@@ -53,9 +65,9 @@ import {CookieService} from "ngx-cookie-service";
     SidebarComponent,
     FooterComponent,
 
-    StudentComponent,
     StudentListComponent,
-    StudentEditComponent,
+    StudentDetailComponent,
+    CreatingStudentComponent,
 
     TeacherComponent,
     TeacherListComponent,
@@ -82,13 +94,24 @@ import {CookieService} from "ngx-cookie-service";
     ChartsComponent,
     AnnualLearningKindComponent,
     StudentGenderChartComponent,
+
+    SkeletonComponent
   ],
+
   imports: [
     BrowserModule,
     AppRoutingModule,
     FontAwesomeModule,
     FormsModule,
-    HttpClientModule
+    ReactiveFormsModule,
+    HttpClientModule,
+    BrowserAnimationsModule,
+    ToastrModule.forRoot({
+      timeOut: 4000,
+      positionClass: 'toast-top-right',
+      preventDuplicates: false,
+      easing: 'ease-in-out'
+    })
   ],
   providers: [[CookieService], {provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true}],
   bootstrap: [AppComponent]
