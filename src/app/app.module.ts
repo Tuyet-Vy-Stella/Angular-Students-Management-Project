@@ -42,16 +42,6 @@ import { LoadingSpinnerComponent } from './shared/loading-spinner/loading-spinne
 import { ModalComponent } from './shared/modal/modal.component'
 import { SkeletonComponent } from './shared/skeleton/skeleton.component'
 
-import { MenuIconComponent } from './shared/icons/menu-icon/menu-icon.component'
-import { BellIconComponent } from './shared/icons/bell-icon/bell-icon.component'
-import { ZoomIconComponent } from './shared/icons/zoom-icon/zoom-icon.component'
-import { ChevronDownIconComponent } from './shared/icons/chevron-down-icon/chevron-down-icon.component'
-import { ChevronRightComponent } from './shared/icons/chevron-right-icon/chevron-right-icon.component'
-import { DashboardIconComponent } from './shared/icons/dashboard-icon/dashboard-icon.component'
-import { UsersIconComponent } from './shared/icons/users-icon/users-icon.component'
-import { ChalkboardIconComponent } from './shared/icons/chalkboard-icon/chalkboard-icon.component'
-import { MathIconComponent } from './shared/icons/math-icon/math-icon.component'
-
 @NgModule({
   declarations: [
     AppComponent,
@@ -67,15 +57,6 @@ import { MathIconComponent } from './shared/icons/math-icon/math-icon.component'
     AuthComponent,
     HeaderComponent,
     SidebarComponent,
-    MenuIconComponent,
-    BellIconComponent,
-    ZoomIconComponent,
-    ChevronDownIconComponent,
-    ChevronRightComponent,
-    DashboardIconComponent,
-    UsersIconComponent,
-    ChalkboardIconComponent,
-    MathIconComponent,
     StudentListComponent,
     StudentDetailComponent,
     CreatingStudentComponent,
