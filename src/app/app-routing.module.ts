@@ -19,6 +19,7 @@ import {ClassEditComponent} from "./class/class-edit/class-edit.component";
 
 import {AuthComponent} from "./auth/auth.component";
 import { HomeComponent } from './home/home.component';
+import {LoginGuard} from "./auth/login.guard";
 
 const routes: Routes = [
   {path: '', redirectTo: '', pathMatch: 'full'},
@@ -55,7 +56,7 @@ const routes: Routes = [
       {path: ':id/edit', component: ClassEditComponent}
     ]
   },
-  {path: 'auth', component: AuthComponent}
+  {path: 'auth', canActivate : [LoginGuard], component: AuthComponent}
 ];
 
 @NgModule({

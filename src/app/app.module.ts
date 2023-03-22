@@ -1,5 +1,8 @@
-import { NgModule } from '@angular/core'
-import { BrowserModule } from '@angular/platform-browser'
+import {NgModule} from '@angular/core';
+import {BrowserModule} from '@angular/platform-browser';
+import {FormsModule} from "@angular/forms";
+import {HttpClientModule, HTTP_INTERCEPTORS} from "@angular/common/http";
+import {AuthInterceptor} from "./auth/auth.interceptor";
 
 import { AppRoutingModule } from './app-routing.module'
 import { AppComponent } from './app.component'
@@ -23,15 +26,15 @@ import { ClassEditComponent } from './class/class-edit/class-edit.component'
 import { AuthComponent } from './auth/auth.component'
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome'
 
-import { MenuIconComponent } from './shared/icons/menu-icon/menu-icon.component'
-import { BellIconComponent } from './shared/icons/bell-icon/bell-icon.component'
-import { ZoomIconComponent } from './shared/icons/zoom-icon/zoom-icon.component'
-import { ChevronDownIconComponent } from './shared/icons/chevron-down-icon/chevron-down-icon.component'
-import { ChevronRightComponent } from './shared/icons/chevron-right-icon/chevron-right-icon.component'
-import { DashboardIconComponent } from './shared/icons/dashboard-icon/dashboard-icon.component'
-import { UsersIconComponent } from './shared/icons/users-icon/users-icon.component'
-import { ChalkboardIconComponent } from './shared/icons/chalkboard-icon/chalkboard-icon.component'
-import { MathIconComponent } from './shared/icons/math-icon/math-icon.component'
+import {MenuIconComponent} from './shared/icons/menu-icon/menu-icon.component'
+import {BellIconComponent} from './shared/icons/bell-icon/bell-icon.component'
+import {ZoomIconComponent} from './shared/icons/zoom-icon/zoom-icon.component'
+import {ChevronDownIconComponent} from './shared/icons/chevron-down-icon/chevron-down-icon.component'
+import {ChevronRightComponent} from './shared/icons/chevron-right-icon/chevron-right-icon.component'
+import {DashboardIconComponent} from './shared/icons/dashboard-icon/dashboard-icon.component'
+import {UsersIconComponent} from './shared/icons/users-icon/users-icon.component'
+import {ChalkboardIconComponent} from './shared/icons/chalkboard-icon/chalkboard-icon.component'
+import {MathIconComponent} from './shared/icons/math-icon/math-icon.component'
 import { HeaderComponent } from './components/header/header.component';
 import { SidebarComponent } from './components/sidebar/sidebar.component'
 import { FooterComponent } from './components/footer/footer.component';
@@ -40,6 +43,7 @@ import { HomeComponent } from './home/home.component';
 import { ChartsComponent } from './charts/charts.component';
 import { AnnualLearningKindComponent } from './charts/annual-learning-kind/annual-learning-kind.component';
 import { StudentGenderChartComponent } from './charts/student-gender-chart/student-gender-chart.component';
+import {CookieService} from "ngx-cookie-service";
 
 @NgModule({
   declarations: [
@@ -77,10 +81,17 @@ import { StudentGenderChartComponent } from './charts/student-gender-chart/stude
     HomeComponent,
     ChartsComponent,
     AnnualLearningKindComponent,
-    StudentGenderChartComponent
+    StudentGenderChartComponent,
   ],
-  imports: [BrowserModule, AppRoutingModule, FontAwesomeModule],
-  providers: [],
+  imports: [
+    BrowserModule,
+    AppRoutingModule,
+    FontAwesomeModule,
+    FormsModule,
+    HttpClientModule
+  ],
+  providers: [[CookieService], {provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true}],
   bootstrap: [AppComponent]
 })
-export class AppModule {}
+export class AppModule {
+}

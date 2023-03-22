@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import {DataStorageService} from "../shared/data-storage.service";
 
 @Component({
   selector: 'app-teacher',
@@ -6,4 +7,10 @@ import { Component } from '@angular/core';
 })
 export class TeacherComponent {
 
+  constructor(private dataStorage : DataStorageService) {
+  }
+
+  onFetch(){
+    this.dataStorage.fetchTeachersData();
+  }
 }
