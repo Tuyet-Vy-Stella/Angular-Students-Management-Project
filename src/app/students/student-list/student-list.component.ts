@@ -30,6 +30,7 @@ export class StudentListComponent {
   isFetchingToDeleteStudent = false
   showModal = false
   studentIdToDelete: number | null = null
+  tableViewMode = true
 
   constructor(private studentService: StudentService, private toastrService: ToastrService) {}
 
@@ -155,5 +156,10 @@ export class StudentListComponent {
         }
       })
     }
+  }
+
+  // Switch view mode
+  switchToTableViewMode(isTableViewMode: boolean) {
+    this.tableViewMode = isTableViewMode
   }
 }

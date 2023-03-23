@@ -25,7 +25,7 @@
     </div>
   </div>
 
-  <!-- Table -->
+  <!-- Content -->
   <div class="mt-6 bg-light rounded-lg">
     <!-- Header -->
     <div
@@ -51,11 +51,11 @@
 
       <!-- Buttons -->
       <div class="flex items-center justify-between gap-4">
-        <button class="btn icon primary rounded-lg">
+        <button class="btn icon rounded-lg" [ngClass]="tableViewMode ? 'primary' : 'secondary'" (click)="switchToTableViewMode(true)">
           <fa-icon [icon]="icons.faList"></fa-icon>
         </button>
 
-        <button class="btn icon secondary rounded-lg">
+        <button class="btn icon rounded-lg" [ngClass]="tableViewMode ? 'secondary' : 'primary'" (click)="switchToTableViewMode(false)">
          <fa-icon [icon]="icons.faBorderAll"></fa-icon>
         </button>
 
@@ -70,8 +70,8 @@
       <app-skeleton />
     </div>
 
-    <!-- Table data -->
-    <div class="overflow-x-auto">
+    <!-- Table view mode -->
+    <div *ngIf="tableViewMode" class="overflow-x-auto">
       <table *ngIf="!isFetchingStudentList" class="w-full text-sm text-dark">
         <thead>
           <tr>
@@ -119,6 +119,15 @@
           </tr>
         </tbody>
       </table>
+    </div>
+
+    <!-- Grid view mode -->
+    <div *ngIf="!tableViewMode" class="grid-student-list grid p-6 gap-6">
+      <a *ngFor="let student of studentListToShow" class="h-[250px] p-6 border border-solid border-secondary rounded-lg flex flex-col items-center justify-between cursor-pointer group" [routerLink]="[student.id]">
+        <img src="../assets/images/avt.jpg" alt="" class="w-[140px] h-[140px] rounded-full">
+        <span class="text-dark font-medium group-hover:text-active">{{student.name}}</span>
+        <span class="text-dark text-sm">{{student.grade}}{{student.section}}</span>
+      </a>
     </div>
 
     <!-- Footer -->
