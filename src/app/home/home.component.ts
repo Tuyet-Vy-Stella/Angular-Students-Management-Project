@@ -1,11 +1,12 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { HomeService, StarStudent } from './home.service';
 
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.scss']
 })
-export class HomeComponent {
+export class HomeComponent implements OnInit{
 
   // columns = ['column 1', 'column 2', 'column 3', 'column 4'];
   columns = [
@@ -88,7 +89,24 @@ export class HomeComponent {
       img: '../../assets/images/icons/social-icon-04.svg',
       bgColor : '#0a66c2'
     },
-  ]
+  ];
+
+  starStudentList: StarStudent[] = [];
+
+  constructor(private homeService: HomeService){}
+
+  ngOnInit(){
+    this.homeService.getStarStudentList().subscribe({
+      next: (response) => {
+        if (response) {
+          this.starStudentList = response.slice(0,4)
+        }
+      },
+      error: (error) => {
+        console.log(error);
+      }
+    })
+  }
 
 
 

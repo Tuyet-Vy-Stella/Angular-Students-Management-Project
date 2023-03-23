@@ -7,6 +7,7 @@ import {AuthInterceptor} from "./auth/auth.interceptor";
 import { ReactiveFormsModule } from '@angular/forms'
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations'
 import { ToastrModule } from 'ngx-toastr'
+import { NgApexchartsModule } from 'ng-apexcharts';
 
 import { AppRoutingModule } from './app-routing.module'
 import { AppComponent } from './app.component'
@@ -106,6 +107,7 @@ import { SkeletonComponent } from './skeleton/skeleton.component'
     ReactiveFormsModule,
     HttpClientModule,
     BrowserAnimationsModule,
+    NgApexchartsModule,
     ToastrModule.forRoot({
       timeOut: 4000,
       positionClass: 'toast-top-right',

@@ -27,7 +27,8 @@ module.exports = {
         light: '#ffffff',
         active: '#3D5EE1',
         footer: '#808191',
-        button: '#6c757d'
+        button: '#6c757d',
+        darkGrey: '#495057'
       },
       borderColor: {
         primary: '#3D5EE1',
@@ -40,6 +41,7 @@ module.exports = {
         button: '#f5f5f5',
         dash: '#edf4ff',
         lightgray: '#f4f4f4',
+        mediumGrey: '#f8f9fa',
         lightPink: '#fff9ed',
         facebook: '#1877f2',
         twitter: '#1d9bf0',

@@ -17,17 +17,43 @@
 
     <!-- CHARTS -->
 
+    <app-charts></app-charts>
+
     <!-- STAR STUDENTS + STUDENT ACTIVITY -->
     <div class="row flex items-center justify-between">
+
+      <!-- Star Students -->
       <div class="columns-lg bg-light rounded-lg box-border p-6 mr-6">
         <div class="item">
-          <div class="top flex items-center justify-between">
+          <div class="top flex items-center justify-between pb-3">
             <h5 class="fs18 font-semibold">Star Students</h5>
             <i class="fa-solid fa-ellipsis-vertical w-6 h-8 leading-8 bg-lightgray rounded-md text-center cursor-pointer"></i>
           </div>
-          <div class="bottom"></div>
+          <div class="bottom">
+            <table class="w-full text-fs15 border my-3">
+              <thead class="font-semibold text-darkGrey bg-mediumGrey">
+                <tr class="border border-b-black">
+                  <th>ID</th>
+                  <th>Name</th>
+                  <th>Marks</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let starStudentItem of starStudentList">
+                  <td >{{starStudentItem.id}}</td>
+                  <td class="flex items-center gap-2 w-max">
+                    <img class="w-[30px] h-[30px] rounded-full" src="../../assets/images/avt.jpg" alt="">
+                    <span>{{starStudentItem.name}}</span>
+                  </td>
+                  <td>{{starStudentItem.average}}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
         </div>
       </div>
+
+      <!-- Student Activity -->
       <div class="columns-lg bg-light rounded-lg box-border p-6 mr-6">
         <div class="item">
           <div class="top flex items-center justify-between pb-3">
