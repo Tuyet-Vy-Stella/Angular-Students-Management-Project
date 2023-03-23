@@ -1,5 +1,8 @@
+import { Router, NavigationEnd } from '@angular/router'
 import { Component } from '@angular/core'
-import { faGauge, faUsers, faChalkboard, faCalculator } from '@fortawesome/free-solid-svg-icons'
+import { faChevronRight } from '@fortawesome/free-solid-svg-icons'
+
+import { sidebarTabs } from '../constants/sidebar.constant'
 
 @Component({
   selector: 'app-sidebar',
@@ -7,75 +10,27 @@ import { faGauge, faUsers, faChalkboard, faCalculator } from '@fortawesome/free-
   styleUrls: ['./sidebar.component.scss']
 })
 export class SidebarComponent {
-  tabs = [
-    {
-      id: 1,
-      name: 'Dashboard',
-      icon: faGauge,
-      children: [
-        {
-          id: 11,
-          name: 'Admin Dashboard',
-          link: ''
-        },
-        {
-          id: 12,
-          name: 'Teacher Dashboard',
-          link: ''
-        },
-        {
-          id: 13,
-          name: 'Student Dashboard',
-          link: ''
-        }
-      ]
-    },
-    {
-      id: 2,
-      name: 'Students',
-      icon: faUsers,
-      children: [
-        {
-          id: 21,
-          name: 'Student List',
-          link: 'students'
-        },
-        {
-          id: 22,
-          name: 'Create Student',
-          link: 'students/create'
-        }
-      ]
-    },
-    {
-      id: 3,
-      name: 'Teachers',
-      icon: faChalkboard,
-      children: [
-        {
-          id: 31,
-          name: 'Teacher List',
-          link: ''
-        }
-      ]
-    },
-    {
-      id: 4,
-      name: 'Subjects',
-      icon: faCalculator,
-      children: [
-        {
-          id: 41,
-          name: 'Subject List',
-          link: ''
-        }
-      ]
-    }
-  ]
+  sidebarTabs = sidebarTabs
+  faChevronRightIcon = faChevronRight
   parentTabClicked = 1
   parentTabSelected = 1
   childTabSelected = 11
   showChild = true
+
+  constructor(private router: Router) {}
+
+  ngOnInit() {
+    // Listen url path when first access
+    this.router.events.subscribe((event) => {
+      if (event instanceof NavigationEnd) {
+        const prefix = event.url.split('/')[1]
+        const tab = this.sidebarTabs.find((tab) => tab.prefix === prefix)
+        if (tab) {
+          this.parentTabSelected = tab.id
+        }
+      }
+    })
+  }
 
   // On click parent tab item
   onClickParentTab(parentId: number) {

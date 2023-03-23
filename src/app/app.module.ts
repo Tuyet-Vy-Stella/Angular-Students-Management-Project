@@ -1,11 +1,11 @@
-import { AuthInterceptorService } from './auth/auth-interceptor.service'
 import { NgModule } from '@angular/core'
 import { BrowserModule } from '@angular/platform-browser'
-import { ReactiveFormsModule } from '@angular/forms'
+import { FormsModule, ReactiveFormsModule } from '@angular/forms'
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http'
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations'
 import { ToastrModule } from 'ngx-toastr'
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome'
+import { CookieService } from 'ngx-cookie-service'
 
 import { AppRoutingModule } from './app-routing.module'
 import { AppComponent } from './app.component'
@@ -70,6 +70,7 @@ import { SkeletonComponent } from './shared/skeleton/skeleton.component'
     BrowserModule,
     AppRoutingModule,
     FontAwesomeModule,
+    FormsModule,
     ReactiveFormsModule,
     HttpClientModule,
     BrowserAnimationsModule,
@@ -84,7 +85,7 @@ import { SkeletonComponent } from './shared/skeleton/skeleton.component'
     [CookieService],
     {
       provide: HTTP_INTERCEPTORS,
-      useClass: AuthInterceptorService,
+      useClass: AuthInterceptor,
       multi: true
     }
   ],
