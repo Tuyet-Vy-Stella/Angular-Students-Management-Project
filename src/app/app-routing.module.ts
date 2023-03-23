@@ -77,7 +77,7 @@ const routes: Routes = [
       { path: ':id/edit', component: ClassEditComponent }
     ]
   },
-  {path: 'auth', component: AuthComponent}
+  {path: 'auth', canActivate : [LoginGuard], component: AuthComponent}
 ];
 
 @NgModule({

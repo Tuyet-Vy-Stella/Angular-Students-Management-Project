@@ -9,6 +9,7 @@ import {CookieService} from 'ngx-cookie-service';
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss']
 })
+
 export class AppComponent implements OnInit, OnDestroy {
   isShowNav = true;
   isMiniSidebar = false
@@ -32,10 +33,6 @@ export class AppComponent implements OnInit, OnDestroy {
     })
 
     this.authService.setLogoutAuto();
-
-    if (window.screen.width < 1024) {
-      this.onClickOverlay()
-    }
   }
 
   ngOnDestroy() {
