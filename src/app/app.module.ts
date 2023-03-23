@@ -6,6 +6,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations'
 import { ToastrModule } from 'ngx-toastr'
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome'
 import { CookieService } from 'ngx-cookie-service'
+import { NgApexchartsModule } from 'ng-apexcharts'
 
 // Module
 import { AppRoutingModule } from './app-routing.module'
@@ -34,15 +35,33 @@ import { ClassComponent } from './class/class.component'
 import { AuthComponent } from './auth/auth.component'
 
 // Common
-import { HeaderComponent } from './components/header/header.component'
 import { SidebarComponent } from './components/sidebar/sidebar.component'
-import { NgApexchartsModule } from 'ng-apexcharts'
+import {HeaderComponent} from "./components/header/header.component"
+import { FooterComponent } from './components/footer/footer.component'
+import { ChartsComponent } from './charts/charts.component'
+import { AnnualLearningKindComponent } from './charts/annual-learning-kind/annual-learning-kind.component'
+import { StudentGenderChartComponent } from './charts/student-gender-chart/student-gender-chart.component'
+import { HomeComponent } from './home/home.component'
 @NgModule({
   declarations: [
     AppComponent,
+    TeacherEditComponent,
+    SubjectListComponent,
+    SubjectEditComponent,
+    TeacherListComponent,
+    ClassListComponent,
+    ClassEditComponent,
+    SubjectComponent,
+    TeacherComponent,
+    ClassComponent,
     AuthComponent,
     HeaderComponent,
-    SidebarComponent
+    SidebarComponent,
+    FooterComponent,
+    ChartsComponent,
+    AnnualLearningKindComponent,
+    StudentGenderChartComponent,
+    HomeComponent
   ],
 
   imports: [

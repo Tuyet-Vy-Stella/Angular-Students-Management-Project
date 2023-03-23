@@ -12,16 +12,6 @@ export const sidebarTabs = [
         name: 'Admin Dashboard',
         link: ''
       },
-      {
-        id: 12,
-        name: 'Teacher Dashboard',
-        link: ''
-      },
-      {
-        id: 13,
-        name: 'Student Dashboard',
-        link: ''
-      }
     ]
   },
   {

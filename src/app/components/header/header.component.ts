@@ -1,42 +1,29 @@
 import { Subject } from 'rxjs'
-<<<<<<<<< Temporary merge branch 1
 import { Component, ElementRef, Output, Renderer2, ViewChild } from '@angular/core'
-=========
-import { Component, ElementRef, OnInit, Output, Renderer2, ViewChild } from '@angular/core'
-import {AuthService} from "../auth/auth.service";
->>>>>>>>> Temporary merge branch 2
+import { faBell, faBars, faMaximize, faChevronDown } from '@fortawesome/free-solid-svg-icons'
+
+import { AuthService } from '../../auth/auth.service'
 
 @Component({
   selector: 'app-header',
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.scss']
 })
-<<<<<<<<< Temporary merge branch 1
 export class HeaderComponent {
+  name!: string
   showDropdown = false
-=========
-export class HeaderComponent implements OnInit {
-  name! : string;
-  showDropdown = false
-  isAuthenticated = false;
->>>>>>>>> Temporary merge branch 2
+  icons = { faBars, faBell, faMaximize, faChevronDown }
   @Output() clickMenuIconEvent = new Subject<void>()
   @ViewChild('dropdown') dropdown!: ElementRef
   @ViewChild('userMenu') userMenu!: ElementRef
 
-<<<<<<<<< Temporary merge branch 1
-  constructor(private renderer: Renderer2) {}
+  constructor(private renderer: Renderer2, private authService: AuthService) {}
 
   ngOnInit() {
-=========
-  constructor(private renderer: Renderer2, private authService : AuthService) {}
+    this.authService.user.subscribe((name) => {
+      this.name = name
+    })
 
-  ngOnInit() {
-    this.authService.user.subscribe(name => {
-      this.name = name;
-    });
-
->>>>>>>>> Temporary merge branch 2
     this.renderer.listen('window', 'click', (e: Event) => {
       if (!this.userMenu.nativeElement.contains(e.target) && !this.dropdown.nativeElement.contains(e.target)) {
         this.showDropdown = false
@@ -55,11 +42,8 @@ export class HeaderComponent implements OnInit {
   onClickOutsideUserIcon() {
     this.showDropdown = false
   }
-<<<<<<<<< Temporary merge branch 1
-=========
 
-  onLogout(){
-    this.authService.resetAuth();
+  onLogout() {
+    this.authService.resetAuth()
   }
->>>>>>>>> Temporary merge branch 2
 }

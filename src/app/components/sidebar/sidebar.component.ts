@@ -1,9 +1,8 @@
+import { Router, NavigationEnd } from '@angular/router'
 import { Component } from '@angular/core'
+import { faChevronRight } from '@fortawesome/free-solid-svg-icons'
 
-import { MathIconComponent } from '../../shared/icons/math-icon/math-icon.component'
-import { ChalkboardIconComponent } from '../../shared/icons/chalkboard-icon/chalkboard-icon.component'
-import { UsersIconComponent } from '../../shared/icons/users-icon/users-icon.component'
-import { DashboardIconComponent } from '../../shared/icons/dashboard-icon/dashboard-icon.component'
+import { sidebarTabs } from '../../constants/sidebar.constant'
 
 @Component({
   selector: 'app-sidebar',
@@ -11,97 +10,27 @@ import { DashboardIconComponent } from '../../shared/icons/dashboard-icon/dashbo
   styleUrls: ['./sidebar.component.scss']
 })
 export class SidebarComponent {
-  tabs = [
-    {
-      id: 1,
-      name: 'Dashboard',
-      icon: DashboardIconComponent,
-      children: [
-        // {
-        //   id: 1,
-        //   name: 'Admin Dashboard'
-        // },
-        // {
-        //   id: 2,
-        //   name: 'Teacher Dashboard'
-        // },
-        // {
-        //   id: 3,
-        //   name: 'Student Dashboard'
-        // }
-      ]
-    },
-    {
-      id: 2,
-      name: 'Students',
-      icon: UsersIconComponent,
-      children: [
-        {
-          id: 21,
-          name: 'Student List',
-          link: 'students'
-        },
-        {
-          id: 22,
-          name: 'Student Edit',
-          link: ''
-        },
-        {
-          id: 23,
-          name: 'Student Add',
-          link: 'students/create'
-        }
-      ]
-    },
-    {
-      id: 3,
-      name: 'Teachers',
-      icon: ChalkboardIconComponent,
-      children: [
-        {
-          id: 1,
-          name: 'Teacher List',
-          link: ''
-        },
-        {
-          id: 2,
-          name: 'Teacher Edit',
-          link: ''
-        },
-        {
-          id: 3,
-          name: 'Teacher Add',
-          link: ''
-        }
-      ]
-    },
-    {
-      id: 4,
-      name: 'Subjects',
-      icon: MathIconComponent,
-      children: [
-        {
-          id: 1,
-          name: 'Subject List',
-          link: ''
-        },
-        {
-          id: 2,
-          name: 'Subject Edit',
-          link: ''
-        },
-        {
-          id: 3,
-          name: 'Subject Add',
-          link: ''
-        }
-      ]
-    }
-  ]
+  sidebarTabs = sidebarTabs
+  faChevronRightIcon = faChevronRight
   parentTabClicked = 1
   parentTabSelected = 1
   childTabSelected = 11
   showChild = true
+
+  constructor(private router: Router) {}
+
+  ngOnInit() {
+    // Listen url path when first access
+    this.router.events.subscribe((event) => {
+      if (event instanceof NavigationEnd) {
+        const prefix = event.url.split('/')[1]
+        const tab = this.sidebarTabs.find((tab) => tab.prefix === prefix)
+        if (tab) {
+          this.parentTabSelected = tab.id
+        }
+      }
+    })
+  }
 
   // On click parent tab item
   onClickParentTab(parentId: number) {
