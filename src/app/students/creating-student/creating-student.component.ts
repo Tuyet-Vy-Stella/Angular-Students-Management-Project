@@ -4,7 +4,7 @@ import { ActivatedRoute, Params, Router } from '@angular/router'
 import { ToastrService } from 'ngx-toastr'
 
 import { StudentService } from './../student.service'
-import { Student } from '../student.model'
+
 @Component({
   selector: 'app-creating-student',
   templateUrl: './creating-student.component.html',

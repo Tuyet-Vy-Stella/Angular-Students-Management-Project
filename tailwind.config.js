@@ -23,7 +23,6 @@ module.exports = {
       colors: {
         sidebar: '#6f6f6f',
         dark: '#161823',
-        // dark: '#333333',
         light: '#ffffff',
         active: '#3D5EE1',
         footer: '#808191',
@@ -54,7 +53,7 @@ module.exports = {
         sidebar: 'calc(100vh - 3.75rem)' // Sidebar height
       },
       minHeight: {
-        'screen-except-header': 'calc(100vh - 3.75rem)'
+        'screen-except-header': 'calc(100vh - 3.75rem)' // 100vh - header
       },
       spacing: {
         header: '3.75rem', // Header height

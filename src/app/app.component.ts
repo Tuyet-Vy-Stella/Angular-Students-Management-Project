@@ -1,42 +1,34 @@
-import {Component, OnDestroy, OnInit} from '@angular/core'
-import {Subscription} from 'rxjs'
-import {Router, NavigationEnd} from "@angular/router";
-import {AuthService} from "./auth/auth.service";
-import {CookieService} from 'ngx-cookie-service';
+import { Component } from '@angular/core'
+import { Router, NavigationEnd } from '@angular/router'
+import { AuthService } from './auth/auth.service'
+import { CookieService } from 'ngx-cookie-service'
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss']
 })
+export class AppComponent {
+  isShowNav = true
+  isMiniSidebar = true
+  classes = 'main mini-sidebar'
+  name: string | undefined = ''
 
-export class AppComponent implements OnInit, OnDestroy {
-  isShowNav = true;
-  isMiniSidebar = false
-  classes = 'main'
-  clickMenuIconSubscription!: Subscription;
-  name: string | undefined = '';
-
-  constructor(private router: Router, private authService: AuthService, private cookieService: CookieService) {
-  }
+  constructor(private router: Router, private authService: AuthService, private cookieService: CookieService) {}
 
   ngOnInit(): void {
-    const name = this.cookieService.get('name');
+    const name = this.cookieService.get('name')
     if (name) {
-      this.authService.user.next(name);
+      this.authService.user.next(name)
     }
 
-    this.router.events.subscribe(event => {
+    this.router.events.subscribe((event) => {
       if (event instanceof NavigationEnd) {
-        this.isShowNav = event.url !== '/auth';
+        this.isShowNav = event.url !== '/auth'
       }
     })
 
-    this.authService.setLogoutAuto();
-  }
-
-  ngOnDestroy() {
-    this.clickMenuIconSubscription.unsubscribe();
+    this.authService.setLogoutAuto()
   }
 
   onClickMenuIcon() {

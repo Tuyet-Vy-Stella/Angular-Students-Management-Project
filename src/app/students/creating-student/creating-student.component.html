@@ -1,10 +1,7 @@
 <div class="p-6 min-h-screen-except-header">
   <!-- Spinner -->
-  <div *ngIf="isFetchingToCreateOrUpdateStudent" class="spinner">
-    <div class="lds-ripple">
-      <div></div>
-      <div></div>
-    </div>
+  <div *ngIf="isFetchingToCreateOrUpdateStudent">
+    <app-loading-spinner />
   </div>
 
   <!-- Title -->
@@ -155,15 +152,15 @@
       <div class="flex gap-8">
         <div class="">
           <p class="font-medium mb-4">Upload photo</p>
-          <label class="btn primary rounded-lg cursor-pointer select-none" for="photo-upload"> Choose File </label>
+          <label class="btn text primary rounded-lg" for="photo-upload"> Choose File </label>
           <input type="file" id="photo-upload" accept="image/*" hidden />
         </div>
 
-        <img src="../assets/images/avt.jpg" alt="" class="w-[100px] h-[100px] rounded-full select-none" />
+        <img src="../assets/images/avt.jpg" alt="" class="w-[6.25rem] h-[6.25rem] rounded-full select-none" />
       </div>
     </div>
 
-    <button type="submit" [disabled]="!studentForm.valid" class="btn primary rounded-lg mt-6 select-none">
+    <button type="submit" [disabled]="!studentForm.valid" class="btn text primary rounded-lg mt-6">
       Submit
     </button>
   </form>

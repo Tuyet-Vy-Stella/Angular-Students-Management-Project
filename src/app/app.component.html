@@ -1,9 +1,9 @@
 <div class="{{ classes }}" *ngIf="isShowNav; else loginTemplate">
   <!-- Header -->
-  <app-header (clickMenuIconEvent)="onClickMenuIcon()"></app-header>
+  <app-header (clickMenuIconEvent)="onClickMenuIcon()" />
 
   <!-- Sidebar -->
-  <app-sidebar></app-sidebar>
+  <app-sidebar />
 
   <!-- Overlay -->
   <div
@@ -21,6 +21,7 @@
   <!-- Footer -->
   <app-footer></app-footer>
 </div>
+
 <ng-template #loginTemplate>
   <div class="bg-content">
     <router-outlet></router-outlet>

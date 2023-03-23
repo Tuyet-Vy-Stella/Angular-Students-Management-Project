@@ -1,4 +1,15 @@
+import { ToastrService } from 'ngx-toastr'
 import { Component } from '@angular/core'
+import {
+  faList,
+  faBorderAll,
+  faPlus,
+  faChevronLeft,
+  faChevronRight,
+  faPenToSquare,
+  faTrash,
+  faMagnifyingGlass
+} from '@fortawesome/free-solid-svg-icons'
 
 import { Student } from '../student.model'
 import { StudentService } from './../student.service'
@@ -9,20 +20,28 @@ import { StudentService } from './../student.service'
   styleUrls: ['./student-list.component.scss']
 })
 export class StudentListComponent {
+  icons = { faList, faBorderAll, faPlus, faChevronLeft, faChevronRight, faPenToSquare, faTrash, faMagnifyingGlass }
   studentList: Student[] = []
   studentListToShow: Student[] = []
   numberOfEntriesPerPage: number = 10
   currentPage: number = 1
   pageNumbers: number[] = []
-  isLoading = false
+  isFetchingStudentList = false
+  isFetchingToDeleteStudent = false
+  showModal = false
+  studentIdToDelete: number | null = null
+  tableViewMode = true
 
-  constructor(private studentService: StudentService) {}
+  constructor(private studentService: StudentService, private toastrService: ToastrService) {}
 
   ngOnInit() {
-    this.isLoading = true
+    // Fetch student data
+    this.isFetchingStudentList = true
     this.studentService.getStudentList().subscribe({
       next: (response) => {
         if (response) {
+          this.isFetchingStudentList = false
+
           // Update student list
           this.studentList = response
 
@@ -34,9 +53,9 @@ export class StudentListComponent {
         }
       },
       error: (error) => {
+        this.isFetchingStudentList = false
         console.log(error)
-      },
-      complete: () => (this.isLoading = false)
+      }
     })
   }
 
@@ -86,5 +105,61 @@ export class StudentListComponent {
       (this.currentPage - 1) * this.numberOfEntriesPerPage,
       this.currentPage * this.numberOfEntriesPerPage
     )
+  }
+
+  // On click delete button
+  onClickDeleteButton(studentId: number) {
+    this.showModal = true
+    this.studentIdToDelete = studentId
+  }
+
+  // On click modal close button
+  handleCloseModal() {
+    this.showModal = false
+    this.studentIdToDelete = null
+  }
+
+  // Handle delete student
+  handleDeleteStudent() {
+    if (this.studentIdToDelete) {
+      // Hide modal
+      this.showModal = false
+
+      // Active loading spinner
+      this.isFetchingToDeleteStudent = true
+
+      // Listen fetch event
+      this.studentService.deleteStudent(this.studentIdToDelete).subscribe({
+        next: () => {
+          this.isFetchingToDeleteStudent = false
+          this.toastrService.success(
+            `Delete student with id (${this.studentIdToDelete}) successfully`,
+            'Delete Student'
+          )
+
+          // Remove this student on student list
+          this.studentList = this.studentList.filter((student) => student.id !== this.studentIdToDelete)
+
+          // Set student list to show
+          this.onClickPageNumber(this.currentPage)
+
+          // Reset student id to delete
+          this.studentIdToDelete = null
+        },
+        error: (error) => {
+          this.isFetchingToDeleteStudent = false
+          console.error(error)
+          this.toastrService.error(`Delete student with id (${this.studentIdToDelete}) failure`, 'Delete Student')
+
+          // Reset student id to delete
+          this.studentIdToDelete = null
+        }
+      })
+    }
+  }
+
+  // Switch view mode
+  switchToTableViewMode(isTableViewMode: boolean) {
+    this.tableViewMode = isTableViewMode
   }
 }

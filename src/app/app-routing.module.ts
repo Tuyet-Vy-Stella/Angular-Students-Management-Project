@@ -1,51 +1,27 @@
-
-
 import { NgModule } from '@angular/core'
 import { RouterModule, Routes } from '@angular/router'
 
-// Students
 
-// import {StudentComponent} from "./student/student.component";
-import { StudentListComponent } from './students/student-list/student-list.component'
-import { StudentDetailComponent } from './students/student-detail/student-detail.component'
-import { CreatingStudentComponent } from './students/creating-student/creating-student.component'
-// import {StudentEditComponent} from "./student/student-edit/student-edit.component";
 
-import {SubjectComponent} from "./subject/subject.component";
-import {SubjectListComponent} from "./subject/subject-list/subject-list.component";
-import {SubjectEditComponent} from "./subject/subject-edit/subject-edit.component";
-
-import {TeacherComponent} from "./teacher/teacher.component";
-import {TeacherListComponent} from "./teacher/teacher-list/teacher-list.component";
-import {TeacherEditComponent} from "./teacher/teacher-edit/teacher-edit.component";
-
-import {ClassComponent} from "./class/class.component";
-import {ClassListComponent} from "./class/class-list/class-list.component";
-import {ClassEditComponent} from "./class/class-edit/class-edit.component";
-
-import {AuthComponent} from "./auth/auth.component";
-import { HomeComponent } from './home/home.component';
-import {LoginGuard} from "./auth/login.guard";
+import { SubjectListComponent } from './subject/subject-list/subject-list.component'
+import { SubjectEditComponent } from './subject/subject-edit/subject-edit.component'
+import { TeacherListComponent } from './teacher/teacher-list/teacher-list.component'
+import { TeacherEditComponent } from './teacher/teacher-edit/teacher-edit.component'
+import { ClassListComponent } from './class/class-list/class-list.component'
+import { SubjectComponent } from './subject/subject.component'
+import { TeacherComponent } from './teacher/teacher.component'
+import { ClassComponent } from './class/class.component'
+import { AuthComponent } from './auth/auth.component'
+import { LoginGuard } from './auth/login.guard'
+import { ClassEditComponent } from './class/class-edit/class-edit.component'
+import { HomeComponent } from './home/home.component'
 
 const routes: Routes = [
   {path: '', redirectTo: 'home', pathMatch: 'full'},
   {path: 'home', component: HomeComponent},
   {
     path: 'students',
-    children: [
-      { path: '', component: StudentListComponent },
-      { path: 'create', component: CreatingStudentComponent },
-      {
-        path: ':id',
-        children: [
-          {
-            path: '',
-            component: StudentDetailComponent
-          },
-          { path: 'update', component: CreatingStudentComponent }
-        ]
-      }
-    ]
+    loadChildren: () => import('./students/student.module').then((module) => module.StudentModule)
   },
   {
     path: 'subjects',
@@ -77,8 +53,8 @@ const routes: Routes = [
       { path: ':id/edit', component: ClassEditComponent }
     ]
   },
-  {path: 'auth', canActivate : [LoginGuard], component: AuthComponent}
-];
+  { path: 'auth', canActivate: [LoginGuard], component: AuthComponent }
+]
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],

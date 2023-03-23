@@ -1,28 +1,18 @@
 <div class="p-6">
-  <!-- Header -->
+    <!-- Spinner -->
+    <div *ngIf="isFetchingToDeleteStudent">
+      <app-loading-spinner />
+    </div>
+
+  <!-- Header Section -->
   <div class="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 md:gap-0 select-none">
     <!-- Title -->
     <h4 class="font-medium text-xl md:text-2xl">Students Management</h4>
 
     <!-- Search box -->
-    <div class="relative w-full md:w-[300px]">
-      <span class="absolute top-1/2 left-[16px] -translate-y-1/2 text-[#11111152]">
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          class="icon icon-tabler icon-tabler-search"
-          width="20"
-          height="20"
-          viewBox="0 0 24 24"
-          stroke-width="2"
-          stroke="currentColor"
-          fill="none"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-        >
-          <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-          <path d="M10 10m-7 0a7 7 0 1 0 14 0a7 7 0 1 0 -14 0"></path>
-          <path d="M21 21l-6 -6"></path>
-        </svg>
+    <div class="relative w-full md:w-[18.75rem]">
+      <span class="absolute top-1/2 left-4 -translate-y-1/2 text-[#11111152]">
+        <fa-icon [icon]="icons.faMagnifyingGlass"></fa-icon>
       </span>
 
       <input
@@ -30,12 +20,12 @@
         name=""
         id=""
         placeholder="Search here"
-        class="w-full pl-[52px] pr-[16px] py-[11px] outline-none border border-[#DDDDDD] border-solid rounded-md text-dark"
+        class="w-full pl-[3.25rem] pr-4 py-[0.688rem] outline-none border border-[#DDDDDD] border-solid rounded-md text-dark"
       />
     </div>
   </div>
 
-  <!-- Table -->
+  <!-- Content -->
   <div class="mt-6 bg-light rounded-lg">
     <!-- Header -->
     <div
@@ -61,82 +51,31 @@
 
       <!-- Buttons -->
       <div class="flex items-center justify-between gap-4">
-        <button class="btn primary rounded-lg">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            class="icon icon-tabler icon-tabler-list"
-            width="20"
-            height="20"
-            viewBox="0 0 24 24"
-            stroke-width="2"
-            stroke="currentColor"
-            fill="none"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-          >
-            <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-            <path d="M9 6l11 0"></path>
-            <path d="M9 12l11 0"></path>
-            <path d="M9 18l11 0"></path>
-            <path d="M5 6l0 .01"></path>
-            <path d="M5 12l0 .01"></path>
-            <path d="M5 18l0 .01"></path>
-          </svg>
+        <button class="btn icon rounded-lg" [ngClass]="tableViewMode ? 'primary' : 'secondary'" (click)="switchToTableViewMode(true)">
+          <fa-icon [icon]="icons.faList"></fa-icon>
         </button>
 
-        <button class="btn secondary outlined rounded-lg">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            class="icon icon-tabler icon-tabler-layout-grid"
-            width="20"
-            height="20"
-            viewBox="0 0 24 24"
-            stroke-width="2"
-            stroke="currentColor"
-            fill="none"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-          >
-            <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-            <path d="M4 4m0 1a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v4a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1z"></path>
-            <path d="M14 4m0 1a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v4a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1z"></path>
-            <path d="M4 14m0 1a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v4a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1z"></path>
-            <path d="M14 14m0 1a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v4a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1z"></path>
-          </svg>
+        <button class="btn icon rounded-lg" [ngClass]="tableViewMode ? 'secondary' : 'primary'" (click)="switchToTableViewMode(false)">
+         <fa-icon [icon]="icons.faBorderAll"></fa-icon>
         </button>
 
-        <button class="btn primary rounded-lg" routerLink="create">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            class="icon icon-tabler icon-tabler-plus"
-            width="20"
-            height="20"
-            viewBox="0 0 24 24"
-            stroke-width="2"
-            stroke="currentColor"
-            fill="none"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-          >
-            <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-            <path d="M12 5l0 14"></path>
-            <path d="M5 12l14 0"></path>
-          </svg>
+        <button class="btn icon primary rounded-lg" routerLink="create">
+          <fa-icon [icon]="icons.faPlus"></fa-icon>
         </button>
       </div>
     </div>
 
     <!-- Skeleton for get student list -->
-    <div *ngIf="isLoading" class="p-6">
+    <div *ngIf="isFetchingStudentList" class="p-6">
       <app-skeleton />
     </div>
 
-    <!-- Table data -->
-    <div class="overflow-x-auto max-h-[400px] overflow-y-scroll">
-      <table *ngIf="!isLoading" class="w-full text-sm text-dark">
+    <!-- Table view mode -->
+    <div *ngIf="tableViewMode" class="overflow-x-auto">
+      <table *ngIf="!isFetchingStudentList" class="w-full text-sm text-dark">
         <thead>
           <tr>
-            <th><input type="checkbox" /></th>
+            <th><input type="checkbox"/></th>
             <th>ID</th>
             <th>Name</th>
             <th>Class</th>
@@ -157,54 +96,23 @@
           <tr *ngFor="let student of studentListToShow">
             <td><input type="checkbox" /></td>
             <td>{{ student.id }}</td>
-            <td class="flex items-center gap-2 w-max">
-              <img class="w-[40px] h-[40px] rounded-full" src="../assets/images/avt.jpg" alt="" />
-              <span class="">{{ student.name }}</span>
+            <td class="" [routerLink]="[student.id]">
+              <div class="flex items-center gap-2 w-max cursor-pointer group">
+                <img class="w-[2.5rem] h-[2.5rem] rounded-full" src="../assets/images/avt.jpg" alt="" />
+                <span class="group-hover:text-active">{{ student.name }}</span>
+              </div>
             </td>
             <td>{{ student.grade }}{{ student.section | uppercase }}</td>
             <td>{{ student.gender }}</td>
-            <td>{{ student.phone }}</td>
-            <td>{{ student.email }}</td>
+            <td><span class="w-max inline-block">{{ student.phone }}</span></td>
+            <td><span class="w-max inline-block">{{ student.email }}</span></td>
             <td>
               <div class="flex items-center gap-2">
-                <a class="btn secondary rounded-full sm" type="button" [routerLink]="[ student.id, 'update']">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    class="icon icon-tabler icon-tabler-edit"
-                    width="20"
-                    height="20"
-                    viewBox="0 0 24 24"
-                    stroke-width="2"
-                    stroke="currentColor"
-                    fill="none"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                  >
-                    <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                    <path d="M7 7h-1a2 2 0 0 0 -2 2v9a2 2 0 0 0 2 2h9a2 2 0 0 0 2 -2v-1"></path>
-                    <path d="M20.385 6.585a2.1 2.1 0 0 0 -2.97 -2.97l-8.415 8.385v3h3l8.385 -8.415z"></path>
-                    <path d="M16 5l3 3"></path>
-                  </svg>
+                <a class="btn icon secondary sm rounded-full" type="button" [routerLink]="[ student.id, 'update']">
+                  <fa-icon [icon]="icons.faPenToSquare"></fa-icon>
                 </a>
-                <button class="btn secondary rounded-full sm">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    class="icon icon-tabler icon-tabler-trash-x"
-                    width="20"
-                    height="20"
-                    viewBox="0 0 24 24"
-                    stroke-width="2"
-                    stroke="currentColor"
-                    fill="none"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                  >
-                    <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                    <path d="M4 7h16"></path>
-                    <path d="M5 7l1 12a2 2 0 0 0 2 2h8a2 2 0 0 0 2 -2l1 -12"></path>
-                    <path d="M9 7v-3a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v3"></path>
-                    <path d="M10 12l4 4m0 -4l-4 4"></path>
-                  </svg>
+                <button class="btn icon secondary sm rounded-full" (click)="onClickDeleteButton(student.id)">
+                  <fa-icon [icon]="icons.faTrash"></fa-icon>
                 </button>
               </div>
             </td>
@@ -213,9 +121,18 @@
       </table>
     </div>
 
+    <!-- Grid view mode -->
+    <div *ngIf="!tableViewMode" class="grid-student-list grid p-6 gap-6">
+      <a *ngFor="let student of studentListToShow" class="h-[15.625rem] p-6 border border-solid border-secondary rounded-lg flex flex-col items-center justify-between cursor-pointer group" [routerLink]="[student.id]">
+        <img src="../assets/images/avt.jpg" alt="" class="w-[8.75rem] h-[8.75rem] rounded-full">
+        <span class="text-dark font-medium group-hover:text-active">{{student.name}}</span>
+        <span class="text-dark text-sm">{{student.grade}}{{student.section}}</span>
+      </a>
+    </div>
+
     <!-- Footer -->
     <div
-      *ngIf="!isLoading && studentListToShow.length > 0"
+      *ngIf="!isFetchingStudentList && studentListToShow.length > 0"
       class="flex flex-col md:flex-row items-center justify-between p-6 gap-4 md:gap-0 border-t border-secondary border-solid"
     >
       <span class="text-sm md:text-base"
@@ -228,25 +145,11 @@
         of {{ studentList.length }} entries</span
       >
       <div class="flex items-center gap-4 lg:gap-2 select-none">
-        <button class="btn rounded-lg" [disabled]="currentPage === 1" (click)="onClickPreviousPage()">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            class="icon icon-tabler icon-tabler-chevron-left"
-            width="20"
-            height="20"
-            viewBox="0 0 24 24"
-            stroke-width="2"
-            stroke="currentColor"
-            fill="none"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-          >
-            <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-            <path d="M15 6l-6 6l6 6"></path>
-          </svg>
+        <button class="btn icon rounded-lg" [disabled]="currentPage === 1" (click)="onClickPreviousPage()">
+          <fa-icon [icon]="icons.faChevronLeft"></fa-icon>
         </button>
         <button
-          class="btn rounded-lg"
+          class="btn icon rounded-lg"
           *ngFor="let pageNumber of pageNumbers; index as i"
           [ngClass]="{ primary: currentPage === i + 1 }"
           (click)="onClickPageNumber(i + 1)"
@@ -254,27 +157,18 @@
           {{ pageNumber }}
         </button>
         <button
-          class="btn rounded-lg"
+          class="btn icon rounded-lg"
           [disabled]="currentPage === pageNumbers[pageNumbers.length - 1]"
           (click)="onClickNextPage()"
         >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            class="icon icon-tabler icon-tabler-chevron-right"
-            width="20"
-            height="20"
-            viewBox="0 0 24 24"
-            stroke-width="2"
-            stroke="currentColor"
-            fill="none"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-          >
-            <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-            <path d="M9 6l6 6l-6 6"></path>
-          </svg>
+           <fa-icon [icon]="icons.faChevronRight"></fa-icon>
         </button>
       </div>
     </div>
+  </div>
+
+  <!-- Modal -->
+  <div *ngIf="showModal">
+    <app-modal (onClose)="handleCloseModal()" (onAccept)="handleDeleteStudent()" title="Delete Student" content="This action cannot be undone. Are you sure you want to continue?" />
   </div>
 </div>
