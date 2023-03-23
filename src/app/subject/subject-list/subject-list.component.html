@@ -3,10 +3,12 @@
   <div class="lg:flex">
     <input [(ngModel)]="id"
       class="block my-[28px] w-full p-[12px] text-base rounded-[6px] border border-gray-400 outline-blue-500 lg:w-[318px]"
-      type="text" placeholder="Search by ID ..."  />
+      type="text" placeholder="Search by ID ..."  
+      (change)="handleList()"/>
     <input
       class="block my-[28px] w-full p-[12px] text-base rounded-[6px] border border-gray-400 outline-blue-500 lg:w-[318px] lg:mx-[32px]"
-      type="text" placeholder="Search by Name ..." [(ngModel)]="nameSearchText" />
+      type="text" placeholder="Search by Name ..." [(ngModel)]="nameSearchText"
+      (change)="handleList()" />
     <!-- <input
       class="block my-[28px] w-full p-[12px] text-base rounded-[6px] border border-gray-400 outline-blue-500 lg:w-[430px]"
       type="text" placeholder="Search by Class ..." disabled /> -->
@@ -60,6 +62,15 @@
           </tr>
         </thead>
         <tbody class="text-base">
+
+          <tr class="text-center hover:bg-slate-100" *ngIf="subjectList.length === 0">
+            <td class="border px-4 py-2"></td>
+            <td class="border px-4 py-2">0 result with your keyword</td>
+            <td class="border px-4 py-2 flex items-center justify-center">
+             
+
+            </td>
+          </tr>
           <!-- Row 1 -->
           <tr class="text-center hover:bg-slate-100" *ngFor="let subject of subjectList">
             <td class="border px-4 py-2">{{ subject.id }}</td>
