@@ -33,16 +33,15 @@ const routes: Routes = [
       { path: ':id/edit', component: SubjectEditComponent }
     ]
   },
-  // {
-  //   path: 'teachers',
-  //   component: TeacherComponent,
-  //   children: [
-  //     { path: '', component: TeacherListComponent },
-  //     { path: ':new', component: TeacherEditComponent },
-  //     { path: ':id', component: TeacherEditComponent },
-  //     { path: ':id/edit', component: TeacherEditComponent }
-  //   ]
-  // },
+  {
+    path: 'teachers',
+    children: [
+      { path: '', component: TeacherListComponent },
+      { path: ':new', component: TeacherEditComponent },
+      { path: ':id', component: TeacherEditComponent },
+      { path: ':id/edit', component: TeacherEditComponent },
+    ],
+  },
   {
     path: 'classes',
     component: ClassComponent,
