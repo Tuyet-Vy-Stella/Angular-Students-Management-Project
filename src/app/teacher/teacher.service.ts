@@ -1,6 +1,7 @@
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { catchError, from, map, Observable, throwError } from 'rxjs';
+import { catchError, map, Observable, throwError } from 'rxjs';
+import { Subject } from '../shared/subject.model';
 
 import { CreateTeacherModel, Teacher } from '../shared/teacher.model';
 
@@ -17,16 +18,34 @@ export class TeacherService {
   }
 
   getTeacherById(id: number) {
-    return this.http.get<Teacher>('https://qlsv-mu.vercel.app/api/student/', {
+    return this.http.get<Teacher>('https://qlsv-mu.vercel.app/api/teacher/', {
       params: {
-        student_id: id
-      }
-    })
+        teacher_id: id,
+      },
+    });
+  }
+
+  getSubjects() {
+    return this.http.get<Subject[]>(
+      'https://qlsv-mu.vercel.app/api/subject-list'
+    );
+  }
+
+  getSubjectById(id: number) {
+    return this.http.get<Subject>('https://qlsv-mu.vercel.app/api/subject/', {
+      params: {
+        subject_id: id,
+      },
+    });
   }
 
   deleteTeacher(id: number) {
     return this.http.delete(
-      `https://qlsv-mu.vercel.app/api/teacher-list/${id}`
+      'https://qlsv-mu.vercel.app/api/teacher/',{
+        params: {
+          teacher_id: id,
+        },
+      }
     );
   }
 
@@ -37,18 +56,17 @@ export class TeacherService {
         return {
           code: 200,
           success: true,
-          data: response
-        }
+          data: response,
+        };
       })
-    )
+    );
   }
 
   updateTeacher(id: number, data: CreateTeacherModel) {
     return this.http.put('https://qlsv-mu.vercel.app/api/teacher/', data, {
       params: {
-        teacher_id: id
-      }
-    })
+        teacher_id: id,
+      },
+    });
   }
-
 }

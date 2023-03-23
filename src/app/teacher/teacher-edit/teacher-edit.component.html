@@ -92,45 +92,29 @@
                 </span>
             </div>
 
-            <div class="flex gap-8">
-                <!-- Grade -->
-                <div class="field-item w-1/2">
-                    <label>Grade</label>
-                    <select formControlName="grade">
-                        <option value="10">10</option>
-                        <option value="11">11</option>
-                        <option value="12">12</option>
-                    </select>
-                    <span class="error-message"
-                        *ngIf="!teacherForm.get('grade')?.valid && teacherForm.get('grade')?.touched">Gender is
-                        required!</span>
-                </div>
-
-                <!-- Section -->
-                <div class="field-item w-1/2">
-                    <label>Section</label>
-                    <select formControlName="section">
-                        <option value="A">A</option>
-                        <option value="B">B</option>
-                        <option value="C">C</option>
-                        <option value="D">D</option>
-                    </select>
-                    <span class="error-message"
-                        *ngIf="!teacherForm.get('section')?.valid && teacherForm.get('section')?.touched">Gender is
-                        required!</span>
-                </div>
+            <!-- Subject -->
+            <div class="field-item">
+                <label>Subject</label>
+                <select formControlName="subject_id">
+                    <option *ngFor="let subject of subjectList" [value]="subject.id">{{ subject.name }}</option>
+                </select>
+                <span class="error-message"
+                    *ngIf="!teacherForm.get('grade')?.valid && teacherForm.get('grade')?.touched">
+                    Gender is required!
+                </span>
             </div>
 
-            <!-- Photo -->
-            <div class="flex gap-8">
-                <div class="">
-                    <p class="font-medium mb-4">Upload photo</p>
-                    <label class="btn text primary rounded-lg" for="photo-upload"> Choose File </label>
-                    <input type="file" id="photo-upload" accept="image/*" hidden />
-                </div>
-
-                <img src="../assets/images/avt.jpg" alt="" class="w-[100px] h-[100px] rounded-full select-none" />
+            <!-- Join Date -->
+            <div class="field-item">
+                <label>Join Date</label>
+                <input type="date" formControlName="joined_date" />
+                <span class="error-message"
+                    *ngIf="!teacherForm.get('joined_date')?.valid && teacherForm.get('joined_date')?.touched">
+                    This field is required!
+                </span>
             </div>
+
+
         </div>
 
         <button type="submit" [disabled]="!teacherForm.valid" class="btn text primary rounded-lg mt-6">

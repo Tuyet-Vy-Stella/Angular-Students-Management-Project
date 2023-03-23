@@ -82,6 +82,7 @@ export class TeacherListComponent {
             );
             this.changePage(1);
             this.updatePageNumbers();
+            window.alert(`Teacher ${teacher_name} has been deleted successfully!`);
           }
         },
         error: (error) => {
