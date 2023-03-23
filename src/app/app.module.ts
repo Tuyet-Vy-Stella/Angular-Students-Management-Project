@@ -1,44 +1,94 @@
-import { NgModule } from '@angular/core';
-import { BrowserModule } from '@angular/platform-browser';
+import { NgModule } from '@angular/core'
+import { BrowserModule } from '@angular/platform-browser'
+import { FormsModule, ReactiveFormsModule } from '@angular/forms'
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http'
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations'
+import { ToastrModule } from 'ngx-toastr'
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome'
+import { CookieService } from 'ngx-cookie-service'
+import { NgApexchartsModule } from 'ng-apexcharts'
 
-import { AppRoutingModule } from './app-routing.module';
-import { AppComponent } from './app.component';
-import { StudentEditComponent } from './student/student-edit/student-edit.component';
-import { TeacherEditComponent } from './teacher/teacher-edit/teacher-edit.component';
-import { SubjectListComponent } from './subject/subject-list/subject-list.component';
-import { SubjectEditComponent } from './subject/subject-edit/subject-edit.component';
-import { StudentListComponent } from './student/student-list/student-list.component';
-import { TeacherListComponent } from './teacher/teacher-list/teacher-list.component';
-import { ClassListComponent } from './class/class-list/class-list.component';
-import { ClassEditComponent } from './class/class-edit/class-edit.component';
-import { StudentComponent } from './student/student.component';
-import { SubjectComponent } from './subject/subject.component';
-import { TeacherComponent } from './teacher/teacher.component';
-import { ClassComponent } from './class/class.component';
-import { AuthComponent } from './auth/auth.component';
+// Module
+import { AppRoutingModule } from './app-routing.module'
+import { SharedModule } from './shared/shared.module'
 
+import { AppComponent } from './app.component'
+
+import { AuthInterceptor } from './auth/auth.interceptor'
+
+// Teachers
+import { TeacherEditComponent } from './teacher/teacher-edit/teacher-edit.component'
+import { TeacherListComponent } from './teacher/teacher-list/teacher-list.component'
+
+
+// Subjects
+import { SubjectListComponent } from './subject/subject-list/subject-list.component'
+import { SubjectEditComponent } from './subject/subject-edit/subject-edit.component'
+import { SubjectComponent } from './subject/subject.component'
+
+// Class
+import { ClassListComponent } from './class/class-list/class-list.component'
+import { ClassEditComponent } from './class/class-edit/class-edit.component'
+import { ClassComponent } from './class/class.component'
+
+// Auth
+import { AuthComponent } from './auth/auth.component'
+
+// Common
+import { SidebarComponent } from './components/sidebar/sidebar.component'
+import {HeaderComponent} from "./components/header/header.component"
+import { FooterComponent } from './components/footer/footer.component'
+import { ChartsComponent } from './charts/charts.component'
+import { AnnualLearningKindComponent } from './charts/annual-learning-kind/annual-learning-kind.component'
+import { StudentGenderChartComponent } from './charts/student-gender-chart/student-gender-chart.component'
+import { HomeComponent } from './home/home.component'
 @NgModule({
   declarations: [
     AppComponent,
-    StudentEditComponent,
     TeacherEditComponent,
     SubjectListComponent,
     SubjectEditComponent,
-    StudentListComponent,
     TeacherListComponent,
     ClassListComponent,
     ClassEditComponent,
-    StudentComponent,
     SubjectComponent,
-    TeacherComponent,
     ClassComponent,
     AuthComponent,
+    HeaderComponent,
+    SidebarComponent,
+    FooterComponent,
+    ChartsComponent,
+    AnnualLearningKindComponent,
+    StudentGenderChartComponent,
+    HomeComponent,
   ],
+
   imports: [
+    FontAwesomeModule,
+    AppRoutingModule,
+    SharedModule,
     BrowserModule,
-    AppRoutingModule
+    FormsModule,
+    ReactiveFormsModule,
+    HttpClientModule,
+    BrowserAnimationsModule,
+    NgApexchartsModule,
+    ToastrModule.forRoot({
+      timeOut: 4000,
+      positionClass: 'toast-top-right',
+      preventDuplicates: false,
+      easing: 'ease-in-out'
+    })
   ],
-  providers: [],
+  providers: [
+    [CookieService],
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: AuthInterceptor,
+      multi: true
+    }
+
+  ],
   bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule {}
