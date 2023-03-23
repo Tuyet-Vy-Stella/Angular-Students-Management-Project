@@ -1,4 +1,4 @@
-import { Component, ViewChild, ElementRef, OnInit } from '@angular/core';
+import { Component, ViewChild, ElementRef, OnInit, OnChanges, SimpleChanges } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { SubjectService } from 'src/app/subject/service/subject.service';
 
@@ -7,7 +7,7 @@ import { SubjectService } from 'src/app/subject/service/subject.service';
   templateUrl: './subject-list.component.html',
   styleUrls: ['./subject-list.component.scss']
 })
-export class SubjectListComponent implements OnInit {
+export class SubjectListComponent implements OnInit, OnChanges {
   subjectList: any[] = [];
   name: string = '';
   nameSearchText: string = '';
@@ -22,14 +22,24 @@ export class SubjectListComponent implements OnInit {
   constructor(private SubjectService: SubjectService, private title: Title) { }
 
   ngOnInit() {
-    this.title.setTitle('Subject List')
+    this.title.setTitle('Subject List');
+    
     this.SubjectService.getListSubject().subscribe(res => {
       this.subjectList = res;
-
-      console.log(res);
       
     })
   }
+
+
+  /* Handle if not found */
+  handleList(){
+    if(this.id === '' && this.nameSearchText === ''){
+      this.SubjectService.getListSubject().subscribe(res => {
+        this.subjectList = res
+      })
+    }
+  }
+
 
   /* Handle Create */
   handleCreate(name: string) {
@@ -145,6 +155,10 @@ export class SubjectListComponent implements OnInit {
     }
 
 
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+   
   }
 
 
