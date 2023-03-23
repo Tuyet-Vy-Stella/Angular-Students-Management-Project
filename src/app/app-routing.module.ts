@@ -35,13 +35,12 @@ const routes: Routes = [
   },
   {
     path: 'teachers',
-    component: TeacherComponent,
     children: [
       { path: '', component: TeacherListComponent },
       { path: ':new', component: TeacherEditComponent },
       { path: ':id', component: TeacherEditComponent },
-      { path: ':id/edit', component: TeacherEditComponent }
-    ]
+      { path: ':id/edit', component: TeacherEditComponent },
+    ],
   },
   {
     path: 'classes',
