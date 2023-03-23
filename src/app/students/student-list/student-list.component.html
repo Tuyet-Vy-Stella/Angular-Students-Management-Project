@@ -96,14 +96,16 @@
           <tr *ngFor="let student of studentListToShow">
             <td><input type="checkbox" /></td>
             <td>{{ student.id }}</td>
-            <td class="flex items-center gap-2 w-max cursor-pointer group" [routerLink]="[student.id]">
-              <img class="w-[40px] h-[40px] rounded-full" src="../assets/images/avt.jpg" alt="" />
-              <span class="group-hover:text-active">{{ student.name }}</span>
+            <td class="" [routerLink]="[student.id]">
+              <div class="flex items-center gap-2 w-max cursor-pointer group">
+                <img class="w-[40px] h-[40px] rounded-full" src="../assets/images/avt.jpg" alt="" />
+                <span class="group-hover:text-active">{{ student.name }}</span>
+              </div>
             </td>
             <td>{{ student.grade }}{{ student.section | uppercase }}</td>
             <td>{{ student.gender }}</td>
-            <td>{{ student.phone }}</td>
-            <td>{{ student.email }}</td>
+            <td><span class="w-max inline-block">{{ student.phone }}</span></td>
+            <td><span class="w-max inline-block">{{ student.email }}</span></td>
             <td>
               <div class="flex items-center gap-2">
                 <a class="btn icon secondary sm rounded-full" type="button" [routerLink]="[ student.id, 'update']">

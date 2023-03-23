@@ -21,20 +21,7 @@ import { ClassEditComponent } from './class/class-edit/class-edit.component'
 const routes: Routes = [
   {
     path: 'students',
-    children: [
-      { path: '', component: StudentListComponent },
-      { path: 'create', component: CreatingStudentComponent },
-      {
-        path: ':id',
-        children: [
-          {
-            path: '',
-            component: StudentDetailComponent
-          },
-          { path: 'update', component: CreatingStudentComponent }
-        ]
-      }
-    ]
+    loadChildren: () => import('./students/student.module').then((module) => module.StudentModule)
   },
   {
     path: 'subjects',

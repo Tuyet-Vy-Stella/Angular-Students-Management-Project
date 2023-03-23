@@ -7,15 +7,13 @@ import { ToastrModule } from 'ngx-toastr'
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome'
 import { CookieService } from 'ngx-cookie-service'
 
+// Module
 import { AppRoutingModule } from './app-routing.module'
+import { SharedModule } from './shared/shared.module'
+
 import { AppComponent } from './app.component'
 
 import { AuthInterceptor } from './auth/auth.interceptor'
-
-// Students
-import { StudentListComponent } from './students/student-list/student-list.component'
-import { StudentDetailComponent } from './students/student-detail/student-detail.component'
-import { CreatingStudentComponent } from './students/creating-student/creating-student.component'
 
 // Teachers
 import { TeacherEditComponent } from './teacher/teacher-edit/teacher-edit.component'
@@ -40,10 +38,6 @@ import { AuthComponent } from './auth/auth.component'
 // Common
 import { HeaderComponent } from './header/header.component'
 import { SidebarComponent } from './sidebar/sidebar.component'
-import { LoadingSpinnerComponent } from './shared/loading-spinner/loading-spinner.component'
-import { ModalComponent } from './shared/modal/modal.component'
-import { SkeletonComponent } from './shared/skeleton/skeleton.component'
-
 @NgModule({
   declarations: [
     AppComponent,
@@ -58,18 +52,13 @@ import { SkeletonComponent } from './shared/skeleton/skeleton.component'
     ClassComponent,
     AuthComponent,
     HeaderComponent,
-    SidebarComponent,
-    StudentListComponent,
-    StudentDetailComponent,
-    CreatingStudentComponent,
-    SkeletonComponent,
-    ModalComponent,
-    LoadingSpinnerComponent
+    SidebarComponent
   ],
   imports: [
-    BrowserModule,
-    AppRoutingModule,
     FontAwesomeModule,
+    AppRoutingModule,
+    SharedModule,
+    BrowserModule,
     FormsModule,
     ReactiveFormsModule,
     HttpClientModule,
