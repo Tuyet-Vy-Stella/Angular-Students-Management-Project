@@ -21,10 +21,7 @@ export class SubjectEditComponent implements OnInit, OnChanges {
     this.route.params.subscribe(params => {
       this.id = params['id'];
     });
-
-
   }
-
 
   UpdateSubject(name:string){
     if(name == ''){
@@ -40,6 +37,6 @@ export class SubjectEditComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-   
+
   }
 }

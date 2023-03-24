@@ -1,5 +1,10 @@
-export interface Subject {
-  id: number;
-  name: string;
-  created_at: string;
+import { Teacher } from './teacher.model';
+
+export class Subject {
+  constructor(
+    public name: string,
+    public id?: number,
+    public teacher?: Teacher[],
+    public created_at?: Date
+  ) {}
 }
