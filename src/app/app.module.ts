@@ -19,7 +19,7 @@ import { AuthInterceptor } from './auth/auth.interceptor'
 // Teachers
 import { TeacherEditComponent } from './teacher/teacher-edit/teacher-edit.component'
 import { TeacherListComponent } from './teacher/teacher-list/teacher-list.component'
-
+import { TeacherComponent } from './teacher/teacher.component'
 
 // Subjects
 import { SubjectListComponent } from './subject/subject-list/subject-list.component'
@@ -52,6 +52,7 @@ import { HomeComponent } from './home/home.component'
     ClassListComponent,
     ClassEditComponent,
     SubjectComponent,
+    TeacherComponent,
     ClassComponent,
     AuthComponent,
     HeaderComponent,
@@ -60,7 +61,7 @@ import { HomeComponent } from './home/home.component'
     ChartsComponent,
     AnnualLearningKindComponent,
     StudentGenderChartComponent,
-    HomeComponent,
+    HomeComponent
   ],
 
   imports: [
@@ -87,7 +88,6 @@ import { HomeComponent } from './home/home.component'
       useClass: AuthInterceptor,
       multi: true
     }
-
   ],
   bootstrap: [AppComponent]
 })
