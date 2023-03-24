@@ -23,3 +23,7 @@ table {
     }
   }
 }
+
+.grid-teacher-list {
+  grid-template-columns: repeat(auto-fit, minmax(220px, auto));
+}
