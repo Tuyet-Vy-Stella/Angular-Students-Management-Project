@@ -9,7 +9,7 @@ import { TeacherListComponent } from './teacher/teacher-list/teacher-list.compon
 import { TeacherEditComponent } from './teacher/teacher-edit/teacher-edit.component'
 import { ClassListComponent } from './class/class-list/class-list.component'
 import { SubjectComponent } from './subject/subject.component'
-import { TeacherComponent } from './teacher/teacher.component'
+// import { TeacherComponent } from './teacher/teacher.component'
 import { ClassComponent } from './class/class.component'
 import { AuthComponent } from './auth/auth.component'
 import { LoginGuard } from './auth/login.guard'
@@ -57,6 +57,6 @@ const routes: Routes = [
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
-  exports: [RouterModule]
+  exports: [RouterModule],
 })
 export class AppRoutingModule {}

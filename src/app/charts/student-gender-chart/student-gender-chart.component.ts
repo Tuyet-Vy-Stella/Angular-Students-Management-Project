@@ -16,7 +16,7 @@ export class StudentGenderChartComponent implements OnInit{
   studentGenderPercentage!: StudentGenderPercentage
 
   series: ApexNonAxisChartSeries = [];
-  chart: ApexChart = {type: "donut", height: 277};
+  chart: ApexChart = {type: "donut", height: 285};
   responsive: ApexResponsive[] = [
     {
       breakpoint: 480,
