@@ -25,13 +25,13 @@ img {
 // Fonts embedded
 @font-face {
   font-family: Roboto;
-  src: url('./assets/fonts/roboto-regular.woff2');
+  src: url("./assets/fonts/roboto-regular.woff2");
   font-weight: 400;
 }
 
 @font-face {
   font-family: Roboto;
-  src: url('./assets/fonts/roboto-medium.woff2');
+  src: url("./assets/fonts/roboto-medium.woff2");
   font-weight: 500;
 }
 
@@ -68,6 +68,10 @@ html *::-webkit-scrollbar-track {
 
     &.icon {
       @apply w-[2.375rem] h-[2.375rem];
+
+      &.trash {
+        @apply hover:bg-red-500 hover:border-red-500;
+      }
 
       &.sm {
         @apply w-[2rem] h-[2rem] text-sm;
