@@ -1,13 +1,18 @@
 import { Component } from '@angular/core';
 import { Teacher } from 'src/app/shared/teacher.model';
 import { TeacherService } from './../teacher.service';
+import { ToastrService } from 'ngx-toastr';
+
 @Component({
   selector: 'app-teacher-list',
   templateUrl: './teacher-list.component.html',
   styleUrls: ['./teacher-list.component.scss'],
 })
 export class TeacherListComponent {
-  constructor(private teacherService: TeacherService) {}
+  constructor(
+    private teacherService: TeacherService,
+    private toastrService: ToastrService
+  ) {}
 
   teacherList: Teacher[] = [];
   teacherListToShow: Teacher[] = [];
@@ -15,8 +20,10 @@ export class TeacherListComponent {
   currentPage: number = 1;
   pageNumbers: number[] = [];
   isLoading = false;
+  tableViewMode = true;
 
   ngOnInit() {
+    this.isLoading = true;
     this.teacherService.getTeachers().subscribe({
       next: (response) => {
         if (response) {
@@ -34,6 +41,10 @@ export class TeacherListComponent {
         }
       },
       error: (error) => {
+        this.isLoading = false;
+        this.toastrService.error(
+          'Get teacher list failed. Please try again later'
+        );
         console.log(error);
       },
       complete: () => {
@@ -71,21 +82,33 @@ export class TeacherListComponent {
   }
 
   deleteTeacher(id: number) {
-    let teacher_name = this.teacherList.find((teacher) => teacher?.id === id)?.name;
-    if(window.confirm(`Are you sure you want to delete this teacher ${teacher_name}?`)){
+    let teacher_name = this.teacherList.find(
+      (teacher) => teacher?.id === id
+    )?.name;
+    if (
+      window.confirm(
+        `Are you sure you want to delete this teacher ${teacher_name}?`
+      )
+    ) {
+      this.isLoading = true;
       this.teacherService.deleteTeacher(id).subscribe({
         next: (response) => {
           if (response) {
-            console.log(response);
             this.teacherList = this.teacherList.filter(
               (teacher) => teacher.id !== id
             );
             this.changePage(1);
             this.updatePageNumbers();
-            window.alert(`Teacher ${teacher_name} has been deleted successfully!`);
+            this.toastrService.success(
+              `Teacher ${teacher_name} has been deleted successfully!`
+            );
           }
         },
         error: (error) => {
+          this.isLoading = false;
+          this.toastrService.error(
+            `Teacher ${teacher_name} could not be deleted!.`, (error.error.message || 'Please try again later')
+          );
           console.log(error);
         },
         complete: () => {
@@ -94,5 +117,4 @@ export class TeacherListComponent {
       });
     }
   }
-
 }
