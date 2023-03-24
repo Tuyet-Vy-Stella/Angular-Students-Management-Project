@@ -20,6 +20,8 @@ export class TeacherListComponent {
   currentPage: number = 1;
   pageNumbers: number[] = [];
   isLoading = false;
+  showModal = false;
+  teacherIdToDelete: number = 0;
   tableViewMode = true;
 
   ngOnInit() {
@@ -81,40 +83,48 @@ export class TeacherListComponent {
     this.updatePageNumbers();
   }
 
-  deleteTeacher(id: number) {
-    let teacher_name = this.teacherList.find(
-      (teacher) => teacher?.id === id
+  handleShowModal(id: number) {
+    this.showModal = true;
+    this.teacherIdToDelete = id;
+  }
+
+  handleCloseModal() {
+    this.showModal = false;
+    this.teacherIdToDelete = 0;
+  }
+
+  deleteTeacher(id = this.teacherIdToDelete) {
+    const teacher_name = this.teacherList.find(
+      (teacher) => teacher.id === id
     )?.name;
-    if (
-      window.confirm(
-        `Are you sure you want to delete this teacher ${teacher_name}?`
-      )
-    ) {
-      this.isLoading = true;
-      this.teacherService.deleteTeacher(id).subscribe({
-        next: (response) => {
-          if (response) {
-            this.teacherList = this.teacherList.filter(
-              (teacher) => teacher.id !== id
-            );
-            this.changePage(1);
-            this.updatePageNumbers();
-            this.toastrService.success(
-              `Teacher ${teacher_name} has been deleted successfully!`
-            );
-          }
-        },
-        error: (error) => {
-          this.isLoading = false;
-          this.toastrService.error(
-            `Teacher ${teacher_name} could not be deleted!.`, (error.error.message || 'Please try again later')
+
+    this.showModal = false;
+
+    this.isLoading = true;
+    this.teacherService.deleteTeacher(id).subscribe({
+      next: (response) => {
+        if (response) {
+          this.teacherList = this.teacherList.filter(
+            (teacher) => teacher.id !== id
           );
-          console.log(error);
-        },
-        complete: () => {
-          this.isLoading = false;
-        },
-      });
-    }
+          this.changePage(1);
+          this.updatePageNumbers();
+          this.toastrService.success(
+            `Teacher ${teacher_name} has been deleted successfully!`
+          );
+        }
+      },
+      error: (error) => {
+        this.isLoading = false;
+        this.toastrService.error(
+          `Teacher ${teacher_name} could not be deleted!.`,
+          error.error.message || 'Please try again later'
+        );
+        console.log(error);
+      },
+      complete: () => {
+        this.isLoading = false;
+      },
+    });
   }
 }

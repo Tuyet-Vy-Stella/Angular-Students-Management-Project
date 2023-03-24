@@ -103,7 +103,7 @@
                 <a class="btn icon secondary sm rounded-full" type="button" [routerLink]="[teacher.id, 'edit']">
                   <i class="fa-solid fa-edit"></i>
                 </a>
-                <button class="btn icon trash secondary sm rounded-full" (click)="deleteTeacher(teacher.id)">
+                <button class="btn icon trash secondary sm rounded-full" (click)="handleShowModal(teacher.id)">
                   <i class="fa-solid fa-trash"></i>
                 </button>
               </div>
@@ -142,5 +142,9 @@
         </button>
       </div>
     </div>
+  </div>
+  <!-- Modal -->
+  <div *ngIf="showModal">
+    <app-modal (onClose)="handleCloseModal()" (onAccept)="deleteTeacher()" title="Delete Teacher" content="This action cannot be undone. Are you sure you want to continue?" />
   </div>
 </div>
