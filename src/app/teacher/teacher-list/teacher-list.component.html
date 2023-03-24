@@ -1,1 +1,150 @@
-<p>teacher-list works!</p>
+<div class="p-6">
+  <!-- Header -->
+  <div class="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 md:gap-0 select-none">
+    <!-- Title -->
+    <h4 class="font-medium text-xl md:text-2xl">Teacher Management</h4>
+
+    <!-- Search box -->
+    <div class="relative w-full md:w-[300px]">
+      <span class="absolute top-1/2 left-[16px] -translate-y-1/2 text-[#11111152]">
+        <i class="fa-solid fa-magnifying-glass"></i>
+      </span>
+
+      <input type="text" name="" id="" placeholder="Search here"
+        class="w-full pl-[52px] pr-[16px] py-[11px] outline-none border border-[#DDDDDD] border-solid rounded-md text-dark" />
+    </div>
+  </div>
+
+  <!-- Table -->
+  <div class="mt-6 bg-light rounded-lg">
+    <!-- Header -->
+    <div
+      class="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 md:gap-0 p-6 border-b border-secondary border-solid">
+      <!-- Select number of records per page -->
+      <div class="text-sm md:text-base">
+        Show
+        <span class="">
+          <select (change)="changeNumberOfEntriesPerPage($event)" name="" id="num-per-page"
+            class="border border-solid border-secondary outline-none px-2 py-1 rounded-lg">
+            <option value="10">10</option>
+            <option value="20">20</option>
+            <option value="50">50</option>
+          </select>
+        </span>
+        entries
+      </div>
+
+      <!-- Buttons -->
+      <div class="flex items-center justify-between gap-4">
+        <button class="btn icon rounded-lg" [ngClass]="tableViewMode ? 'primary' : 'secondary'"
+          (click)="this.tableViewMode = true">
+          <span class="w-5 h-5">
+            <i class="fa-solid fa-list-ul"></i>
+          </span>
+        </button>
+
+        <button class="btn icon rounded-lg" [ngClass]="tableViewMode ? 'secondary' : 'primary'"
+          (click)="this.tableViewMode =  false">
+          <span class="w-5 h-5">
+            <i class="fa-solid fa-border-all"></i>
+          </span>
+        </button>
+
+        <button class="btn icon primary rounded-lg" routerLink="create">
+          <span class="w-5 h-5">
+            <i class="fa-solid fa-plus"></i>
+          </span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Skeleton for get student list -->
+    <div *ngIf="isLoading" class="p-6">
+      <app-skeleton />
+    </div>
+
+    <!-- Table data -->
+    <div *ngIf="tableViewMode" class="overflow-x-auto max-h-[400px] overflow-y-scroll">
+      <table *ngIf="!isLoading" class="w-full text-sm text-dark">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Gender</th>
+            <th>Phone</th>
+            <th>Join Date</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+
+        <tbody *ngIf="teacherListToShow.length === 0">
+          <tr>
+            <td colspan="7" rowspan="2" class="!text-center">Empty</td>
+          </tr>
+        </tbody>
+
+        <tbody *ngIf="teacherListToShow.length > 0">
+          <tr *ngFor="let teacher of teacherListToShow">
+            <td>{{ teacher.id }}</td>
+            <td class="flex items-center gap-2 w-max">
+              <img class="w-[40px] h-[40px] rounded-full" [src]="
+                  'https://xsgames.co/randomusers/avatar.php?g=' +
+                  teacher.gender
+                " alt="" />
+              <span class="">{{ teacher.name }}</span>
+            </td>
+            <td>{{ teacher.email }}</td>
+            <td>{{ teacher.gender }}</td>
+            <td>{{ teacher.phone }}</td>
+            <td>{{ teacher.joined_date | date:'dd/MM/yyyy' }}</td>
+            <td>
+              <div class="flex items-center gap-2">
+                <a class="btn icon secondary sm rounded-full" type="button" [routerLink]="[teacher.id, 'edit']">
+                  <i class="fa-solid fa-edit"></i>
+                </a>
+                <button class="btn icon trash secondary sm rounded-full" (click)="handleShowModal(teacher.id)">
+                  <i class="fa-solid fa-trash"></i>
+                </button>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <!-- Grid view mode -->
+    <div *ngIf="!tableViewMode" class="grid-teacher-list grid p-6 gap-6">
+      <a *ngFor="let teacher of teacherListToShow"
+        class="h-[15.625rem] p-6 border border-solid border-secondary rounded-lg flex flex-col items-center justify-between cursor-pointer group"
+        [routerLink]="[teacher.id, 'edit']">
+        <img [src]="'https://xsgames.co/randomusers/avatar.php?g=' + teacher.gender" alt=""
+          class="w-[8.75rem] h-[8.75rem] rounded-full">
+        <span class="text-dark font-medium group-hover:text-active">{{teacher.name}}</span>
+        <span class="text-dark text-sm">Teacher</span>
+      </a>
+    </div>
+
+    <!-- Footer -->
+    <div *ngIf="!isLoading && teacherListToShow.length > 0"
+      class="flex flex-col md:flex-row items-center justify-between p-6 gap-4 md:gap-0 border-t border-secondary border-solid">
+      <span class="text-sm md:text-base">Showing
+        {{ (this.currentPage - 1) * this.numberOfEntriesPerPage + 1 }} to
+        {{
+        this.currentPage * this.numberOfEntriesPerPage > teacherList.length
+        ? teacherList.length
+        : this.currentPage * this.numberOfEntriesPerPage
+        }}
+        of {{ teacherList.length }} entries</span>
+      <div class="flex items-center gap-4 lg:gap-2 select-none">
+        <button class="btn icon rounded-lg" *ngFor="let pageNumber of pageNumbers; index as i"
+          [ngClass]="{ primary: currentPage === i + 1 }" (click)="changePage(i + 1)">
+          {{ pageNumber }}
+        </button>
+      </div>
+    </div>
+  </div>
+  <!-- Modal -->
+  <div *ngIf="showModal">
+    <app-modal (onClose)="handleCloseModal()" (onAccept)="deleteTeacher()" title="Delete Teacher" content="This action cannot be undone. Are you sure you want to continue?" />
+  </div>
+</div>

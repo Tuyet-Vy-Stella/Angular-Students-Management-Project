@@ -2,7 +2,7 @@ import { Router, NavigationEnd } from '@angular/router'
 import { Component } from '@angular/core'
 import { faChevronRight } from '@fortawesome/free-solid-svg-icons'
 
-import { sidebarTabs } from '../constants/sidebar.constant'
+import { sidebarTabs } from '../../constants/sidebar.constant'
 
 @Component({
   selector: 'app-sidebar',

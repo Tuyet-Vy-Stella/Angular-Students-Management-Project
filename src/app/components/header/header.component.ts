@@ -2,7 +2,7 @@ import { Subject } from 'rxjs'
 import { Component, ElementRef, Output, Renderer2, ViewChild } from '@angular/core'
 import { faBell, faBars, faMaximize, faChevronDown } from '@fortawesome/free-solid-svg-icons'
 
-import { AuthService } from './../auth/auth.service'
+import { AuthService } from '../../auth/auth.service'
 
 @Component({
   selector: 'app-header',

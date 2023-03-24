@@ -7,13 +7,16 @@ import { TeacherListComponent } from './teacher/teacher-list/teacher-list.compon
 import { TeacherEditComponent } from './teacher/teacher-edit/teacher-edit.component'
 import { ClassListComponent } from './class/class-list/class-list.component'
 import { SubjectComponent } from './subject/subject.component'
-import { TeacherComponent } from './teacher/teacher.component'
+// import { TeacherComponent } from './teacher/teacher.component'
 import { ClassComponent } from './class/class.component'
 import { AuthComponent } from './auth/auth.component'
 import { LoginGuard } from './auth/login.guard'
 import { ClassEditComponent } from './class/class-edit/class-edit.component'
+import { HomeComponent } from './home/home.component'
 
 const routes: Routes = [
+  { path: '', redirectTo: 'home', pathMatch: 'full' },
+  { path: 'home', component: HomeComponent },
   {
     path: 'students',
     loadChildren: () => import('./students/student.module').then((module) => module.StudentModule)
@@ -30,7 +33,6 @@ const routes: Routes = [
   },
   {
     path: 'teachers',
-    component: TeacherComponent,
     children: [
       { path: '', component: TeacherListComponent },
       { path: ':new', component: TeacherEditComponent },

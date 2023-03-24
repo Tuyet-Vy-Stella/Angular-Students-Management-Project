@@ -1,4 +1,4 @@
-import { faGauge, faUsers, faChalkboard, faCalculator, faChevronRight } from '@fortawesome/free-solid-svg-icons'
+import { faGauge, faGraduationCap, faChalkboardUser, faBookReader, faChevronRight } from '@fortawesome/free-solid-svg-icons'
 
 export const sidebarTabs = [
   {
@@ -12,22 +12,12 @@ export const sidebarTabs = [
         name: 'Admin Dashboard',
         link: ''
       },
-      {
-        id: 12,
-        name: 'Teacher Dashboard',
-        link: ''
-      },
-      {
-        id: 13,
-        name: 'Student Dashboard',
-        link: ''
-      }
     ]
   },
   {
     id: 2,
     name: 'Students',
-    icon: faUsers,
+    icon: faGraduationCap,
     prefix: 'students',
     children: [
       {
@@ -45,26 +35,36 @@ export const sidebarTabs = [
   {
     id: 3,
     name: 'Teachers',
-    icon: faChalkboard,
+    icon: faChalkboardUser,
     prefix: 'teachers',
     children: [
       {
         id: 31,
         name: 'Teacher List',
-        link: ''
+        link: 'teachers'
+      },
+      {
+        id: 32,
+        name: 'Create Teacher',
+        link: 'teachers/create'
       }
     ]
   },
   {
     id: 4,
     name: 'Subjects',
-    icon: faCalculator,
+    icon: faBookReader,
     prefix: 'subjects',
     children: [
       {
         id: 41,
         name: 'Subject List',
-        link: ''
+        link: 'subjects'
+      },
+      {
+        id: 42,
+        name: 'Create Subject',
+        link: 'subjects/create'
       }
     ]
   }

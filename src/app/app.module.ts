@@ -6,6 +6,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations'
 import { ToastrModule } from 'ngx-toastr'
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome'
 import { CookieService } from 'ngx-cookie-service'
+import { NgApexchartsModule } from 'ng-apexcharts'
 
 // Module
 import { AppRoutingModule } from './app-routing.module'
@@ -18,14 +19,12 @@ import { AuthInterceptor } from './auth/auth.interceptor'
 // Teachers
 import { TeacherEditComponent } from './teacher/teacher-edit/teacher-edit.component'
 import { TeacherListComponent } from './teacher/teacher-list/teacher-list.component'
-import { TeacherComponent } from './teacher/teacher.component'
+
 
 // Subjects
 import { SubjectListComponent } from './subject/subject-list/subject-list.component'
 import { SubjectEditComponent } from './subject/subject-edit/subject-edit.component'
 import { SubjectComponent } from './subject/subject.component'
-
-// Dashboard
 
 // Class
 import { ClassListComponent } from './class/class-list/class-list.component'
@@ -36,8 +35,13 @@ import { ClassComponent } from './class/class.component'
 import { AuthComponent } from './auth/auth.component'
 
 // Common
-import { HeaderComponent } from './header/header.component'
-import { SidebarComponent } from './sidebar/sidebar.component'
+import { SidebarComponent } from './components/sidebar/sidebar.component'
+import {HeaderComponent} from "./components/header/header.component"
+import { FooterComponent } from './components/footer/footer.component'
+import { ChartsComponent } from './charts/charts.component'
+import { AnnualLearningKindComponent } from './charts/annual-learning-kind/annual-learning-kind.component'
+import { StudentGenderChartComponent } from './charts/student-gender-chart/student-gender-chart.component'
+import { HomeComponent } from './home/home.component'
 @NgModule({
   declarations: [
     AppComponent,
@@ -48,12 +52,17 @@ import { SidebarComponent } from './sidebar/sidebar.component'
     ClassListComponent,
     ClassEditComponent,
     SubjectComponent,
-    TeacherComponent,
     ClassComponent,
     AuthComponent,
     HeaderComponent,
-    SidebarComponent
+    SidebarComponent,
+    FooterComponent,
+    ChartsComponent,
+    AnnualLearningKindComponent,
+    StudentGenderChartComponent,
+    HomeComponent,
   ],
+
   imports: [
     FontAwesomeModule,
     AppRoutingModule,
@@ -63,6 +72,7 @@ import { SidebarComponent } from './sidebar/sidebar.component'
     ReactiveFormsModule,
     HttpClientModule,
     BrowserAnimationsModule,
+    NgApexchartsModule,
     ToastrModule.forRoot({
       timeOut: 4000,
       positionClass: 'toast-top-right',
@@ -77,6 +87,7 @@ import { SidebarComponent } from './sidebar/sidebar.component'
       useClass: AuthInterceptor,
       multi: true
     }
+
   ],
   bootstrap: [AppComponent]
 })
