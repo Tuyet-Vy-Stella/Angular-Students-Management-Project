@@ -116,7 +116,7 @@
     <div *ngIf="!tableViewMode" class="grid-teacher-list grid p-6 gap-6">
       <a *ngFor="let teacher of teacherListToShow"
         class="h-[15.625rem] p-6 border border-solid border-secondary rounded-lg flex flex-col items-center justify-between cursor-pointer group"
-        [routerLink]="[teacher.id]">
+        [routerLink]="[teacher.id, 'edit']">
         <img [src]="'https://xsgames.co/randomusers/avatar.php?g=' + teacher.gender" alt=""
           class="w-[8.75rem] h-[8.75rem] rounded-full">
         <span class="text-dark font-medium group-hover:text-active">{{teacher.name}}</span>
