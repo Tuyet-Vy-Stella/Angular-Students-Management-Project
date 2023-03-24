@@ -4,6 +4,8 @@ import { ActivatedRoute, Params, Router } from '@angular/router';
 import { Subject } from 'src/app/shared/subject.model';
 
 import { TeacherService } from '../teacher.service';
+import { ToastrService } from 'ngx-toastr';
+
 
 @Component({
   selector: 'app-teacher-edit',
@@ -20,6 +22,7 @@ export class TeacherEditComponent {
 
   constructor(
     private teacherService: TeacherService,
+    private toastrService: ToastrService,
     private router: Router,
     private route: ActivatedRoute
   ) {}
@@ -54,6 +57,7 @@ export class TeacherEditComponent {
         this.subjectList = response;
       },
       error: (error) => {
+        this.toastrService.error('Get subject list failed. Please try again');
         console.error(error);
       },
     });
@@ -74,6 +78,7 @@ export class TeacherEditComponent {
               console.log(rest);
             },
             error: (error) => {
+              this.toastrService.error('Get teacher failed. Please try again');
               console.error(error);
             },
             complete: () => {
@@ -99,10 +104,11 @@ export class TeacherEditComponent {
       this.teacherService
         .createTeacher({ ...this.teacherForm.value, password: '123456' })
         .subscribe({
-          next: (response) => {
+          next: () => {
             this.isFetchingToCreateOrUpdateTeacher = false;
 
-            window.alert('Create teacher successfully');
+            // Show alert
+            this.toastrService.success('Create teacher successfully');
 
             // Reset form
             this.teacherForm.reset();
@@ -123,8 +129,10 @@ export class TeacherEditComponent {
           .subscribe({
             next: () => {
               this.isFetchingToCreateOrUpdateTeacher = false;
-              window.alert('Update teacher successfully');
-              this.router.navigate(['/teachers']);
+              this.toastrService.success('Update teacher successfully');
+              setTimeout(() => {
+                this.router.navigate(['/teachers']);
+              }, 1000);
             },
             error: (error) => {
               this.isFetchingToCreateOrUpdateTeacher = false;
@@ -134,8 +142,6 @@ export class TeacherEditComponent {
               this.isFetchingToCreateOrUpdateTeacher = false;
             },
           });
-        console.log(this.teacherForm.value);
-
       }
     }
   }

@@ -1,19 +1,14 @@
 <div class="p-6 min-h-screen-except-header">
   <!-- Spinner -->
-  <!-- <div *ngIf="isFetchingToCreateOrUpdateTeacher">
+  <div *ngIf="isFetchingToCreateOrUpdateTeacher || isFetchingToGetTeacher">
       <app-loading-spinner />
-  </div> -->
+  </div>
 
   <!-- Title -->
   <h4 class="font-medium text-xl md:text-2xl">
       <span *ngIf="createMode">Create Teacher</span>
       <span *ngIf="!createMode">Update Teacher</span>
   </h4>
-
-  <!-- Skeleton for get teacher data -->
-  <!-- <div *ngIf="isFetchingToGetTeacher" class="mt-6">
-      <app-skeleton />
-  </div> -->
 
   <!-- Form -->
   <form *ngIf="!isFetchingToGetTeacher" class="mt-6 bg-light rounded-lg p-6" [formGroup]="teacherForm"
@@ -113,8 +108,6 @@
                   This field is required!
               </span>
           </div>
-
-
       </div>
 
       <button type="submit" [disabled]="!teacherForm.valid" class="btn text primary rounded-lg mt-6">
