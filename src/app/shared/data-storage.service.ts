@@ -6,8 +6,5 @@ export class DataStorageService {
   constructor(private http : HttpClient) {
   }
 
-  fetchTeachersData(){
-    this.http.get(`https://qlsv-mu.vercel.app/api/teacher-list`)
-      .subscribe(res => console.log(res));
-  }
+  
 }
