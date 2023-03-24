@@ -33,7 +33,7 @@ export class CreatingStudentComponent {
       gender: new FormControl('male', [Validators.required]),
       birthday: new FormControl(null, [Validators.required]),
       address: new FormControl(null, [Validators.required, this.checkFieldEmpty]),
-      phone: new FormControl(null, [Validators.required, Validators.pattern('[- +()0-9]+')]),
+      phone: new FormControl(null, [Validators.required]),
       email: new FormControl(null, [Validators.required, Validators.email]),
       grade: new FormControl('10', [Validators.required]),
       section: new FormControl('A', [Validators.required])

@@ -23,7 +23,7 @@ export class StudentService {
   }
 
   createStudent(data: CreateStudentModel) {
-    return this.http.post('https://qlsv-mu.vercel.app/api/student', data).pipe(
+    return this.http.post('https://qlsv-mu.vercel.app/api/student', null).pipe(
       // Success (map: modify response, tap: handle side & not modify response)
       map((response) => {
         return {

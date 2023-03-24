@@ -1,10 +1,5 @@
 import { NgModule } from '@angular/core'
-import { RouterModule, Routes } from '@angular/router'
-
-// Students
-import { StudentDetailComponent } from './students/student-detail/student-detail.component'
-import { CreatingStudentComponent } from './students/creating-student/creating-student.component'
-import { StudentListComponent } from './students/student-list/student-list.component'
+import { PreloadAllModules, RouterModule, Routes } from '@angular/router'
 
 import { SubjectListComponent } from './subject/subject-list/subject-list.component'
 import { SubjectEditComponent } from './subject/subject-edit/subject-edit.component'
@@ -57,7 +52,11 @@ const routes: Routes = [
 ]
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes)],
+  imports: [
+    RouterModule.forRoot(routes, {
+      preloadingStrategy: PreloadAllModules
+    })
+  ],
   exports: [RouterModule]
 })
 export class AppRoutingModule {}
