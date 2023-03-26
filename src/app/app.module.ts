@@ -16,9 +16,15 @@ import { AuthInterceptor } from './auth/data-access/auth.interceptor';
 // Common
 import { HeaderComponent } from './layouts/ui/header/header.component';
 import { SidebarComponent } from './layouts/ui/sidebar/sidebar.component';
+import { FooterComponent } from './layouts/ui/footer/footer.component';
 
 @NgModule({
-  declarations: [AppComponent, HeaderComponent, SidebarComponent],
+  declarations: [
+    AppComponent,
+    HeaderComponent,
+    SidebarComponent,
+    FooterComponent,
+  ],
 
   imports: [
     FontAwesomeModule,
