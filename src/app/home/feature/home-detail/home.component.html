@@ -1,0 +1,97 @@
+<div class="home">
+  <div class="container p-8">
+    <h3 class="page-title text-fs22 font-medium pb-8">Welcome Admin!</h3>
+    <div class="row flex items-center box-border mb-8">
+      <div class="columns-3xs bg-light rounded-lg box-border p-6 mr-6" *ngFor="let column of columns">
+        <div class="item flex items-center justify-between">
+          <div class="text">
+            <h6 class="top text-fs14 text-footer">{{column.title}}</h6>
+            <h3 class="bottom text-fs22 font-semibold">{{column.count}}</h3>
+          </div>
+          <div class="pic border rounded-lg bg-dash">
+            <img src="{{column.img}}" alt="">
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- CHARTS -->
+
+    <app-charts></app-charts>
+
+    <!-- STAR STUDENTS + STUDENT ACTIVITY -->
+    <div class="row flex items-center justify-between">
+
+      <!-- Star Students -->
+      <div class="columns-lg bg-light rounded-lg box-border p-6 mr-6">
+        <div class="item">
+          <div class="top flex items-center justify-between pb-3">
+            <h5 class="fs18 font-semibold">Star Students</h5>
+            <i class="fa-solid fa-ellipsis-vertical w-6 h-8 leading-8 bg-lightgray rounded-md text-center cursor-pointer"></i>
+          </div>
+          <div class="bottom">
+            <table class="w-full text-fs15 border my-3">
+              <thead class="font-semibold text-darkGrey bg-mediumGrey">
+                <tr class="border border-b-black">
+                  <th>ID</th>
+                  <th>Name</th>
+                  <th>Marks</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let starStudentItem of starStudentList">
+                  <td >{{starStudentItem.id}}</td>
+                  <td class="flex items-center gap-2 w-max">
+                    <img class="w-[30px] h-[30px] rounded-full" src="../../../../assets/images/avt.jpg" alt="">
+                    <span>{{starStudentItem.name}}</span>
+                  </td>
+                  <td>{{starStudentItem.average}}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- Student Activity -->
+      <div class="columns-lg bg-light rounded-lg box-border p-6 mr-6">
+        <div class="item">
+          <div class="top flex items-center justify-between pb-3">
+            <h5 class="fs18 font-semibold">Student Activity</h5>
+            <i class="fa-solid fa-ellipsis-vertical w-6 h-8 leading-8 bg-lightgray rounded-md text-center cursor-pointer"></i>
+          </div>
+          <div class="bottom">
+            <div class="details flex items-center my-3 mx-1 relative" *ngFor="let activity of activities">
+              <div class="icon border rounded-lg bg-dash p-2">
+                <img src="{{activity.icon}}" alt="">
+              </div>
+              <div class="activity-name p-2 w-3/4">
+                <h4 class="text-fs14 font-medium mb-1">{{activity.title}}</h4>
+                <span class="text-fs12 text-footer">{{activity.description}}</span>
+              </div>
+              <div class="date-posted text-fs11 text-footer bg-lightPink px-1 py-2 absolute right-0">
+                <span>{{activity.postingDate}}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SOCIAL MEDIA -->
+    <div class="row flex items-center justify-between box-border mt-8">
+      <div class="columns-3xs box-border mr-6" *ngFor="let socialMedia of socialMedias">
+        <div [style.background-color]="socialMedia.bgColor" class="item flex items-center justify-between rounded-lg p-6 " >
+          <div class="text">
+            <h6 class="top text-fs12 text-light mb-1">{{socialMedia.title}}</h6>
+            <h3 class="bottom text-fs22 font-semibold text-light">{{socialMedia.count}}</h3>
+          </div>
+          <div class="pic border rounded-lg bg-light p-2">
+            <img src="{{socialMedia.img}}" alt="">
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
