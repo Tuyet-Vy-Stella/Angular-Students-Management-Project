@@ -96,6 +96,8 @@ html *::-webkit-scrollbar-track {
   }
 
   .main {
+    @apply w-full overflow-x-hidden;
+    
     .sidebar {
       @apply fixed left-0 top-header bottom-0 w-sidebar bg-white text-sidebar py-4 transition-200-ease-in-out;
     }
