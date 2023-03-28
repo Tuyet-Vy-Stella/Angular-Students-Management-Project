@@ -1,1 +1,8 @@
-<p>quiz-page works!</p>
+<form action="">
+  <div class="mb-10" *ngFor="let quiz of currentQuizList.slice(1);let i =  index">
+    <p>{{quiz.question}} score: {{quiz.score}}</p>
+    <p *ngFor="let answer of shuffledAnswers[i]">
+      {{answer}}
+    </p>
+  </div>
+</form>
