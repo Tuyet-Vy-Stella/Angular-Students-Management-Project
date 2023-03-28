@@ -1,8 +1,8 @@
-import { SharedModule } from './../../shared/shared.module';
 import { ReactiveFormsModule } from '@angular/forms';
 import { NgModule } from '@angular/core';
 
 import { QuizRoutingModule } from './quiz-routing.module';
+import { SharedModule } from 'src/app/shared/shared.module';
 
 @NgModule({
   declarations: [],
