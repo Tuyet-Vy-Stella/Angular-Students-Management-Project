@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { RouterModule, Routes } from '@angular/router';
+import { Routes, RouterModule } from '@angular/router';
 
 const routes: Routes = [
   { path: '', redirectTo: 'home', pathMatch: 'full' },
@@ -33,6 +33,11 @@ const routes: Routes = [
       import('./teacher/feature/teacher-shell/teacher.module').then(
         (m) => m.TeacherModule
       ),
+  },
+  {
+    path: 'quiz',
+    loadChildren: () =>
+      import('./quiz/quiz-shell/quiz.module').then((m) => m.QuizModule),
   },
 ];
 
