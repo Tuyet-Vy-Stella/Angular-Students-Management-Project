@@ -1,0 +1,7 @@
+<div *ngIf="quiz$ | async as quiz">
+  <p>{{ quiz.question }} score: {{ quiz.score }}</p>
+  <p *ngFor="let answer of shufflerAnswer; let idx = index">
+    <input #input type="radio" [name]="quiz.id" [id]="idx" />
+    <label [for]="idx">{{ answer }}</label>
+  </p>
+</div>

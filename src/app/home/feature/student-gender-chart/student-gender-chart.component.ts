@@ -33,7 +33,7 @@ export class StudentGenderChartComponent implements OnInit {
       },
     },
   ];
-  labels: any = ['Female', 'Male'];
+  labels: string[] = ['Female', 'Male'];
 
   constructor(private studentGenderService: StudentGenderService) {}
 

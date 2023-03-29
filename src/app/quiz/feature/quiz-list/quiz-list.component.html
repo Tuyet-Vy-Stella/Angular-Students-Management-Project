@@ -1,0 +1,7 @@
+<div>
+  Hello quiz list
+  <ng-container *ngFor="let quiz of quizList; let idx = index">
+    <app-quiz-item [id]="quiz.id"></app-quiz-item>
+  </ng-container>
+</div>
+

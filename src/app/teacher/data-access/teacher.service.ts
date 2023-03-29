@@ -1,6 +1,6 @@
+import { map } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { map } from 'rxjs';
 import { Subject } from '../../shared/model/subject.model';
 
 import { CreateTeacherModel, Teacher } from '../../shared/model/teacher.model';
