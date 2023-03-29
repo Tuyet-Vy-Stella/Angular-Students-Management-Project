@@ -1,8 +1,8 @@
 <div class="p-6">
-    <!-- Spinner -->
-    <div *ngIf="isFetchingToDeleteStudent">
-      <app-loading-spinner />
-    </div>
+  <!-- Spinner -->
+  <div *ngIf="isFetchingToDeleteStudent">
+    <app-loading-spinner />
+  </div>
 
   <!-- Header Section -->
   <div class="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 md:gap-0 select-none">
@@ -51,12 +51,20 @@
 
       <!-- Buttons -->
       <div class="flex items-center justify-between gap-4">
-        <button class="btn icon rounded-lg" [ngClass]="tableViewMode ? 'primary' : 'secondary'" (click)="switchToTableViewMode(true)">
+        <button
+          class="btn icon rounded-lg"
+          [ngClass]="tableViewMode ? 'primary' : 'secondary'"
+          (click)="switchToTableViewMode(true)"
+        >
           <fa-icon [icon]="icons.faList"></fa-icon>
         </button>
 
-        <button class="btn icon rounded-lg" [ngClass]="tableViewMode ? 'secondary' : 'primary'" (click)="switchToTableViewMode(false)">
-         <fa-icon [icon]="icons.faBorderAll"></fa-icon>
+        <button
+          class="btn icon rounded-lg"
+          [ngClass]="tableViewMode ? 'secondary' : 'primary'"
+          (click)="switchToTableViewMode(false)"
+        >
+          <fa-icon [icon]="icons.faBorderAll"></fa-icon>
         </button>
 
         <button class="btn icon primary rounded-lg" routerLink="create">
@@ -75,7 +83,7 @@
       <table *ngIf="!isFetchingStudentList" class="w-full text-sm text-dark">
         <thead>
           <tr>
-            <th><input type="checkbox"/></th>
+            <th><input type="checkbox" /></th>
             <th>ID</th>
             <th>Name</th>
             <th>Class</th>
@@ -102,13 +110,17 @@
                 <span class="group-hover:text-active">{{ student.name }}</span>
               </div>
             </td>
-            <td>{{ student.grade }}{{ student.section | uppercase }}</td>
+            <td>{{ student.class_name | uppercase }}</td>
             <td>{{ student.gender }}</td>
-            <td><span class="w-max inline-block">{{ student.phone }}</span></td>
-            <td><span class="w-max inline-block">{{ student.email }}</span></td>
+            <td>
+              <span class="w-max inline-block">{{ student.phone }}</span>
+            </td>
+            <td>
+              <span class="w-max inline-block">{{ student.email }}</span>
+            </td>
             <td>
               <div class="flex items-center gap-2">
-                <a class="btn icon secondary sm rounded-full" type="button" [routerLink]="[ student.id, 'update']">
+                <a class="btn icon secondary sm rounded-full" type="button" [routerLink]="[student.id, 'update']">
                   <fa-icon [icon]="icons.faPenToSquare"></fa-icon>
                 </a>
                 <button class="btn icon secondary sm rounded-full" (click)="onClickDeleteButton(student.id)">
@@ -123,10 +135,14 @@
 
     <!-- Grid view mode -->
     <div *ngIf="!tableViewMode" class="grid-student-list grid p-6 gap-6">
-      <a *ngFor="let student of studentListToShow" class="h-[15.625rem] p-6 border border-solid border-secondary rounded-lg flex flex-col items-center justify-between cursor-pointer group" [routerLink]="[student.id]">
-        <img src="../assets/images/avt.jpg" alt="" class="w-[8.75rem] h-[8.75rem] rounded-full">
-        <span class="text-dark font-medium group-hover:text-active">{{student.name}}</span>
-        <span class="text-dark text-sm">{{student.grade}}{{student.section}}</span>
+      <a
+        *ngFor="let student of studentListToShow"
+        class="h-[15.625rem] p-6 border border-solid border-secondary rounded-lg flex flex-col items-center justify-between cursor-pointer group"
+        [routerLink]="[student.id]"
+      >
+        <img src="../assets/images/avt.jpg" alt="" class="w-[8.75rem] h-[8.75rem] rounded-full" />
+        <span class="text-dark font-medium group-hover:text-active">{{ student.name }}</span>
+        <span class="text-dark text-sm">{{ student.class_name | uppercase }}</span>
       </a>
     </div>
 
@@ -161,7 +177,7 @@
           [disabled]="currentPage === pageNumbers[pageNumbers.length - 1]"
           (click)="onClickNextPage()"
         >
-           <fa-icon [icon]="icons.faChevronRight"></fa-icon>
+          <fa-icon [icon]="icons.faChevronRight"></fa-icon>
         </button>
       </div>
     </div>
@@ -169,6 +185,11 @@
 
   <!-- Modal -->
   <div *ngIf="showModal">
-    <app-modal (onClose)="handleCloseModal()" (onAccept)="handleDeleteStudent()" title="Delete Student" content="This action cannot be undone. Are you sure you want to continue?" />
+    <app-modal
+      (onClose)="handleCloseModal()"
+      (onAccept)="handleDeleteStudent()"
+      title="Delete Student"
+      content="This action cannot be undone. Are you sure you want to continue?"
+    />
   </div>
 </div>
