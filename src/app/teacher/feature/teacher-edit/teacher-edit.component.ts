@@ -18,6 +18,8 @@ export class TeacherEditComponent {
   isFetchingToGetTeacher = false;
   createMode = false;
   teacherId: number | null = null;
+  classList: any;
+  classTeacherList: number[] = [];
 
   constructor(
     private teacherService: TeacherService,
@@ -61,6 +63,18 @@ export class TeacherEditComponent {
       },
     });
 
+    // Fetch class list
+    this.teacherService.getClassList().subscribe({
+      next: (response) => {
+        this.classList = response;
+        
+      },
+      error: (error) => {
+        this.toastrService.error('Get class list failed. Please try again');
+        console.error(error);
+      },
+    });
+
     // Handle for update mode
     if (!this.createMode) {
       this.isFetchingToGetTeacher = true;
@@ -72,11 +86,20 @@ export class TeacherEditComponent {
           // Fetch teacher
           this.teacherService.getTeacherById(this.teacherId).subscribe({
             next: (response) => {
-              const { id, created_at, ...rest } = response;
+              const { id, created_at, class_id, ...rest } = response;
               this.teacherForm.setValue(rest);
-              console.log(rest);
+              this.classTeacherList = class_id;
+              console.log('class_id', class_id)
+              this.classTeacherList.map((item) => {
+                this.teacherForm.addControl(
+                  `class_id_${item}`,
+                  new FormControl(null, [Validators.required])
+                );
+                this.teacherForm.controls[`class_id_${item}`].setValue(item);
+              });
             },
             error: (error) => {
+              this.isFetchingToGetTeacher = false;
               this.toastrService.error('Get teacher failed. Please try again');
               console.error(error);
             },
@@ -96,30 +119,36 @@ export class TeacherEditComponent {
     return null;
   }
 
+  addClass() {
+    this.classTeacherList.push(0);
+    this.teacherForm.addControl(
+      `class_id_${this.classTeacherList.length}`,
+      new FormControl(null, [Validators.required])
+    );
+  }
+
   onSubmit() {
     this.isFetchingToCreateOrUpdateTeacher = true;
     if (this.createMode) {
       // Create teacher
-      this.teacherService
-        .createTeacher({ ...this.teacherForm.value, password: '123456' })
-        .subscribe({
-          next: () => {
-            this.isFetchingToCreateOrUpdateTeacher = false;
+      this.teacherService.createTeacher(this.teacherForm.value).subscribe({
+        next: () => {
+          this.isFetchingToCreateOrUpdateTeacher = false;
 
-            // Show alert
-            this.toastrService.success('Create teacher successfully');
+          // Show alert
+          this.toastrService.success('Create teacher successfully');
 
-            // Reset form
-            this.teacherForm.reset();
-          },
-          error: (error) => {
-            this.isFetchingToCreateOrUpdateTeacher = false;
-            console.log(error);
-          },
-          complete: () => {
-            this.isFetchingToCreateOrUpdateTeacher = false;
-          },
-        });
+          // Reset form
+          this.teacherForm.reset();
+        },
+        error: (error) => {
+          this.isFetchingToCreateOrUpdateTeacher = false;
+          console.log(error);
+        },
+        complete: () => {
+          this.isFetchingToCreateOrUpdateTeacher = false;
+        },
+      });
     } else {
       // Update teacher
       if (this.teacherId) {
