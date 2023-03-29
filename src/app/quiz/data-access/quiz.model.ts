@@ -9,6 +9,12 @@ export interface Quiz {
   incorrect_answers: string[];
 }
 
+export enum Score {
+  easy = 'easy',
+  medium = 'medium',
+  hard = 'hard',
+}
+
 export function shuffle(array: any) {
   let currentIndex = array.length,
     randomIndex;

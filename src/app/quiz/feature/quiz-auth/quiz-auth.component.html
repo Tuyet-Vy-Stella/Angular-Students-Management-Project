@@ -1,1 +1,34 @@
-<p>quiz-auth works!</p>
+<form action="" [formGroup]="quizAuthForm" (ngSubmit)="submitForm()">
+  <div class="my-5">
+    <label for="full_name">Full name</label>
+    <input type="text" id="full_name" formControlName="full_name">
+    <!-- {{quizAuthForm.controls['full_name'].errors?.['required'] | json}} -->
+    <div class=""
+      *ngIf="quizAuthForm.controls['full_name'].errors?.['required']&& quizAuthForm.controls['full_name'].touched">
+      <div class="relative px-4 py-3 text-red-700 bg-red-100 border border-red-400 rounded" role="alert">
+        <span class="block sm:inline">Name is required</span>
+      </div>
+    </div>
+  </div>
+  <div class="my-5">
+    <label for="student_id">Student ID</label>
+    <input type="text" id="student_id" formControlName="student_id">
+    <div class=""
+      *ngIf="quizAuthForm.controls['student_id'].errors?.['required']&& quizAuthForm.controls['student_id'].touched">
+      <div class="relative px-4 py-3 text-red-700 bg-red-100 border border-red-400 rounded" role="alert">
+        <span class="block sm:inline">Student ID is required</span>
+      </div>
+    </div>
+  </div>
+  <div class="my-5">
+    <label for="subject_id">Subject ID</label>
+    <input type="text" id="subject_id" formControlName="subject_id">
+    <div class=""
+      *ngIf="quizAuthForm.controls['subject_id'].errors?.['required'] && quizAuthForm.controls['subject_id'].touched">
+      <div class="relative px-4 py-3 text-red-700 bg-red-100 border border-red-400 rounded" role="alert">
+        <span class="block sm:inline">Subject ID is required</span>
+      </div>
+    </div>
+  </div>
+  <button type="submit" class="px-4 py-2 text-white rounded bg-primary">Enroll</button>
+</form>

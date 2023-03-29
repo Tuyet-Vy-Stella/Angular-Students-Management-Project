@@ -1,4 +1,4 @@
-import { Quiz, shuffle } from './../../data-access/quiz.model';
+import { Quiz, shuffle, Score } from './../../data-access/quiz.model';
 import { QuizService } from './../../data-access/quiz.service';
 import { Component } from '@angular/core';
 
@@ -31,12 +31,12 @@ export class QuizPageComponent {
         return shuffle([...quiz.incorrect_answers, quiz.correct_answer]);
       });
       this.quizList = next.map((quiz) => {
-        if (quiz.difficulty === 'easy') {
-          return { ...quiz, score: 0.5 };
-        } else if (quiz.difficulty === 'medium') {
+        if (quiz.difficulty === Score.easy) {
           return { ...quiz, score: 1 };
-        } else {
+        } else if (quiz.difficulty === Score.medium) {
           return { ...quiz, score: 2 };
+        } else {
+          return { ...quiz, score: 3 };
         }
       });
       this.quizList.forEach((val) => {
