@@ -1,33 +1,35 @@
 import { Injectable, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Subject } from 'src/app/shared/subject.model';
+import { Subject } from 'src/app/shared/model/subject.model';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class SubjectService implements OnInit {
   nameSubject: string = '';
   subjectList: Subject[] = [];
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) {}
 
   getListSubject() {
-    return this.http.get<Subject[]>('https://qlsv-mu.vercel.app/api/subject-list');
-
+    return this.http.get<Subject[]>(
+      'https://qlsv-mu.vercel.app/api/subject-list'
+    );
   }
 
   /* Create new Subject */
   createSubject(name: string) {
     return this.http.post('https://qlsv-mu.vercel.app/api/subject', {
-      name: name
-    })
+      name: name,
+    });
   }
 
   /* Filter Subject by id */
   getSubjectById(id: number) {
-    return this.http.get<{id:number, name: string}>(`https://qlsv-mu.vercel.app/api/subject/?subject_id=${id}`)
+    return this.http.get<{ id: number; name: string }>(
+      `https://qlsv-mu.vercel.app/api/subject/?subject_id=${id}`
+    );
   }
-
 
   /* Set name for edit page*/
   setNameEdit(name: string) {
@@ -41,13 +43,23 @@ export class SubjectService implements OnInit {
 
   /* Update subject name */
   updateSubject(id: number, name: string) {
-    return this.http.put<{id:number, name:string}>(`https://qlsv-mu.vercel.app/api/subject/?subject_id=${id}`, {
-      name
-    })
+    return this.http.put<{ id: number; name: string }>(
+      `https://qlsv-mu.vercel.app/api/subject/?subject_id=${id}`,
+      {
+        name,
+      }
+    );
   }
 
-  ngOnInit(): void {
-
+  /* delete Subject */
+  deleteSubject(id:number){
+    return this.http.delete(`https://qlsv-mu.vercel.app/api/subject/?subject_id=${id}
+    `)
   }
 
+
+
+
+
+  ngOnInit(): void {}
 }
