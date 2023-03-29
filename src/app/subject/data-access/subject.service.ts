@@ -51,5 +51,15 @@ export class SubjectService implements OnInit {
     );
   }
 
+  /* delete Subject */
+  deleteSubject(id:number){
+    return this.http.delete(`https://qlsv-mu.vercel.app/api/subject/?subject_id=${id}
+    `)
+  }
+
+
+
+
+
   ngOnInit(): void {}
 }
