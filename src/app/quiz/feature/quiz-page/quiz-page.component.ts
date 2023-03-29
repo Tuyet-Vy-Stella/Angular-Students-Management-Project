@@ -1,6 +1,7 @@
-import { Quiz, shuffle, Score } from './../../data-access/quiz.model';
+import { Quiz, shuffle, QuizAnswer } from './../../data-access/quiz.model';
 import { QuizService } from './../../data-access/quiz.service';
 import { Component } from '@angular/core';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-quiz-page',
@@ -9,46 +10,63 @@ import { Component } from '@angular/core';
 })
 export class QuizPageComponent {
   quizList!: Quiz[];
-  shuffledAnswers!: string[];
-  currentQuizList: Quiz[] = [
-    {
-      id: 0,
-      score: 0,
-      category: '',
-      type: '',
-      difficulty: '',
-      question: '',
-      correct_answer: '',
-      incorrect_answers: ['', ''],
-    },
-  ];
+  shufflerAnswer!: Quiz[];
+  currentQuizList: Quiz[] = [];
+  oldQuizList: Quiz[] = [];
   currentScore: number = 0;
-  constructor(private quizService: QuizService) {}
+  totalAnswer!: QuizAnswer[];
+  totalResult: any;
+  constructor(private quizService: QuizService, private route: Router) {}
+
   ngOnInit() {
-    this.quizService.getQuizList().subscribe((next: Quiz[]) => {
-      this.quizList = shuffle(next);
-      this.shuffledAnswers = next.map((quiz) => {
-        return shuffle([...quiz.incorrect_answers, quiz.correct_answer]);
-      });
-      this.quizList = next.map((quiz) => {
-        if (quiz.difficulty === Score.easy) {
-          return { ...quiz, score: 1 };
-        } else if (quiz.difficulty === Score.medium) {
-          return { ...quiz, score: 2 };
-        } else {
-          return { ...quiz, score: 3 };
-        }
-      });
-      this.quizList.forEach((val) => {
-        this.currentScore += val.score;
-        if (this.currentScore <= 10) {
-          if (val) {
-            this.currentQuizList.push(val);
+    // lấy ra những câu trả lời đã chọn
+    this.quizService.chooseTotal$.subscribe(
+      (answer) => (this.totalAnswer = answer)
+    );
+    // check đã làm bài chưa, nếu làm rồi thì lấy bài cũ còn chưa thì làm bài mới
+    if (localStorage.getItem('result')) {
+      this.currentQuizList = JSON.parse(
+        localStorage.getItem('result') as string
+      );
+    } else {
+      this.quizService.getQuizList().subscribe((next: Quiz[]) => {
+        this.quizList = shuffle(next);
+        this.quizList.forEach((val) => {
+          this.currentScore += val.score;
+          if (this.currentScore <= 10) {
+            if (val) {
+              this.currentQuizList = [...this.currentQuizList, val];
+            }
+          } else {
+            this.currentScore -= val.score;
           }
-        } else {
-          this.currentScore -= val.score;
-        }
+        });
       });
+    }
+  }
+  handleSubmitQuiz() {
+    // check đáp án đúng hay sai -> lấy ra đáp án vừa chọn và check đáp án đúng hay sai
+    this.totalResult = this.currentQuizList.map((quiz, index) => {
+      return {
+        isCurrentChoose: this.totalAnswer[index],
+        isCorrect: this.totalAnswer.some(
+          (answer) => quiz.correct_answer === answer.answer
+        ),
+      };
     });
+
+    // thêm phần kết quả sau khi làm bài vào trong mảng currentQuizList
+    this.currentQuizList = this.currentQuizList.map((quiz, index) => {
+      return {
+        ...quiz,
+        result: this.totalResult[index],
+      };
+    });
+
+    // nếu làm bài xong sẽ lưu bài trên localStorage
+    if (this.totalResult.length === this.currentQuizList.length) {
+      localStorage.setItem('result', JSON.stringify(this.currentQuizList));
+      this.route.navigate(['/quiz/result']);
+    }
   }
 }

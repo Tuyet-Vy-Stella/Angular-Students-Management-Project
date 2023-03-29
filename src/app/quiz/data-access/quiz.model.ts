@@ -7,12 +7,12 @@ export interface Quiz {
   question: string;
   correct_answer: string;
   incorrect_answers: string[];
+  result?: any;
 }
 
-export enum Score {
-  easy = 'easy',
-  medium = 'medium',
-  hard = 'hard',
+export interface QuizAnswer {
+  quizID: number;
+  answer: string;
 }
 
 export function shuffle(array: any) {
@@ -29,7 +29,6 @@ export function shuffle(array: any) {
       array[currentIndex],
     ];
   }
-
   return array;
 }
 export const BACKEND_URL_QUIZ = 'http://localhost:3000';

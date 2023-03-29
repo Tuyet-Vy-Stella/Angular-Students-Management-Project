@@ -1,8 +1,10 @@
-<form action="">
-  <div class="mb-10" *ngFor="let quiz of currentQuizList.slice(1);let i =  index">
-    <p>{{quiz.question}} score: {{quiz.score}}</p>
-    <p *ngFor="let answer of shuffledAnswers[i]">
-      {{answer}}
-    </p>
-  </div>
-</form>
+<div class="container mx-auto p-52">
+  <h1 class="mb-4 text-xl font-bold">Questions</h1>
+  <form>
+    <app-quiz-list [quizList]="currentQuizList"></app-quiz-list>
+    <button (click)="handleSubmitQuiz()" class="px-6 py-4 text-white bg-blue-500 rounded-lg hover:bg-blue-600"
+      type="button">
+      Submit
+    </button>
+  </form>
+</div>
