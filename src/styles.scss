@@ -25,13 +25,13 @@ img {
 // Fonts embedded
 @font-face {
   font-family: Roboto;
-  src: url('./assets/fonts/roboto-regular.woff2');
+  src: url("./assets/fonts/roboto-regular.woff2");
   font-weight: 400;
 }
 
 @font-face {
   font-family: Roboto;
-  src: url('./assets/fonts/roboto-medium.woff2');
+  src: url("./assets/fonts/roboto-medium.woff2");
   font-weight: 500;
 }
 
@@ -64,24 +64,42 @@ html *::-webkit-scrollbar-track {
   }
 
   .btn {
-    @apply px-[8px] py-[8px] transition-200-ease-in-out border-2 border-solid border-transparent;
+    @apply flex items-center justify-center text-dark bg-light transition-200-ease-in-out border border-solid border-transparent cursor-pointer select-none hover:bg-primary hover:border-primary hover:text-light;
+
+    &.icon {
+      @apply w-[2.375rem] h-[2.375rem];
+
+      &.trash {
+        @apply hover:bg-red-500 hover:border-red-500;
+      }
+
+      &.sm {
+        @apply w-[2rem] h-[2rem] text-sm;
+      }
+    }
+
+    &.text {
+      @apply px-4 py-2;
+    }
 
     &.primary {
-      @apply text-light bg-primary border-primary hover:text-light hover:bg-hover-primary hover:border-hover-primary;
+      @apply text-light bg-primary border-primary;
     }
 
     &.secondary {
-      @apply text-dark bg-content  hover:text-light hover:bg-hover-primary hover:border-hover-primary;
+      @apply text-sidebar bg-content hover:text-light hover:bg-primary hover:border-primary;
+    }
 
-      &.outlined {
-        @apply border-secondary hover:border-hover-primary;
-      }
+    &:disabled {
+      @apply opacity-40 pointer-events-none hover:bg-light hover:border-transparent hover:text-dark;
     }
   }
 
   .main {
+    @apply w-full overflow-x-hidden;
+
     .sidebar {
-      @apply fixed left-0 top-[3.75rem] bottom-0 w-sidebar bg-white text-sidebar py-4 transition-200-ease-in-out;
+      @apply fixed left-0 top-header bottom-0 w-sidebar bg-white text-sidebar py-4 transition-200-ease-in-out;
     }
 
     .main-content {
@@ -90,7 +108,7 @@ html *::-webkit-scrollbar-track {
 
     &.mini-sidebar {
       .sidebar {
-        @apply -translate-x-full lg:-translate-x-0 w-sidebar lg:w-mini-sidebar hover:w-sidebar;
+        @apply -translate-x-full lg:-translate-x-0 w-sidebar lg:w-mini-sidebar hover:w-sidebar z-[999];
 
         .parent-item {
           @apply justify-center;

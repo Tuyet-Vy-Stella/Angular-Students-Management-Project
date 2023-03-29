@@ -1,0 +1,70 @@
+.image-cover {
+  &:after {
+    content: "";
+    position: absolute;
+    background-image: url("../../../../src/assets/images/login-2.png");
+    width: 144px;
+    height: 144px;
+    right: 0;
+  }
+
+  &:before {
+    content: "";
+    position: absolute;
+    background-image: url("../../../../src/assets/images/login-3.png");
+    width: 144px;
+    height: 144px;
+    left: 0;
+  }
+}
+
+.loader {
+  width: 84px;
+  height: 64px;
+  position: relative;
+  border: 5px solid #18AEFA;
+  border-radius: 8px;
+}
+.loader::before {
+  content: '';
+  position: absolute;
+  border: 5px solid #18AEFA;
+  width: 52px;
+  height: 48px;
+  border-radius: 50% 50% 0 0;
+  left: 50%;
+  top: 0;
+  transform: translate(-50% , -100%)
+
+}
+.loader::after {
+  content: '';
+  position: absolute;
+  transform: translate(-50% , -50%);
+  left: 50%;
+  top: 50%;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background-color: #3D5EE1;
+  box-shadow: 16px 0 #3D5EE1, -16px 0 #3D5EE1;
+  animation: flash 0.5s ease-out infinite alternate;
+}
+
+@keyframes flash {
+  0% {
+    background-color: rgba(255, 255, 255, 0.25);
+    box-shadow: 16px 0 rgba(255, 255, 255, 0.25), -16px 0 #18AEFA ;
+  }
+  50% {
+    background-color: #18AEFA;
+    box-shadow: 16px 0 rgba(255, 255, 255, 0.25), -16px 0 rgba(255, 255, 255, 0.25);
+  }
+  100% {
+    background-color: white;
+    box-shadow: 16px 0 #18AEFA, -16px 0 rgba(255, 255, 255, 0.25);
+  }
+}
+
+
+
