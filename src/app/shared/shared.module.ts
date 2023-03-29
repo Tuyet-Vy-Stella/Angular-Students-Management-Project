@@ -10,7 +10,6 @@ import { PascalCasePipe } from './pipes/pascalcase.pipe'
 @NgModule({
   declarations: [LoadingSpinnerComponent, ModalComponent, SkeletonComponent, PascalCasePipe],
   imports: [CommonModule, FontAwesomeModule],
-  exports: [LoadingSpinnerComponent, ModalComponent, SkeletonComponent, CommonModule, FontAwesomeModule],
-  exports: [LoadingSpinnerComponent, ModalComponent, SkeletonComponent, PascalcasePipe]
+  exports: [LoadingSpinnerComponent, ModalComponent, SkeletonComponent, PascalCasePipe]
 })
 export class SharedModule {}

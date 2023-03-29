@@ -29,7 +29,7 @@
               />
             </div>
             <div class="">
-              <p class="text-xl text-dark font-medium">{{student?.name}}</p>
+              <p class="text-xl text-dark font-medium">{{ student?.name }}</p>
               <p class="text-sm text-sidebar font-normal">Computer Science</p>
             </div>
           </div>
@@ -67,7 +67,7 @@
           <div class="flex gap-4">
             <fa-icon [icon]="icons.faSignature" class="text-active"></fa-icon>
             <div class="">
-              <p class="text-dark font-medium text-lg leading-5">{{'name' | pascalcase}}</p>
+              <p class="text-dark font-medium text-lg leading-5">{{ 'name' | pascalcase }}</p>
               <p class="text-sidebar text-sm mt-1">{{ student?.name }}</p>
             </div>
           </div>
@@ -75,7 +75,7 @@
             <fa-icon [icon]="icons.faUsers" class="text-active"></fa-icon>
             <div class="">
               <p class="text-dark font-medium text-lg leading-5">Class</p>
-              <p class="text-sidebar text-sm mt-1">{{ student?.grade }}{{ student?.section }}</p>
+              <p class="text-sidebar text-sm mt-1">{{ student?.class_name }}</p>
             </div>
           </div>
           <div class="flex gap-4 mt-4">

@@ -18,7 +18,8 @@
     }
   }
 
-  &:has(> input.ng-invalid.ng-touched, select.ng-invalid.ng-tounched) {
+  &:has(input.ng-invalid.ng-touched),
+  &:has(select.ng-invalid.ng-touched) {
     @apply border-red-600;
 
     label {
