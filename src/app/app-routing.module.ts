@@ -1,3 +1,5 @@
+import { NgModule } from '@angular/core';
+import { RouterModule, Routes } from '@angular/router';
 import { NgModule } from '@angular/core'
 import { PreloadAllModules, RouterModule, Routes } from '@angular/router'
 
@@ -16,42 +18,38 @@ import { HomeComponent } from './home/home.component'
 
 const routes: Routes = [
   { path: '', redirectTo: 'home', pathMatch: 'full' },
-  { path: 'home', component: HomeComponent },
+  {
+    path: 'auth',
+    loadChildren: () =>
+      import('./auth/feature/auth.module').then((m) => m.AuthModule),
+  },
+  {
+    path: 'home',
+    loadChildren: () =>
+      import('./home/feature/home-shell/home.module').then((m) => m.HomeModule),
+  },
   {
     path: 'students',
-    loadChildren: () => import('./students/student.module').then((module) => module.StudentModule)
+    loadChildren: () =>
+      import('./students/feature/student-shell/student.module').then(
+        (module) => module.StudentModule
+      ),
   },
   {
     path: 'subjects',
-    component: SubjectComponent,
-    children: [
-      { path: '', component: SubjectListComponent },
-      { path: 'new', component: SubjectEditComponent },
-      { path: ':id', component: SubjectEditComponent },
-      { path: ':id/edit', component: SubjectEditComponent }
-    ]
+    loadChildren: () =>
+      import('./subject/feature/subject-shell/subject.module').then(
+        (m) => m.SubjectModule
+      ),
   },
   {
     path: 'teachers',
-    children: [
-      { path: '', component: TeacherListComponent },
-      { path: ':new', component: TeacherEditComponent },
-      { path: ':id', component: TeacherEditComponent },
-      { path: ':id/edit', component: TeacherEditComponent }
-    ]
+    loadChildren: () =>
+      import('./teacher/feature/teacher-shell/teacher.module').then(
+        (m) => m.TeacherModule
+      ),
   },
-  {
-    path: 'classes',
-    component: ClassComponent,
-    children: [
-      { path: '', component: ClassListComponent },
-      { path: ':new', component: ClassEditComponent },
-      { path: ':id', component: ClassEditComponent },
-      { path: ':id/edit', component: ClassEditComponent }
-    ]
-  },
-  { path: 'auth', canActivate: [LoginGuard], component: AuthComponent }
-]
+];
 
 @NgModule({
   imports: [

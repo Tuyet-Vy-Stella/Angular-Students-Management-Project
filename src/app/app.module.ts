@@ -1,94 +1,52 @@
-import { NgModule } from '@angular/core'
-import { BrowserModule } from '@angular/platform-browser'
-import { FormsModule, ReactiveFormsModule } from '@angular/forms'
-import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http'
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations'
-import { ToastrModule } from 'ngx-toastr'
-import { FontAwesomeModule } from '@fortawesome/angular-fontawesome'
-import { CookieService } from 'ngx-cookie-service'
-import { NgApexchartsModule } from 'ng-apexcharts'
+import { NgModule } from '@angular/core';
+import { BrowserModule } from '@angular/platform-browser';
+import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { ToastrModule } from 'ngx-toastr';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { CookieService } from 'ngx-cookie-service';
 
 // Module
-import { AppRoutingModule } from './app-routing.module'
-import { SharedModule } from './shared/shared.module'
+import { AppRoutingModule } from './app-routing.module';
 
-import { AppComponent } from './app.component'
+import { AppComponent } from './app.component';
 
-import { AuthInterceptor } from './auth/auth.interceptor'
-
-// Teachers
-import { TeacherEditComponent } from './teacher/teacher-edit/teacher-edit.component'
-import { TeacherListComponent } from './teacher/teacher-list/teacher-list.component'
-
-
-// Subjects
-import { SubjectListComponent } from './subject/subject-list/subject-list.component'
-import { SubjectEditComponent } from './subject/subject-edit/subject-edit.component'
-import { SubjectComponent } from './subject/subject.component'
-
-// Class
-import { ClassListComponent } from './class/class-list/class-list.component'
-import { ClassEditComponent } from './class/class-edit/class-edit.component'
-import { ClassComponent } from './class/class.component'
-
-// Auth
-import { AuthComponent } from './auth/auth.component'
+import { AuthInterceptor } from './auth/data-access/auth.interceptor';
 
 // Common
-import { SidebarComponent } from './components/sidebar/sidebar.component'
-import {HeaderComponent} from "./components/header/header.component"
-import { FooterComponent } from './components/footer/footer.component'
-import { ChartsComponent } from './charts/charts.component'
-import { AnnualLearningKindComponent } from './charts/annual-learning-kind/annual-learning-kind.component'
-import { StudentGenderChartComponent } from './charts/student-gender-chart/student-gender-chart.component'
-import { HomeComponent } from './home/home.component'
+import { HeaderComponent } from './layouts/ui/header/header.component';
+import { SidebarComponent } from './layouts/ui/sidebar/sidebar.component';
+import { FooterComponent } from './layouts/ui/footer/footer.component';
+
 @NgModule({
   declarations: [
     AppComponent,
-    TeacherEditComponent,
-    SubjectListComponent,
-    SubjectEditComponent,
-    TeacherListComponent,
-    ClassListComponent,
-    ClassEditComponent,
-    SubjectComponent,
-    ClassComponent,
-    AuthComponent,
     HeaderComponent,
     SidebarComponent,
     FooterComponent,
-    ChartsComponent,
-    AnnualLearningKindComponent,
-    StudentGenderChartComponent,
-    HomeComponent,
   ],
 
   imports: [
     FontAwesomeModule,
     AppRoutingModule,
-    SharedModule,
     BrowserModule,
-    FormsModule,
-    ReactiveFormsModule,
     HttpClientModule,
     BrowserAnimationsModule,
-    NgApexchartsModule,
     ToastrModule.forRoot({
       timeOut: 4000,
       positionClass: 'toast-top-right',
       preventDuplicates: false,
-      easing: 'ease-in-out'
-    })
+      easing: 'ease-in-out',
+    }),
   ],
   providers: [
     [CookieService],
     {
       provide: HTTP_INTERCEPTORS,
       useClass: AuthInterceptor,
-      multi: true
-    }
-
+      multi: true,
+    },
   ],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
 })
 export class AppModule {}
