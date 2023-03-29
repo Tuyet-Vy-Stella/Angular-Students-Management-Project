@@ -31,6 +31,7 @@
       <input type="text" class="p-[10px] rounded-[6px] border border-gray-400 outline-blue-500 text-base"
         placeholder="Name ..." [(ngModel)]="name" #createInput />
       <button
+        routerLink="/subject"
         class="border rounded-[8px] ml-2 mt-2 mb-2 text-base font-semibold py-[8px] px-[24px] lg:self-end cursor-pointer hover:bg-[#18aefa] bg-[#3d5ee1] text-[white] lg:ml-[24px] lg:px-[12px] lg:py-[10px] lg:self-end lg:font-[550]"
         (click)="handleCreate(name)">
         Submit
@@ -90,7 +91,61 @@
           </div>
         </tbody>
       </table>
+    <div *ngIf="isCreate">
+      <app-loading-spinner></app-loading-spinner>
     </div>
+    
+   
+ 
+
+    <!-- TABLE -->
+      <div class="max-h-[200px] max-w-[100%] overflow-y-auto overflow-x-auto mt-[20px]">
+        <table class="table-auto w-[100%] rounded-[6px]" #myTable>
+          <thead>
+            <tr class="font-[600] text-base">
+              <th class="px-4 py-2">ID</th>
+              <th class="px-4 py-2">Name</th>
+              <th class="px-4 py-2">Action</th>
+            </tr>
+          </thead>
+          <tbody class="text-base">
+            <tr *ngIf="isLoading && subjectList.length === 0">
+              <td>
+                <app-skeleton></app-skeleton>
+              </td>
+              <td>
+                <app-skeleton></app-skeleton>
+              </td>
+              <td>
+                <app-skeleton></app-skeleton>
+              </td>
+            </tr>
+            <tr class="text-center hover:bg-slate-100" *ngIf="subjectList.length === 0 && isSearch == true">
+              <td class="border px-4 py-2"></td>
+              <td class="border px-4 py-2">0 result with your keyword</td>
+              <td class="border px-4 py-2 flex items-center justify-center">
+              </td>
+            </tr>
+            <!-- Row 1 -->
+            <tr class="text-center hover:bg-slate-100" *ngFor="let subject of subjectList">
+              <td class="border px-4 py-2">{{ subject.id }}</td>
+              <td class="border px-4 py-2">{{ subject.name }}</td>
+              <td class="border px-4 py-2 flex items-center justify-center">
+                <button>
+                  <a routerLink="{{subject.id}}/edit" (click)="handleUpdate(subject.name)"
+                    class="rounded-full hover:bg-blue-400 hover:text-white hover:cursor-pointer px-[8px] py-[6px] mr-3"><i
+                      class="fa fa-edit"></i></a>
+                </button>
+                <button class="rounded-full hover:bg-blue-400 hover:text-white hover:cursor-pointer px-[8px] py-[6px] mr-3"><i
+                      class="fa fa-trash" (click)="handleDelete(subject.id)"></i>
+                </button>
+              </td>
+            </tr>
+            <div>
+            </div>
+          </tbody>
+        </table>
+      </div>
 
     <!-- Next page -->
 
@@ -116,5 +171,11 @@
         </div> -->
 
     <!-- Next page -->
+    <!-- Modal -->
+    <div *ngIf="isShowModal">
+     <app-modal (onClose)="handleCloseModal()" (onAccept)="handleDeleteStudent()" title="Delete Subject" content="This action cannot be undone. Are you sure you want to continue?" />
+   </div>
   </div>
+
+
 </div>
