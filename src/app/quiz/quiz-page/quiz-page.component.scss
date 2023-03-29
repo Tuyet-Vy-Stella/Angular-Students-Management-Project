@@ -1,0 +1,18 @@
+@import "~@fortawesome/fontawesome-free/css/all.min.css";
+.form-radio:focus+span {
+  @apply bg-gray-300;
+}
+
+.form-radio:checked+span {
+  @apply font-bold text-blue-500;
+}
+
+.modal-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.8);
+  z-index: 9999;
+}
