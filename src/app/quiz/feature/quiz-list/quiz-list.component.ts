@@ -1,4 +1,11 @@
-import { Component, Input, OnInit, QueryList, ViewChildren, OnDestroy } from '@angular/core';
+import {
+  Component,
+  Input,
+  OnInit,
+  QueryList,
+  ViewChildren,
+  OnDestroy,
+} from '@angular/core';
 import { Quiz } from '../../data-access/quiz.model';
 import { QuizService } from '../../data-access/quiz.service';
 import { QuizItemComponent } from '../quiz-item/quiz-item.component';
@@ -10,13 +17,11 @@ import { QuizItemComponent } from '../quiz-item/quiz-item.component';
 })
 export class QuizListComponent implements OnInit, OnDestroy {
   @Input() quizList!: Quiz[];
-  @ViewChildren(QuizItemComponent) quizItems!: QueryList<QuizItemComponent>
+  @ViewChildren(QuizItemComponent) quizItems!: QueryList<QuizItemComponent>;
 
   constructor(private quizService: QuizService) {}
 
-  ngOnInit(): void {
-
-  }
+  ngOnInit(): void {}
 
   ngOnDestroy() {
     // let items = this.quizItems.toArray()

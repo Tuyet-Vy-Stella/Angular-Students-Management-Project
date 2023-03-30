@@ -22,25 +22,23 @@ import { QuizService } from '../../data-access/quiz.service';
 export class QuizItemComponent implements OnInit, OnDestroy {
   @Input() idx!: number;
   @Input() quiz!: Quiz;
+  shufflerAnswers!: string[];
   @ViewChildren('input') inputs!: QueryList<ElementRef>;
-  shufflerAnswer!: string[];
-  answers!: string[];
 
   // đưa đáp án chọn vào subject
+
   onChoose(data: QuizAnswer) {
     this.quizService.addAnswer(data);
   }
   constructor(private quizService: QuizService) {}
 
   ngOnInit(): void {
-    this.shufflerAnswer = shuffle([
-      ...this.quiz.incorrect_answers,
-      this.quiz.correct_answer,
-    ]);
-    this.answers = [...this.quiz.incorrect_answers, this.quiz.correct_answer];
+    if (this.quiz?.result) {
+      this.shufflerAnswers = this.quiz?.result.isCurrentChoose.allAnswer;
+    } else {
+      this.shufflerAnswers = this.quiz.allAnswers;
+    }
   }
 
-  ngOnDestroy(): void {
-
-  }
+  ngOnDestroy(): void {}
 }

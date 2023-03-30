@@ -8,34 +8,32 @@ import { QuizService } from '../../data-access/quiz.service';
   templateUrl: './quiz-result.component.html',
   styleUrls: ['./quiz-result.component.scss'],
 })
-export class QuizResultComponent implements OnInit{
-  @Input() quizList!: Quiz[]
-  @Output('getScore') score = new EventEmitter<number>()
-  finalResult!: Quiz[]
-  numberQuiz!: number
-  numberCorrect!: number
-  finalScore!: number
-
+export class QuizResultComponent implements OnInit {
+  @Input() quizList!: Quiz[];
+  @Output('getScore') score = new EventEmitter<number>();
+  finalResult!: Quiz[];
+  numberQuiz!: number;
+  numberCorrect!: number;
+  finalScore!: number;
 
   constructor(private route: Router, private quizService: QuizService) {}
 
   ngOnInit(): void {
-    this.finalResult = JSON.parse(localStorage.getItem('result') as string)
-    console.log(this.finalResult)
-    this.numberQuiz = this.finalResult.length
+    this.finalResult = JSON.parse(localStorage.getItem('result') as string);
+    console.log(this.finalResult);
+    this.numberQuiz = this.finalResult.length;
     this.numberCorrect = this.finalResult.reduce((acc, val) => {
       let temp = 0;
-      if (val.result.isCorrect) {
-        temp++
+      if (val?.result?.isCorrect) {
+        temp++;
       }
-      return acc + temp
-    }, 0)
+      return acc + temp;
+    }, 0);
 
-    this.finalScore = this.finalResult.reduce((acc, cur) => {
-      return acc + cur.result.isCurrentChoose.score
-    }, 0)
+    this.finalScore = this.finalResult.reduce((acc, val) => {
+      return acc + (val.result?.isCurrentChoose?.score || 0);
+    }, 0);
 
-    this.quizService.score = this.finalScore
+    this.quizService.score = this.finalScore;
   }
-
 }

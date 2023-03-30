@@ -3,24 +3,25 @@
     <p class="mb-4 text-lg font-normal">{{idx + 1}}. {{ quiz.question }} <span class="font-medium">Score: {{
         quiz.score
         }}</span></p>
-    <div class="flex flex-col" *ngFor="let answer of quiz.result ? answers : shufflerAnswer; let idx = index">
-      <label [for]="quiz.id+'-'+idx" class="inline-flex items-center mb-2 rounded-lg pl-5"
+    <div class="flex flex-col" *ngFor="let answer of shufflerAnswers; let idx = index">
+      <label [for]="quiz.id+'-'+idx" class="inline-flex items-center pl-5 mb-2 rounded-lg"
         [ngClass]="!quiz.result?'hover:bg-gray-200':''">
         <input type="radio" class="form-radio" value={{answer}} #input type="radio" [name]="quiz.id"
           [id]="quiz.id+'-'+idx" (change)="onChoose({
             quizID: quiz.id,
             answer,
-            score: quiz.score
+            score: quiz.score,
+            allAnswer: shufflerAnswers
           })" [disabled]="quiz.result" />
         <span class="w-full px-6 py-6 ml-2 rounded-lg"
-          [hidden]="quiz.result && quiz.correct_answer===answer || quiz.result?.isCurrentChoose.answer === answer">{{answer}}
+          [hidden]="quiz.result && quiz.correct_answer===answer || quiz.result?.isCurrentChoose?.answer === answer">{{answer}}
         </span>
         <span *ngIf="quiz.result && quiz.correct_answer===answer"
-          class="ml-2 flex justify-between w-full py-6 px-6 bg-green-300 rounded-lg"> <span>{{answer}}</span> <i
-            class="fas fa-check p-2 rounded-3xl right-0 bg-green-600"></i></span>
-        <span *ngIf="quiz.result?.isCorrect === false && quiz.result?.isCurrentChoose.answer === answer"
-          class="ml-2 flex justify-between w-full py-6 px-6 bg-red-300 rounded-lg"> <span>{{answer}}</span> <i
-            class="fas fa-x w-8 h-8 flex items-center justify-center rounded-full right-0 bg-red-600"></i></span>
+          class="flex justify-between w-full px-6 py-6 ml-2 bg-green-300 rounded-lg"> <span>{{answer}}</span> <i
+            class="right-0 p-2 bg-green-600 fas fa-check rounded-3xl"></i></span>
+        <span *ngIf="quiz.result?.isCorrect === false && quiz.result?.isCurrentChoose?.answer === answer"
+          class="flex justify-between w-full px-6 py-6 ml-2 bg-red-300 rounded-lg"> <span>{{answer}}</span> <i
+            class="right-0 flex items-center justify-center w-8 h-8 bg-red-600 rounded-full fas fa-x"></i></span>
       </label>
     </div>
   </div>

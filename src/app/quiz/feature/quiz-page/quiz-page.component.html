@@ -1,48 +1,42 @@
-<div class="container mx-auto p-52 pt-20" *ngIf="!isReview">
+<div class="container pt-20 mx-auto p-52" *ngIf="!isReview">
   <h1 class="mb-4 text-xl font-bold">Questions</h1>
   <form>
     <app-quiz-list [quizList]="currentQuizList"></app-quiz-list>
-    <button
-      (click)="isSubmit = true"
-      class="px-6 py-4 text-white bg-blue-500 rounded-lg hover:bg-blue-600"
-      type="button"
-    >
+    <button (click)="isSubmit = true" class="px-6 py-4 text-white bg-blue-500 rounded-lg hover:bg-blue-600"
+      type="button">
       Submit
     </button>
 
     <ng-container *ngIf="isSubmit">
-      <button
-        (click)="handleSubmitQuiz()"
-        class="px-6 py-4 text-white bg-blue-500 rounded-lg hover:bg-blue-600"
-        type="button"
-      >
-        Confirm
-      </button>
-
-      <button
-        (click)="isSubmit = false"
-        class="px-6 py-4 text-white bg-blue-500 rounded-lg hover:bg-blue-600"
-        type="button"
-      >
-        Cancel
-      </button>
+      <div class="modal">
+        <div class="modal-content">
+          <h3 class="pb-4 text-2xl font-bold ">Submit the Quiz</h3>
+          <p class="py-4 border-t border-b border-slate-200">Do you want submit the quiz? This can not undone.</p>
+          <div class="flex justify-center pt-4">
+            <button (click)="handleSubmitQuiz()"
+              class="px-4 py-2 mx-4 text-white bg-blue-500 rounded-lg hover:bg-blue-600" type="button">
+              Confirm
+            </button>
+            <button (click)="isSubmit = false"
+              class="px-4 py-2 mx-4 border-2 border-blue-500 rounded-lg hover:bg-blue-600 hover:text-white"
+              type="button">
+              Cancel
+            </button>
+          </div>
+        </div>
+      </div>
     </ng-container>
   </form>
 </div>
 
-<div *ngIf="isReview" class="py-8 ">
+<div *ngIf="isReview" class="py-8">
   <app-quiz-result></app-quiz-result>
   <div class="flex justify-center my-8">
-    <button
-      class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mr-4"
-      (click)="clearStorage()"
-    >
+    <button class="px-4 py-2 mr-4 font-bold text-white bg-blue-500 rounded hover:bg-blue-700" (click)="clearStorage()">
       Hoàn thành
     </button>
-    <button
-      class="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded"
-      (click)="showReview = !showReview"
-    >
+    <button class="px-4 py-2 font-bold text-gray-800 bg-gray-300 rounded hover:bg-gray-400"
+      (click)="showReview = !showReview">
       Xem lại câu trả lời
     </button>
   </div>
