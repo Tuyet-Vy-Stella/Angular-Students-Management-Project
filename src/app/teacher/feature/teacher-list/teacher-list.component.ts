@@ -19,6 +19,7 @@ export class TeacherListComponent {
   numberOfEntriesPerPage: number = 10;
   currentPage: number = 1;
   pageNumbers: number[] = [];
+  searchKeyword: string = '';
   isLoading = false;
   showModal = false;
   teacherIdToDelete: number = 0;
@@ -81,6 +82,14 @@ export class TeacherListComponent {
     );
     this.changePage(1);
     this.updatePageNumbers();
+  }
+
+  handleSearch() {
+    this.teacherListToShow = this.teacherList.filter((teacher) =>
+      teacher.name.toLowerCase().includes(this.searchKeyword.toLowerCase()) ||
+      teacher.email.toLowerCase().includes(this.searchKeyword.toLowerCase()) ||
+      teacher.phone.toLowerCase().includes(this.searchKeyword.toLowerCase())
+    );  
   }
 
   handleShowModal(id: number) {
