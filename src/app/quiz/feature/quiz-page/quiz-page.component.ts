@@ -48,12 +48,13 @@ export class QuizPageComponent {
   handleSubmitQuiz() {
     // check đáp án đúng hay sai -> lấy ra đáp án vừa chọn và check đáp án đúng hay sai
     this.totalResult = this.currentQuizList.map((quiz, index) => {
+      let isCorrect = this.totalAnswer.some(
+        (answer) => quiz.correct_answer === answer.answer
+      );
+      let score = isCorrect ? this.totalAnswer[index].score : 0;
       return {
-        isCurrentChoose: this.totalAnswer[index],
-        score: this.totalAnswer[index].score,
-        isCorrect: this.totalAnswer.some(
-          (answer) => quiz.correct_answer === answer.answer
-        ),
+        isCurrentChoose: { ...this.totalAnswer[index], score: score },
+        isCorrect,
       };
     });
     // nếu làm bài xong sẽ lưu bài trên localStorage
@@ -61,14 +62,14 @@ export class QuizPageComponent {
       this.totalResult.length === this.currentQuizList.length &&
       this.totalResult.length === this.totalAnswer.length
     ) {
-      localStorage.setItem('result', JSON.stringify(this.currentQuizList));
-      // thêm phần kết quả sau khi làm bài vào trong mảng currentQuizList
       this.currentQuizList = this.currentQuizList.map((quiz, index) => {
         return {
           ...quiz,
           result: this.totalResult[index],
         };
       });
+      localStorage.setItem('result', JSON.stringify(this.currentQuizList));
+      // thêm phần kết quả sau khi làm bài vào trong mảng currentQuizList
       this.route.navigate(['/quiz/result']);
     } else {
       alert('Please fill all the input!!');
