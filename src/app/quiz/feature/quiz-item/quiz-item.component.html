@@ -10,7 +10,7 @@
           })" [disabled]="quiz.result" />
         <!-- check đúng thì tô xanh còn sai thì tô đỏ -->
         <span class="w-full px-6 py-6 ml-2 rounded-lg"
-          [class.text-red-500]="quiz.result?.isCorrect===false && quiz.result?.isCurrentChoose.answer === answer"
+          [class.text-red-500]="quiz.result?.isCorrect=== false && quiz.result?.isCurrentChoose.answer === answer"
           [class.text-green-500]="quiz.result?.isCorrect===true && quiz.result?.isCurrentChoose.answer === answer">{{answer}}</span>
       </label>
     </div>
