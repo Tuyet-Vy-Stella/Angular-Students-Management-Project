@@ -5,7 +5,6 @@ import { Subject } from 'src/app/shared/model/subject.model';
 
 import { TeacherService } from '../../data-access/teacher.service';
 import { ToastrService } from 'ngx-toastr';
-import { __values } from 'tslib';
 
 @Component({
   selector: 'app-teacher-edit',
