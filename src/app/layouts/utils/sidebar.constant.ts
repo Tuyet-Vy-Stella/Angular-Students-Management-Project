@@ -46,7 +46,7 @@ export const sidebarTabs = [
       {
         id: 32,
         name: 'Create Teacher',
-        link: 'teachers/create'
+        link: 'teachers/new'
       }
     ]
   },
