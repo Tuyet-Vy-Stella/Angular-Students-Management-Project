@@ -85,6 +85,11 @@ export const sidebarTabs = [
         name: 'Classroom List',
         link: 'classrooms',
       },
+      {
+        id: 52,
+        name: 'Create Classroom',
+        link: 'classrooms/create',
+      },
     ],
   },
 ];
