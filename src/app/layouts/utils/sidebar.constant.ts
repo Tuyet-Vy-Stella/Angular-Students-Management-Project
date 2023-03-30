@@ -61,11 +61,11 @@ export const sidebarTabs = [
         name: 'Subject List',
         link: 'subjects'
       },
-      {
-        id: 42,
-        name: 'Create Subject',
-        link: 'subjects/create'
-      }
+      // {
+      //   id: 42,
+      //   name: 'Create Subject',
+      //   link: 'subjects/create'
+      // }
     ]
   }
 ]

@@ -2,6 +2,7 @@ import { Component, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 import { SubjectService } from '../../data-access/subject.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Title } from '@angular/platform-browser';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-subject-edit',
@@ -16,7 +17,8 @@ export class SubjectEditComponent implements OnInit, OnChanges {
     private SubjectService: SubjectService,
     private route: ActivatedRoute,
     private router: Router,
-    private title: Title
+    private title: Title,
+    private toastService: ToastrService
   ) {}
 
   ngOnInit() {
@@ -29,13 +31,13 @@ export class SubjectEditComponent implements OnInit, OnChanges {
 
   UpdateSubject(name: string) {
     if (name == '') {
-      alert('Please fill out input value.');
+      this.toastService.error('Please fill out input value.')
     } else {
       this.SubjectService.updateSubject(this.id, name).subscribe((res) => {
-        alert(
-          'Update is successful, the site will return to the previous page.'
-        );
-        this.router.navigate(['/subjects']);
+        this.toastService.success('Update is successful, the site will return to the previous page.')
+        setTimeout(() => {
+          this.router.navigate(['/subjects']);
+        }, 2000);
       });
     }
   }
