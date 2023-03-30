@@ -21,7 +21,10 @@ import { HttpClient } from '@angular/common/http';
 
 @Injectable({ providedIn: 'root' })
 export class ClassroomService {
-  classList$ = new Subject<IClassElement[]>();
+  classList$ = new BehaviorSubject<IClassElement[]>([]);
+  searchList$ = new BehaviorSubject<
+    { name: string; id: number; active: boolean }[]
+  >([]);
 
   currentClassId$ = new Subject<number>();
   isSearchTeacher$ = new BehaviorSubject<boolean>(true);
@@ -29,15 +32,23 @@ export class ClassroomService {
 
   currentClass$ = this.getCurrentClass().pipe(shareReplay(1));
 
+  // ID changes
+  classListInitialized$ = new BehaviorSubject<boolean>(false);
+
   constructor(private http: HttpClient) {}
 
   public init(): void {
     // Check Error here
+    if (this.classListInitialized$.value) return;
+
+    this.getSearchListByType();
+
     this.http
       .get<IClassElement[]>('https://qlsv-mu.vercel.app/api/class-list')
       .subscribe((classes) => {
         this.classList$.next(classes);
         this.currentClassId$.next(classes[0].id);
+        this.classListInitialized$.next(true);
       });
   }
 
@@ -89,21 +100,25 @@ export class ClassroomService {
     );
   }
 
-  public getListByType(): Observable<
-    { name: string; id: number; active: boolean }[]
-  > {
-    return combineLatest([
+  public getSearchListByType(): void {
+    combineLatest([
       this.isSearchTeacher$,
       this.classList$,
       this.currentClassId$,
-    ]).pipe(
-      map(([value, data, id]) => {
-        return data.map((el) => {
-          return value
-            ? { name: el.form_teacher_name, id: el.id, active: el.id === id }
-            : { name: el.grade + el.section, id: el.id, active: el.id === id };
-        });
-      })
-    );
+    ])
+      .pipe(
+        map(([value, data, id]) => {
+          return data.map((el) => {
+            return value
+              ? { name: el.form_teacher_name, id: el.id, active: el.id === id }
+              : {
+                  name: el.grade + el.section,
+                  id: el.id,
+                  active: el.id === id,
+                };
+          });
+        })
+      )
+      .subscribe((value) => this.searchList$.next(value));
   }
 }
