@@ -1,18 +1,52 @@
-<div [class.hidden]="isSubmit">
-  <app-quiz-list [quizList]="currentQuizList" (result)="handleFinalScore($event)"></app-quiz-list>
-</div>
-
-<div [class.hidden]="!isSubmit">
-  <div *ngIf="!showScore">
-    <app-quiz-recheck [quizList]="currentQuizList"></app-quiz-recheck>
-    <button class="px-2 py-1 bg-blue-500 text-white" (click)="handleFinalSubmit()">
+<div class="container mx-auto p-52 pt-20" *ngIf="!isReview">
+  <h1 class="mb-4 text-xl font-bold">Questions</h1>
+  <form>
+    <app-quiz-list [quizList]="currentQuizList"></app-quiz-list>
+    <button
+      (click)="isSubmit = true"
+      class="px-6 py-4 text-white bg-blue-500 rounded-lg hover:bg-blue-600"
+      type="button"
+    >
       Submit
-    </button><button class="px-2 py-1 bg-blue-500 text-white" (click)="handleBack()">
-      Back
     </button>
+
+    <ng-container *ngIf="isSubmit">
+      <button
+        (click)="handleSubmitQuiz()"
+        class="px-6 py-4 text-white bg-blue-500 rounded-lg hover:bg-blue-600"
+        type="button"
+      >
+        Confirm
+      </button>
+
+      <button
+        (click)="isSubmit = false"
+        class="px-6 py-4 text-white bg-blue-500 rounded-lg hover:bg-blue-600"
+        type="button"
+      >
+        Cancel
+      </button>
+    </ng-container>
+  </form>
 </div>
 
-  <ng-container *ngIf="showScore">
-    <app-quiz-result [finalResult]="finalResult" [quizList]="currentQuizList"></app-quiz-result>
-  </ng-container>
+<div *ngIf="isReview" class="py-8 ">
+  <app-quiz-result></app-quiz-result>
+  <div class="flex justify-center my-8">
+    <button
+      class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mr-4"
+      (click)="clearStorage()"
+    >
+      Hoàn thành
+    </button>
+    <button
+      class="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded"
+      (click)="showReview = !showReview"
+    >
+      Xem lại câu trả lời
+    </button>
+  </div>
+  <div *ngIf="showReview" class="max-w-5xl mx-auto">
+    <app-quiz-list [quizList]="currentQuizList"></app-quiz-list>
+  </div>
 </div>

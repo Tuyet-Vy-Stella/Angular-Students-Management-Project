@@ -17,7 +17,7 @@ import { QuizItemComponent } from '../quiz-item/quiz-item.component';
     QuizListComponent,
     QuizResultComponent,
     QuizRecheckComponent,
-    QuizItemComponent
+    QuizItemComponent,
   ],
   imports: [FormsModule, SharedModule, QuizRoutingModule, ReactiveFormsModule],
 })

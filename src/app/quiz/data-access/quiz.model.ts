@@ -7,12 +7,20 @@ export interface Quiz {
   question: string;
   correct_answer: string;
   incorrect_answers: string[];
-  answersSelect?: string[]
+  result?: any;
 }
 
-export interface FinalResult {
-  finalScore: number | 0,
-  quizSelect: any
+export interface QuizAnswer {
+  quizID: number;
+  answer: string;
+  score: number;
+}
+
+export interface Mark {
+    student_id: number,
+    subject_id: number,
+    mark: number,
+    semester: number
 }
 
 export function shuffle(array: any) {
@@ -32,3 +40,5 @@ export function shuffle(array: any) {
   return array;
 }
 export const BACKEND_URL_QUIZ = 'http://localhost:3000';
+
+export const markAPI = 'https://qlsv-mu.vercel.app/api/mark'

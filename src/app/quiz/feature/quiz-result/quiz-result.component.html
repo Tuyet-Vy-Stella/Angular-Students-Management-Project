@@ -1,9 +1,27 @@
-<span>{{finalResult.finalScore}}</span>
-<button class="px-2 py-1 bg-blue-500 text-white" (click)="showReview = !showReview">
-  Review
-</button>
-
-<div *ngIf="showReview">
-    <div *ngFor="let quiz of quizList; let idx = index">
+<div class="mx-[300px] mt-8">
+  <div class="flex items-center mb-4">
+    <h1 class="text-3xl font-bold ">Kết quả bài thi</h1>
+    <i class="fa fa-check p-2 text-white font-bold ml-2 bg-blue-500 rounded-full"></i>
+  </div>
+  <div class="bg-white p-6 rounded-lg shadow-lg mb-4">
+    <div class="flex justify-between mb-4">
+      <p>Số điểm đạt được:</p>
+      <p class="font-bold">
+        <span class="text-blue-500">{{finalScore}}</span><span>/</span>10
+      </p>
     </div>
+    <div class="flex justify-between mb-4">
+      <p>Số câu trả lời đúng:</p>
+      <p class="font-bold">
+        <span class="text-blue-500">{{numberCorrect}}</span><span>/</span>{{numberQuiz}}
+      </p>
+    </div>
+  </div>
+  <div class="text-center">
+    <span class="text-blue-500 italic text-xl mb-4">(*Lưu ý)</span>
+    <h1 class="text-xl italic font-semibold">
+      Bấm hoàn thành để kết thúc, mọi thắc mắc xin liên hệ với giáo viên chủ
+      nhiệm.
+    </h1>
+  </div>
 </div>

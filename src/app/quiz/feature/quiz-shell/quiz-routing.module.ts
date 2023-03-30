@@ -1,19 +1,17 @@
 import { RouterModule, Routes } from '@angular/router';
 import { NgModule } from '@angular/core';
 
-
 import { QuizRecheckComponent } from './../quiz-recheck/quiz-recheck.component';
 import { QuizResultComponent } from './../quiz-result/quiz-result.component';
 import { QuizPageComponent } from './../quiz-page/quiz-page.component';
 import { QuizAuthComponent } from '../quiz-auth/quiz-auth.component';
-import { QuizListComponent } from '../quiz-list/quiz-list.component';
+import { LoginGuard } from '../../data-access/login.guard';
 
 const routes: Routes = [
-  { path: '', component: QuizPageComponent },
-  { path: 'quiz-list', component: QuizListComponent },
-  { path: 'auth', component: QuizAuthComponent },
-  { path: 'result', component: QuizResultComponent },
-  { path: 'recheck', component: QuizRecheckComponent },
+  { path: '', component: QuizAuthComponent },
+  { path: 'page', canActivate: [LoginGuard], component: QuizPageComponent  },
+  { path: 'result', canActivate: [LoginGuard], component: QuizResultComponent },
+  { path: 'recheck', canActivate: [LoginGuard], component: QuizRecheckComponent },
 ];
 
 @NgModule({
