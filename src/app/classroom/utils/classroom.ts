@@ -1,0 +1,37 @@
+export interface IClassroom {
+  classId: number;
+  form_teacher_id: number;
+  form_teacher: string;
+  grade: string;
+  section: string;
+  subject: ISubject[];
+  student: IStudent[];
+}
+
+export interface IClassElement {
+  form_teacher_id: number;
+  name: string;
+  id: number;
+  grade: string;
+  section: string;
+  form_teacher_name: string;
+}
+
+export interface ISubject {
+  formed: boolean;
+  teacher: string;
+  teacher_id: number;
+  id?: number;
+  name?: string;
+}
+
+export interface IStudent {
+  id: number;
+  name: string;
+  gender: string;
+  address: string;
+  birthday: string;
+  class_id: number;
+  email: string;
+  phone: string;
+}

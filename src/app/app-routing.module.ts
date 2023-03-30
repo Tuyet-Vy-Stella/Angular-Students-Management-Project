@@ -34,6 +34,13 @@ const routes: Routes = [
         (m) => m.TeacherModule
       ),
   },
+  {
+    path: 'classrooms',
+    loadChildren: () =>
+      import('./classroom/feature/classroom-shell/classroom.module').then(
+        (m) => m.ClassroomModule
+      ),
+  },
 ];
 
 @NgModule({

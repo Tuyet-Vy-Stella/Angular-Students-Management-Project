@@ -1,4 +1,10 @@
-import { faGauge, faGraduationCap, faChalkboardUser, faBookReader, faChevronRight } from '@fortawesome/free-solid-svg-icons'
+import {
+  faBookReader,
+  faChalkboardUser,
+  faGauge,
+  faGraduationCap,
+  faUsers,
+} from '@fortawesome/free-solid-svg-icons';
 
 export const sidebarTabs = [
   {
@@ -10,9 +16,9 @@ export const sidebarTabs = [
       {
         id: 11,
         name: 'Admin Dashboard',
-        link: ''
+        link: '',
       },
-    ]
+    ],
   },
   {
     id: 2,
@@ -23,14 +29,14 @@ export const sidebarTabs = [
       {
         id: 21,
         name: 'Student List',
-        link: 'students'
+        link: 'students',
       },
       {
         id: 22,
         name: 'Create Student',
-        link: 'students/create'
-      }
-    ]
+        link: 'students/create',
+      },
+    ],
   },
   {
     id: 3,
@@ -41,14 +47,14 @@ export const sidebarTabs = [
       {
         id: 31,
         name: 'Teacher List',
-        link: 'teachers'
+        link: 'teachers',
       },
       {
         id: 32,
         name: 'Create Teacher',
-        link: 'teachers/create'
-      }
-    ]
+        link: 'teachers/create',
+      },
+    ],
   },
   {
     id: 4,
@@ -59,13 +65,26 @@ export const sidebarTabs = [
       {
         id: 41,
         name: 'Subject List',
-        link: 'subjects'
+        link: 'subjects',
       },
       {
         id: 42,
         name: 'Create Subject',
-        link: 'subjects/create'
-      }
-    ]
-  }
-]
+        link: 'subjects/create',
+      },
+    ],
+  },
+  {
+    id: 5,
+    name: 'Classroom',
+    icon: faUsers,
+    prefix: 'subjects',
+    children: [
+      {
+        id: 51,
+        name: 'Classroom List',
+        link: 'classrooms',
+      },
+    ],
+  },
+];
