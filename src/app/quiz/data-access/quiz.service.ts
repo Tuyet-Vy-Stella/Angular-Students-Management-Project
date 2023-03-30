@@ -24,6 +24,10 @@ export class QuizService {
     }
     // thêm câu trả lời vào subject
     this.chooseTotal.push(data);
+    console.log(
+      '🚀 ~ file: quiz.service.ts:27 ~ QuizService ~ addAnswer ~ this.chooseTotal:',
+      this.chooseTotal
+    );
     this.chooseTotal$.next([...this.chooseTotal]);
   }
 

@@ -23,6 +23,7 @@ export class QuizPageComponent {
     this.quizService.chooseTotal$.subscribe(
       (answer) => (this.totalAnswer = answer)
     );
+
     // check đã làm bài chưa, nếu làm rồi thì lấy bài cũ còn chưa thì làm bài mới
     if (localStorage.getItem('result')) {
       this.currentQuizList = JSON.parse(
@@ -49,24 +50,28 @@ export class QuizPageComponent {
     this.totalResult = this.currentQuizList.map((quiz, index) => {
       return {
         isCurrentChoose: this.totalAnswer[index],
+        score: this.totalAnswer[index].score,
         isCorrect: this.totalAnswer.some(
           (answer) => quiz.correct_answer === answer.answer
         ),
       };
     });
-
-    // thêm phần kết quả sau khi làm bài vào trong mảng currentQuizList
-    this.currentQuizList = this.currentQuizList.map((quiz, index) => {
-      return {
-        ...quiz,
-        result: this.totalResult[index],
-      };
-    });
-
     // nếu làm bài xong sẽ lưu bài trên localStorage
-    if (this.totalResult.length === this.currentQuizList.length) {
+    if (
+      this.totalResult.length === this.currentQuizList.length &&
+      this.totalResult.length === this.totalAnswer.length
+    ) {
       localStorage.setItem('result', JSON.stringify(this.currentQuizList));
+      // thêm phần kết quả sau khi làm bài vào trong mảng currentQuizList
+      this.currentQuizList = this.currentQuizList.map((quiz, index) => {
+        return {
+          ...quiz,
+          result: this.totalResult[index],
+        };
+      });
       this.route.navigate(['/quiz/result']);
+    } else {
+      alert('Please fill all the input!!');
     }
   }
 }

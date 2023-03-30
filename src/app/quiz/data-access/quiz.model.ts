@@ -13,6 +13,7 @@ export interface Quiz {
 export interface QuizAnswer {
   quizID: number;
   answer: string;
+  score: number;
 }
 
 export function shuffle(array: any) {

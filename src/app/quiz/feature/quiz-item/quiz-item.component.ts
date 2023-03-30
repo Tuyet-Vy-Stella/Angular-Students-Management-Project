@@ -20,6 +20,8 @@ import { QuizService } from '../../data-access/quiz.service';
   styleUrls: ['./quiz-item.component.scss'],
 })
 export class QuizItemComponent implements OnInit, OnDestroy {
+  @Input() id!: number;
+  @Output('selectChange') change = new EventEmitter<{}>();
   @Input() quiz!: Quiz;
   // @Output() answer = new EventEmitter<boolean>();
   @ViewChildren('input') inputs!: QueryList<ElementRef>;
