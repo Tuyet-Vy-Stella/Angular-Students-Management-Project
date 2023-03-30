@@ -20,12 +20,13 @@ import { QuizService } from '../../data-access/quiz.service';
   styleUrls: ['./quiz-item.component.scss'],
 })
 export class QuizItemComponent implements OnInit, OnDestroy {
-  @Input() id!: number;
+  @Input() idx!: number;
   @Output('selectChange') change = new EventEmitter<{}>();
   @Input() quiz!: Quiz;
   // @Output() answer = new EventEmitter<boolean>();
   @ViewChildren('input') inputs!: QueryList<ElementRef>;
   shufflerAnswer!: string[];
+  answers!: string[];
   // quiz$!: Observable<Quiz>;
 
   // đưa đáp án chọn vào subject
@@ -39,6 +40,7 @@ export class QuizItemComponent implements OnInit, OnDestroy {
       ...this.quiz.incorrect_answers,
       this.quiz.correct_answer,
     ]);
+    this.answers = [...this.quiz.incorrect_answers, this.quiz.correct_answer];
   }
 
   ngOnDestroy(): void {

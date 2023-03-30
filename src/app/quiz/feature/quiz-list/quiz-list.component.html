@@ -1,5 +1,5 @@
 <div>
   <ng-container *ngFor="let quiz of quizList; let idx = index">
-    <app-quiz-item [quiz]="quiz"></app-quiz-item>
+    <app-quiz-item [quiz]="quiz" [idx]="idx"></app-quiz-item>
   </ng-container>
 </div>
