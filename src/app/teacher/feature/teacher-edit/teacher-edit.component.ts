@@ -5,6 +5,7 @@ import { Subject } from 'src/app/shared/model/subject.model';
 
 import { TeacherService } from '../../data-access/teacher.service';
 import { ToastrService } from 'ngx-toastr';
+import { __values } from 'tslib';
 
 @Component({
   selector: 'app-teacher-edit',
@@ -50,7 +51,7 @@ export class TeacherEditComponent {
     });
 
     //  Set current mode
-    this.createMode = this.router.url.includes('create');
+    this.createMode = this.router.url.includes('new');
 
     // Fetch subject list
     this.teacherService.getSubjects().subscribe({
@@ -67,7 +68,6 @@ export class TeacherEditComponent {
     this.teacherService.getClassList().subscribe({
       next: (response) => {
         this.classList = response;
-        
       },
       error: (error) => {
         this.toastrService.error('Get class list failed. Please try again');
@@ -88,14 +88,13 @@ export class TeacherEditComponent {
             next: (response) => {
               const { id, created_at, class_id, ...rest } = response;
               this.teacherForm.setValue(rest);
-              this.classTeacherList = class_id;
-              console.log('class_id', class_id)
-              this.classTeacherList.map((item) => {
+              this.classTeacherList = [...class_id];
+              this.classTeacherList.map((item, index) => {
                 this.teacherForm.addControl(
-                  `class_id_${item}`,
+                  `class_id_${index}`,
                   new FormControl(null, [Validators.required])
                 );
-                this.teacherForm.controls[`class_id_${item}`].setValue(item);
+                this.teacherForm.controls[`class_id_${index}`].setValue(item);
               });
             },
             error: (error) => {
@@ -109,6 +108,8 @@ export class TeacherEditComponent {
           });
         }
       });
+    } else {
+      this.addClass();
     }
   }
 
@@ -120,40 +121,67 @@ export class TeacherEditComponent {
   }
 
   addClass() {
-    this.classTeacherList.push(0);
     this.teacherForm.addControl(
       `class_id_${this.classTeacherList.length}`,
       new FormControl(null, [Validators.required])
     );
+    this.classTeacherList.push(0);
+  }
+
+  removeClass() {
+    this.classTeacherList.pop();
+    this.teacherForm.removeControl(`class_id_${this.classTeacherList.length}`);
   }
 
   onSubmit() {
     this.isFetchingToCreateOrUpdateTeacher = true;
     if (this.createMode) {
+      this.classTeacherList = this.classTeacherList.map(
+        (item, index) =>
+          (item = +this.teacherForm.controls[`class_id_${index}`].value)
+      );
       // Create teacher
-      this.teacherService.createTeacher(this.teacherForm.value).subscribe({
-        next: () => {
-          this.isFetchingToCreateOrUpdateTeacher = false;
+      this.teacherService
+        .createTeacher({
+          ...this.teacherForm.value,
+          // get unique class_id
+          class_id: this.classTeacherList.filter(
+            (item, index) => this.classTeacherList.indexOf(item) === index
+          ),
+        })
+        .subscribe({
+          next: () => {
+            this.isFetchingToCreateOrUpdateTeacher = false;
 
-          // Show alert
-          this.toastrService.success('Create teacher successfully');
+            // Show alert
+            this.toastrService.success('Create teacher successfully');
 
-          // Reset form
-          this.teacherForm.reset();
-        },
-        error: (error) => {
-          this.isFetchingToCreateOrUpdateTeacher = false;
-          console.log(error);
-        },
-        complete: () => {
-          this.isFetchingToCreateOrUpdateTeacher = false;
-        },
-      });
+            // Reset form
+            this.teacherForm.reset();
+          },
+          error: (error) => {
+            this.isFetchingToCreateOrUpdateTeacher = false;
+            this.toastrService.error(error.error.detail || 'Create teacher failed. Please try again');
+          },
+          complete: () => {
+            this.isFetchingToCreateOrUpdateTeacher = false;
+          },
+        });
     } else {
       // Update teacher
       if (this.teacherId) {
+        this.classTeacherList = this.classTeacherList.map(
+          (item, index) =>
+            (item = +this.teacherForm.controls[`class_id_${index}`].value)
+        );
         this.teacherService
-          .updateTeacher(this.teacherId, this.teacherForm.value)
+          .updateTeacher(this.teacherId, {
+            ...this.teacherForm.value,
+            // get unique class_id
+            class_id: this.classTeacherList.filter(
+              (item, index) => this.classTeacherList.indexOf(item) === index
+            ),
+          })
           .subscribe({
             next: () => {
               this.isFetchingToCreateOrUpdateTeacher = false;

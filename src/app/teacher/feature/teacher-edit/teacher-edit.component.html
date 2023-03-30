@@ -179,8 +179,8 @@
         *ngFor="let class of classTeacherList; let i = index"
       >
         <label>{{ "Class " + (i + 1) }}</label>
-        <select [formControlName]="'class_id_' + class">
-          <option *ngFor="let classItem of classList" [value]="classItem.id">
+        <select [formControlName]="'class_id_' + i">
+          <option *ngFor="let classItem of classList" [value]="+classItem.id">
             {{ classItem.grade + " " + classItem.section }}
           </option>
         </select>
@@ -200,16 +200,24 @@
       <button
         type="submit"
         [disabled]="!teacherForm.valid"
-        class="btn text primary rounded-lg mr-2"
+        class="btn text primary rounded-lg"
       >
         Submit
       </button>
       <button
         type="button"
-        class="btn text primary rounded-lg w-1/12"
+        class="btn text primary rounded-lg w-1/12 ml-2"
         (click)="addClass()"
       >
         Add Class
+      </button>
+      <button
+        type="button"
+        class="btn text danger rounded-lg w-1/12 ml-2"
+        (click)="removeClass()"
+        [disabled]="classTeacherList.length <= 1"
+      >
+        Remove
       </button>
     </div>
   </form>
