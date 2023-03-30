@@ -9,7 +9,7 @@ import {
   ElementRef,
   OnDestroy,
 } from '@angular/core';
-import { Observable, toArray } from 'rxjs';
+import { Observable } from 'rxjs';
 import { Quiz, shuffle } from '../../data-access/quiz.model';
 import { QuizService } from '../../data-access/quiz.service';
 
@@ -20,19 +20,19 @@ import { QuizService } from '../../data-access/quiz.service';
 })
 export class QuizItemComponent implements OnInit, OnDestroy {
   @Input() id!: number;
-  @Output() answer = new EventEmitter<boolean>();
+  @Output('selectChange') change = new EventEmitter<{}>();
   @ViewChildren('input') inputs!: QueryList<ElementRef>;
-  shufflerAnswer!: string[];
 
-  quiz$!: Observable<Quiz>;
+  quiz$!: Observable<Quiz>
+  shufflerAnswers: string[] = []
 
   constructor(private quizService: QuizService) {}
 
   ngOnInit(): void {
-    this.quiz$ = this.quizService.getQuizById(this.id);
+    this.quiz$ = this.quizService.getQuizById(this.id)
 
     this.quiz$.subscribe((quiz) => {
-      this.shufflerAnswer = shuffle([
+      this.shufflerAnswers = shuffle([
         ...quiz.incorrect_answers,
         quiz.correct_answer,
       ]);
@@ -40,13 +40,20 @@ export class QuizItemComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    // this.inputs.changes.subscribe(() => {
-    //   this.inputs.toArray().forEach(val => {
-    //     // this.answer.emit(val.nativeElement.checked)
-    //     console.log(val)
-    //   })
-    // });
 
-    console.log(this.inputs)
+  }
+
+  emitChangeValue(event: number) {
+    console.log(event)
+    let quiz
+    this.quiz$.subscribe((val) => {
+      quiz = val.correct_answer
+
+      if (this.shufflerAnswers[event] === quiz) {
+        this.change.emit({isCorrect: true, selectIndex: event})
+      } else {
+        this.change.emit({isCorrect: false, selectIndex: event})
+      }
+    })
   }
 }

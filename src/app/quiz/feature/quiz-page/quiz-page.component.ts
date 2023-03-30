@@ -1,6 +1,6 @@
-import { Quiz, shuffle } from './../../data-access/quiz.model';
+import { FinalResult, Quiz, shuffle } from './../../data-access/quiz.model';
 import { QuizService } from './../../data-access/quiz.service';
-import { Component, Input } from '@angular/core';
+import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 
 @Component({
@@ -9,29 +9,53 @@ import { Router } from '@angular/router';
   styleUrls: ['./quiz-page.component.scss'],
 })
 export class QuizPageComponent {
-
   quizList!: Quiz[];
   currentQuizList: Quiz[] = [];
-  currentScore: number = 0;
+  finalQuizList: Quiz[] = []
+  finalResult: FinalResult = {
+    finalScore: 0,
+    quizSelect: []
+  }
+  isSubmit = false;
+  showScore = false;
+
   constructor(private quizService: QuizService, private route: Router) {}
+
   ngOnInit() {
+    let remainScore: number = 0;
     this.quizService.getQuizList().subscribe((next: Quiz[]) => {
       this.quizList = shuffle(next);
+      this.quizList.map((val) => {
+        return (val.answersSelect = shuffle([
+          ...val.incorrect_answers,
+          val.correct_answer,
+        ]));
+      });
       this.quizList.forEach((val) => {
-        this.currentScore += val.score;
-        if (this.currentScore <= 10) {
+        remainScore += val.score;
+        if (remainScore <= 10) {
           if (val) {
             this.currentQuizList = [...this.currentQuizList, val];
           }
         } else {
-          this.currentScore -= val.score;
+          remainScore -= val.score;
         }
       });
     });
   }
 
-  handleSubmitQuiz() {
-    console.log("submitted")
-    this.route.navigate(['/quiz/recheck'])
+  handleFinalScore(event: any) {
+    this.isSubmit = true;
+    this.finalResult = event;
+    console.log(event);
+  }
+
+  handleFinalSubmit() {
+    this.showScore = true;
+  }
+
+  handleBack() {
+    this.isSubmit = false;
+    this.showScore = false;
   }
 }

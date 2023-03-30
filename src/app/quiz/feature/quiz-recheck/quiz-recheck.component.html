@@ -1,1 +1,6 @@
-<p>quiz-recheck works!</p>
+<ul>
+  <li *ngFor="let quiz of quizList; let idx = index">
+    <span>{{idx + 1}}</span>
+    <span>Done</span>
+  </li>
+</ul>

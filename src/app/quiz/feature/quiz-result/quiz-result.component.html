@@ -1,1 +1,9 @@
-<p>quiz-result works!</p>
+<span>{{finalResult.finalScore}}</span>
+<button class="px-2 py-1 bg-blue-500 text-white" (click)="showReview = !showReview">
+  Review
+</button>
+
+<div *ngIf="showReview">
+    <div *ngFor="let quiz of quizList; let idx = index">
+    </div>
+</div>

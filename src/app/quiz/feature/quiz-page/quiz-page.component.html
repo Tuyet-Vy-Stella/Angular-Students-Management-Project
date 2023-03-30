@@ -1,6 +1,18 @@
-<div>
-  <app-quiz-list [quizList]="currentQuizList"></app-quiz-list>
-  <button class="px-2 py-1 bg-blue-500 text-white" (click)="handleSubmitQuiz()">
-    Submit
-  </button>
+<div [class.hidden]="isSubmit">
+  <app-quiz-list [quizList]="currentQuizList" (result)="handleFinalScore($event)"></app-quiz-list>
+</div>
+
+<div [class.hidden]="!isSubmit">
+  <div *ngIf="!showScore">
+    <app-quiz-recheck [quizList]="currentQuizList"></app-quiz-recheck>
+    <button class="px-2 py-1 bg-blue-500 text-white" (click)="handleFinalSubmit()">
+      Submit
+    </button><button class="px-2 py-1 bg-blue-500 text-white" (click)="handleBack()">
+      Back
+    </button>
+</div>
+
+  <ng-container *ngIf="showScore">
+    <app-quiz-result [finalResult]="finalResult" [quizList]="currentQuizList"></app-quiz-result>
+  </ng-container>
 </div>

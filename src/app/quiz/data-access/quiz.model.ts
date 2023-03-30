@@ -7,6 +7,12 @@ export interface Quiz {
   question: string;
   correct_answer: string;
   incorrect_answers: string[];
+  answersSelect?: string[]
+}
+
+export interface FinalResult {
+  finalScore: number | 0,
+  quizSelect: any
 }
 
 export function shuffle(array: any) {
