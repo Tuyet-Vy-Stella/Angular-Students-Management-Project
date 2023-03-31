@@ -33,11 +33,13 @@ export class SubjectEditComponent implements OnInit, OnChanges {
     if (name == '') {
       this.toastService.error('Please fill out input value.')
     } else {
+      this.SubjectService.setUpdateStatus();
       this.SubjectService.updateSubject(this.id, name).subscribe((res) => {
         this.toastService.success('Update is successful, the site will return to the previous page.')
         setTimeout(() => {
           this.router.navigate(['/subjects']);
-        }, 2000);
+          
+        }, 1000);
       });
     }
   }

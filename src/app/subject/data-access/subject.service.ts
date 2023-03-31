@@ -8,6 +8,7 @@ import { Subject } from 'src/app/shared/model/subject.model';
 export class SubjectService implements OnInit {
   nameSubject: string = '';
   subjectList: Subject[] = [];
+  isUpdate:boolean = false;
 
   constructor(private http: HttpClient) {}
 
@@ -49,6 +50,13 @@ export class SubjectService implements OnInit {
         name,
       }
     );
+  }
+  setUpdateStatus(){
+    this.isUpdate = true;
+  }
+
+  getUpdateStatus(){
+    return this.isUpdate;
   }
 
   /* delete Subject */

@@ -8,7 +8,7 @@ import {
   ViewChild,
 } from '@angular/core';
 import { Title } from '@angular/platform-browser';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, Route, Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { Subject } from 'src/app/shared/model/subject.model';
 import { SubjectService } from 'src/app/subject/data-access/subject.service';
@@ -42,10 +42,11 @@ export class SubjectListComponent implements OnInit, OnChanges {
   }
 
   constructor(
+    private route: ActivatedRoute,
     private SubjectService: SubjectService,
     private title: Title,
     private ToastService: ToastrService,
-    private router: Router
+    private router: Router,
     ) {
 
     }
@@ -58,15 +59,23 @@ export class SubjectListComponent implements OnInit, OnChanges {
   ngOnInit() {
     this.title.setTitle('Subject List');
     this.isLoading = true;
-    this.getListSubject();
+    this.subjectList = this.route.snapshot.data['data']
+    if(this.SubjectService.getUpdateStatus()){
+      this.SubjectService.getListSubject().subscribe(res => {
+        this.subjectList = res;
+      })
+    }
+    /* this.getListSubject(); */
   }
 
 
   /* Handle if not found */
   handleList() {
     if (this.id === '' && this.nameSearchText === '') {
-     this.getListSubject();
-    }
+      this.subjectList = this.route.snapshot.data['data']
+
+/*      this.getListSubject();
+ */    }
   }
 
   /* Handle Create */
@@ -74,6 +83,9 @@ export class SubjectListComponent implements OnInit, OnChanges {
     this.isCreate = true;
     if (name == '') {
       this.ToastService.error('Please fill out input value.');
+      setTimeout(() => {
+        this.isCreate = false;
+      },2000)
     } else {
       setTimeout(() => {
         this.isCreate = false;
@@ -103,11 +115,16 @@ export class SubjectListComponent implements OnInit, OnChanges {
   }
 
   /* Delete Subject and Close Modal */
-  handleDeleteStudent(){
+  handleDeleteSubject(){
     this.isShowModal =  false;
-    this.SubjectService.deleteSubject(this.subjectId).subscribe(res => {
+    this.SubjectService.deleteSubject(this.subjectId).subscribe(() => {
+      this.SubjectService.getListSubject().subscribe(res => {
+        this.subjectList = res;
+      })
       this.ToastService.success(`Delete Subject With Id ${this.subjectId} Successfully.`);
-      this.getListSubject();
+     /*  this.getListSubject(); */
+/*      this.subjectList = this.route.snapshot.data['data']
+ */
     })
   }
 
@@ -164,31 +181,53 @@ export class SubjectListComponent implements OnInit, OnChanges {
     this.isLoading =  false;
     /* Handle search if input value of id and value of name not empty */
     if (this.id.length !== 0 && this.nameSearchText.length !== 0) {
+    /* use resolve */
+    let subjectList:Subject[] =  this.subjectList = this.route.snapshot.data['data']
+    
+      this.subjectList = subjectList.filter(
+        (sub: Subject) =>
+          sub.id === +this.id &&
+          sub.name.toLowerCase().includes(this.nameSearchText.toLowerCase())
+      );
+    
 
-      this.SubjectService.getListSubject().subscribe((res) => {
+    /*   this.SubjectService.getListSubject().subscribe((res) => {
         this.subjectList = res.filter(
           (sub: Subject) =>
             sub.id === +this.id &&
             sub.name.toLowerCase().includes(this.nameSearchText.toLowerCase())
         );
-      });
+      }); */
     }
 
     /* Handle search if input value of id not empty and name is empty */
     if (this.id.length !== 0 && this.nameSearchText.length === 0) {
+      /* use resolve */
+      let subjectList:Subject[] =  this.subjectList = this.route.snapshot.data['data']
+      this.subjectList = subjectList.filter((sub: Subject) => sub.id === +this.id);
 
-      this.SubjectService.getListSubject().subscribe((res) => {
+
+      /* this.SubjectService.getListSubject().subscribe((res) => {
         this.subjectList = res.filter((sub: Subject) => sub.id === +this.id);
-      });
+      }); */
     }
 
     /* Handle search if input value of id is empty and name is not empty */
     if (this.id.length === 0 && this.nameSearchText.length !== 0) {
-      this.SubjectService.getListSubject().subscribe((res) => {
+      /* Use Resolve */
+      let subjectList:Subject[] =  this.subjectList = this.route.snapshot.data['data']
+
+        this.subjectList = subjectList.filter((sub: Subject) =>
+          sub.name.toLowerCase().includes(this.nameSearchText.toLowerCase())
+        );
+      
+    
+       
+      /* this.SubjectService.getListSubject().subscribe((res) => {
         this.subjectList = res.filter((sub: Subject) =>
           sub.name.toLowerCase().includes(this.nameSearchText.toLowerCase())
         );
-      });
+      }); */
     }
   }
 
@@ -200,11 +239,17 @@ export class SubjectListComponent implements OnInit, OnChanges {
     this.name = '';
     const selectedValue = event.target.value;
     if (selectedValue === 'All') {
-     this.getListSubject();
+    /*  this.getListSubject(); */
+    this.subjectList = this.route.snapshot.data['data']
+
     } else {
-      this.SubjectService.getListSubject().subscribe((res) => {
+    /*   this.SubjectService.getListSubject().subscribe((res) => {
         this.subjectList = res.slice(0, +selectedValue);
-      });
+      }); */
+
+      /* Use Resolve */
+      let subjectList:Subject[] =  this.subjectList = this.route.snapshot.data['data']
+        this.subjectList = subjectList.slice(0, +selectedValue);
     }
   }
 
