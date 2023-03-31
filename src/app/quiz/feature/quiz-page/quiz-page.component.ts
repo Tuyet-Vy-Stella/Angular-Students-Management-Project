@@ -27,7 +27,8 @@ export class QuizPageComponent {
   isReview = false;
   isSubmit = false;
   showReview = false;
-  timer: number = 70;
+  idInterval!: any;
+  timer: number = 30;
   timerSeconds!: number;
   timerMinutes!: number;
   constructor(private quizService: QuizService, private route: Router) {}
@@ -78,7 +79,7 @@ export class QuizPageComponent {
       });
     }
 
-    setInterval(() => {
+    this.idInterval = setInterval(() => {
       this.timer--;
       this.timerMinutes = Math.floor(this.timer / 60);
       this.timerSeconds = this.timer % 60;
@@ -104,6 +105,7 @@ export class QuizPageComponent {
         localStorage.setItem('result', JSON.stringify(this.currentQuizList));
         localStorage.setItem('isSubmit', JSON.stringify(this.isReview));
         localStorage.removeItem('quizList');
+        clearInterval(this.idInterval);
       }
     }, 1000);
   }
@@ -119,7 +121,6 @@ export class QuizPageComponent {
         isCorrect,
       };
     });
-
     // nếu làm bài xong sẽ lưu bài trên localStorage
     if (
       this.totalResult.length === this.currentQuizList.length &&
@@ -136,6 +137,7 @@ export class QuizPageComponent {
       localStorage.setItem('result', JSON.stringify(this.currentQuizList));
       localStorage.setItem('isSubmit', JSON.stringify(this.isReview));
       localStorage.removeItem('quizList');
+      clearInterval(this.idInterval);
     } else {
       alert('Please fill all the input!!');
       this.isSubmit = false;
@@ -150,7 +152,6 @@ export class QuizPageComponent {
       mark: this.quizService.score,
       semester: 1,
     };
-
     // Post kết quả lên: Hạn chế sử dụng khi đang test để tránh rác database
     // this.quizService.postMark(this.studentId, result).subscribe(console.log)
     localStorage.clear();

@@ -24,9 +24,11 @@ export class QuizItemComponent implements OnInit, OnDestroy {
   @Input() quiz!: Quiz;
   shufflerAnswers!: string[];
   @ViewChildren('input') inputs!: QueryList<ElementRef>;
+  shufflerAnswer!: string[];
+  answers!: string[];
+  // quiz$!: Observable<Quiz>;
 
   // đưa đáp án chọn vào subject
-
   onChoose(data: QuizAnswer) {
     this.quizService.addAnswer(data);
   }

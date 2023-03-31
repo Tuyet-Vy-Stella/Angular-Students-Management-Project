@@ -8,7 +8,6 @@ import {
 } from '@angular/core';
 import { Quiz } from '../../data-access/quiz.model';
 import { QuizService } from '../../data-access/quiz.service';
-import { QuizItemComponent } from '../quiz-item/quiz-item.component';
 
 @Component({
   selector: 'app-quiz-list',
@@ -17,7 +16,7 @@ import { QuizItemComponent } from '../quiz-item/quiz-item.component';
 })
 export class QuizListComponent implements OnInit, OnDestroy {
   @Input() quizList!: Quiz[];
-  @ViewChildren(QuizItemComponent) quizItems!: QueryList<QuizItemComponent>;
+  // @ViewChildren(QuizItemComponent) quizItems!: QueryList<QuizItemComponent>;
 
   constructor(private quizService: QuizService) {}
 
