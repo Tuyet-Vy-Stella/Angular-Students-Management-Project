@@ -1,4 +1,3 @@
-import { QuizRecheckComponent } from './../quiz-recheck/quiz-recheck.component';
 import { QuizResultComponent } from './../quiz-result/quiz-result.component';
 import { QuizListComponent } from './../quiz-list/quiz-list.component';
 import { QuizAuthComponent } from './../quiz-auth/quiz-auth.component';
@@ -16,7 +15,6 @@ import { QuizItemComponent } from '../quiz-item/quiz-item.component';
     QuizAuthComponent,
     QuizListComponent,
     QuizResultComponent,
-    QuizRecheckComponent,
     QuizItemComponent,
   ],
   imports: [FormsModule, SharedModule, QuizRoutingModule, ReactiveFormsModule],

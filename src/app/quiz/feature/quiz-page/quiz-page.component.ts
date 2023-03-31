@@ -7,6 +7,7 @@ import {
 import { QuizService } from './../../data-access/quiz.service';
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
+import { interval, Observable, timer } from 'rxjs';
 
 @Component({
   selector: 'app-quiz-page',
@@ -27,14 +28,51 @@ export class QuizPageComponent {
   isReview = false;
   isSubmit = false;
   showReview = false;
-  idInterval!: any;
-  timer: number = 30;
-  timerSeconds!: number;
-  timerMinutes!: number;
+  time: number = 5; // Phút
+  timer!: any;
+  remainTime: number = this.time * 60 * 1000; // giây
+  remainMinutes!: number;
+  remainSeconds!: number;
   constructor(private quizService: QuizService, private route: Router) {}
 
   ngOnInit() {
-    // check đã nộp bài chưa
+    this.timer = setInterval(() => {
+      this.remainTime -= 1000;
+      if (this.remainTime / 1000 >= 60) {
+        this.remainMinutes = Math.floor(this.remainTime / 1000 / 60);
+        this.remainSeconds = (this.remainTime / 1000) % 60;
+      } else {
+        this.remainMinutes = 0;
+        this.remainSeconds = this.remainTime / 1000;
+      }
+      console.log(this.remainTime);
+      if (this.remainTime <= 0) {
+        // check đáp án đúng hay sai -> lấy ra đáp án vừa chọn và check đáp án đúng hay sai
+        this.totalResult = this.currentQuizList.map((quiz, index) => {
+          let isCorrect = this.totalAnswer.some(
+            (answer) => quiz.correct_answer === answer.answer
+          );
+          let score: any = isCorrect ? this.totalAnswer[index]?.score : 0;
+          return {
+            isCurrentChoose: { ...this.totalAnswer[index], score: score },
+            isCorrect,
+          };
+        });
+        // nếu làm bài xong sẽ lưu bài trên localStorage
+        this.currentQuizList = this.currentQuizList.map((quiz, index) => {
+          return {
+            ...quiz,
+            result: this.totalResult[index],
+          };
+        });
+        this.isReview = true;
+        localStorage.setItem('result', JSON.stringify(this.currentQuizList));
+        localStorage.setItem('isSubmit', JSON.stringify(this.isReview));
+        localStorage.removeItem('quizList');
+        clearInterval(this.timer);
+      }
+    }, 1000);
+
     this.isReview = JSON.parse(localStorage.getItem('isSubmit') as string)
       ? JSON.parse(localStorage.getItem('isSubmit') as string)
       : false;
@@ -79,35 +117,35 @@ export class QuizPageComponent {
       });
     }
 
-    this.idInterval = setInterval(() => {
-      this.timer--;
-      this.timerMinutes = Math.floor(this.timer / 60);
-      this.timerSeconds = this.timer % 60;
-      if (this.timer == 0) {
-        // this.nextQuestion();
-        this.totalResult = this.currentQuizList.map((quiz, index) => {
-          let isCorrect = this.totalAnswer.some(
-            (answer) => quiz.correct_answer === answer.answer
-          );
-          let score: any = isCorrect ? this.totalAnswer[index]?.score : 0;
-          return {
-            isCurrentChoose: { ...this.totalAnswer[index], score: score },
-            isCorrect,
-          };
-        });
-        this.currentQuizList = this.currentQuizList.map((quiz, index) => {
-          return {
-            ...quiz,
-            result: this.totalResult[index],
-          };
-        });
-        this.isReview = true;
-        localStorage.setItem('result', JSON.stringify(this.currentQuizList));
-        localStorage.setItem('isSubmit', JSON.stringify(this.isReview));
-        localStorage.removeItem('quizList');
-        clearInterval(this.idInterval);
-      }
-    }, 1000);
+    // this.idInterval = setInterval(() => {
+    //   this.timer--;
+    //   this.timerMinutes = Math.floor(this.timer / 60);
+    //   this.timerSeconds = this.timer % 60;
+    //   if (this.timer == 0) {
+    //     // this.nextQuestion();
+    //     this.totalResult = this.currentQuizList.map((quiz, index) => {
+    //       let isCorrect = this.totalAnswer.some(
+    //         (answer) => quiz.correct_answer === answer.answer
+    //       );
+    //       let score: any = isCorrect ? this.totalAnswer[index]?.score : 0;
+    //       return {
+    //         isCurrentChoose: { ...this.totalAnswer[index], score: score },
+    //         isCorrect,
+    //       };
+    //     });
+    //     this.currentQuizList = this.currentQuizList.map((quiz, index) => {
+    //       return {
+    //         ...quiz,
+    //         result: this.totalResult[index],
+    //       };
+    //     });
+    //     this.isReview = true;
+    //     localStorage.setItem('result', JSON.stringify(this.currentQuizList));
+    //     localStorage.setItem('isSubmit', JSON.stringify(this.isReview));
+    //     localStorage.removeItem('quizList');
+    //     clearInterval(this.idInterval);
+    //   }
+    // }, 1000);
   }
   handleSubmitQuiz() {
     // check đáp án đúng hay sai -> lấy ra đáp án vừa chọn và check đáp án đúng hay sai
@@ -137,7 +175,7 @@ export class QuizPageComponent {
       localStorage.setItem('result', JSON.stringify(this.currentQuizList));
       localStorage.setItem('isSubmit', JSON.stringify(this.isReview));
       localStorage.removeItem('quizList');
-      clearInterval(this.idInterval);
+      clearInterval(this.timer);
     } else {
       alert('Please fill all the input!!');
       this.isSubmit = false;
@@ -145,7 +183,7 @@ export class QuizPageComponent {
     }
   }
 
-  clearStorage() {
+  postMark() {
     let result: Mark = {
       student_id: this.studentId,
       subject_id: this.subjectId,
