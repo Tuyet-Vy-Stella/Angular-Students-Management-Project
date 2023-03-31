@@ -28,6 +28,7 @@ export class QuizPageComponent {
   isReview = false;
   isSubmit = false;
   showReview = false;
+  timer: any
   time: number = 5 // Phút
   remainTime: number = this.time*60*1000; // giây
   remainMinutes!: number
@@ -35,7 +36,7 @@ export class QuizPageComponent {
   constructor(private quizService: QuizService, private route: Router) {}
 
   ngOnInit() {
-    let timer = setInterval(() => {
+    this.timer = setInterval(() => {
       this.remainTime -= 1000;
       if (this.remainTime / 1000 >= 60) {
         this.remainMinutes = Math.floor((this.remainTime / 1000) / 60)
@@ -68,7 +69,7 @@ export class QuizPageComponent {
         localStorage.setItem('result', JSON.stringify(this.currentQuizList));
         localStorage.setItem('isSubmit', JSON.stringify(this.isReview));
         localStorage.removeItem('quizList');
-        clearInterval(timer);
+        clearInterval(this.timer);
       }
     }, 1000);
 
@@ -143,6 +144,7 @@ export class QuizPageComponent {
       localStorage.setItem('result', JSON.stringify(this.currentQuizList));
       localStorage.setItem('isSubmit', JSON.stringify(this.isReview));
       localStorage.removeItem('quizList');
+      clearInterval(this.timer);
     } else {
       alert('Please fill all the input!!');
       this.isSubmit = false;
