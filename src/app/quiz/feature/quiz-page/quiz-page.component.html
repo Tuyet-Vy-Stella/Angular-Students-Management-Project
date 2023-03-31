@@ -1,5 +1,6 @@
 <div class="container pt-20 mx-auto p-52" *ngIf="!isReview">
   <h1 class="mb-4 text-xl font-bold">Questions</h1>
+  <p class="mb-4"><strong>Time remaining: </strong>{{remainMinutes}}:{{remainSeconds}}s</p>
   <form>
     <app-quiz-list [quizList]="currentQuizList"></app-quiz-list>
     <button (click)="isSubmit = true" class="px-6 py-4 text-white bg-blue-500 rounded-lg hover:bg-blue-600"
@@ -9,7 +10,7 @@
 
     <ng-container *ngIf="isSubmit">
       <div class="modal">
-        <div class="modal-content">
+        <div class="modal-content rounded">
           <h3 class="pb-4 text-2xl font-bold ">Submit the Quiz</h3>
           <p class="py-4 border-t border-b border-slate-200">Do you want submit the quiz? This can not undone.</p>
           <div class="flex justify-center pt-4">
@@ -32,12 +33,12 @@
 <div *ngIf="isReview" class="py-8">
   <app-quiz-result></app-quiz-result>
   <div class="flex justify-center my-8">
-    <button class="px-4 py-2 mr-4 font-bold text-white bg-blue-500 rounded hover:bg-blue-700" (click)="clearStorage()">
-      Hoàn thành
+    <button class="px-4 py-2 mr-4 font-bold text-white bg-blue-500 rounded hover:bg-blue-700" (click)="postMark()">
+      Finish
     </button>
     <button class="px-4 py-2 font-bold text-gray-800 bg-gray-300 rounded hover:bg-gray-400"
       (click)="showReview = !showReview">
-      Xem lại câu trả lời
+      Review
     </button>
   </div>
   <div *ngIf="showReview" class="max-w-5xl mx-auto">

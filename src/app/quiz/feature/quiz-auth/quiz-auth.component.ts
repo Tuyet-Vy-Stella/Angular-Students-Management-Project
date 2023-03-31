@@ -104,6 +104,7 @@ export class QuizAuthComponent implements OnInit {
 
   handleCancel() {
     this.showBackdrop = !this.showBackdrop;
+    this.router.navigate(['/home'])
   }
 
   onClearMessage() {
