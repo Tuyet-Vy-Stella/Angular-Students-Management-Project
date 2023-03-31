@@ -21,9 +21,17 @@ const routes: Routes = [
   },
   {
     path: 'teachers',
-    loadChildren: () => import('./teacher/feature/teacher-shell/teacher.module').then((m) => m.TeacherModule)
-  }
-]
+    loadChildren: () =>
+      import('./teacher/feature/teacher-shell/teacher.module').then(
+        (m) => m.TeacherModule
+      ),
+  },
+  {
+    path: 'quiz',
+    loadChildren: () =>
+      import('./quiz/feature/quiz-shell/quiz.module').then((m) => m.QuizModule),
+  },
+];
 
 @NgModule({
   imports: [

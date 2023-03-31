@@ -1,9 +1,9 @@
+import { Router } from '@angular/router';
+import { CookieService } from 'ngx-cookie-service';
 import { Component, OnInit } from '@angular/core';
 import { AuthIcon } from '../utils/auth-icon';
 import { NgForm } from '@angular/forms';
 import { AuthService, IResponse } from '../data-access/auth.service';
-import { CookieService } from 'ngx-cookie-service';
-import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-auth',
