@@ -1,9 +1,13 @@
 import { Observable, Subject } from 'rxjs';
-import { Quiz, BACKEND_URL_QUIZ, QuizAnswer, Mark, markAPI } from './quiz.model';
+import {
+  Quiz,
+  BACKEND_URL_QUIZ,
+  QuizAnswer,
+  Mark,
+  markAPI,
+} from './quiz.model';
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-
-
 
 @Injectable({
   providedIn: 'root',
@@ -27,10 +31,6 @@ export class QuizService {
     }
     // thêm câu trả lời vào subject
     this.chooseTotal.push(data);
-    console.log(
-      '🚀 ~ file: quiz.service.ts:27 ~ QuizService ~ addAnswer ~ this.chooseTotal:',
-      this.chooseTotal
-    );
     this.chooseTotal$.next([...this.chooseTotal]);
   }
 

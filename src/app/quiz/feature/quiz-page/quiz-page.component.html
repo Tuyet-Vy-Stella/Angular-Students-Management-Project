@@ -1,5 +1,6 @@
 <div class="container pt-20 mx-auto p-52" *ngIf="!isReview">
   <h1 class="mb-4 text-xl font-bold">Questions</h1>
+  {{timerMinutes }} / {{timerSeconds}}
   <form>
     <app-quiz-list [quizList]="currentQuizList"></app-quiz-list>
     <button (click)="isSubmit = true" class="px-6 py-4 text-white bg-blue-500 rounded-lg hover:bg-blue-600"

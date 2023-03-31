@@ -32,12 +32,17 @@ export class QuizItemComponent implements OnInit, OnDestroy {
   }
   constructor(private quizService: QuizService) {}
 
+  handleChoose(answer: string): QuizAnswer {
+    return {
+      quizID: this.quiz.id,
+      answer,
+      score: this.quiz.score,
+      isChoose: true,
+    };
+  }
+
   ngOnInit(): void {
-    if (this.quiz?.result) {
-      this.shufflerAnswers = this.quiz?.result.isCurrentChoose.allAnswer;
-    } else {
-      this.shufflerAnswers = this.quiz.allAnswers;
-    }
+    this.shufflerAnswers = this.quiz.allAnswers;
   }
 
   ngOnDestroy(): void {}

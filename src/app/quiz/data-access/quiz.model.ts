@@ -8,6 +8,7 @@ export type CurrentChoose = {
   answer: string;
   quizID: number;
   score: number;
+  isChoose: boolean;
 };
 
 export interface Quiz {
@@ -26,7 +27,7 @@ export interface QuizAnswer {
   quizID: number;
   answer: string;
   score: number;
-  allAnswer: string[];
+  isChoose: boolean;
 }
 
 export interface Mark {

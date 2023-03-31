@@ -27,10 +27,13 @@ export class QuizPageComponent {
   isReview = false;
   isSubmit = false;
   showReview = false;
+  timer: number = 70;
+  timerSeconds!: number;
+  timerMinutes!: number;
   constructor(private quizService: QuizService, private route: Router) {}
 
   ngOnInit() {
-    //
+    // check đã nộp bài chưa
     this.isReview = JSON.parse(localStorage.getItem('isSubmit') as string)
       ? JSON.parse(localStorage.getItem('isSubmit') as string)
       : false;
@@ -54,6 +57,7 @@ export class QuizPageComponent {
         localStorage.getItem('result') as string
       );
     } else {
+      // bốc ngẫu nhiên đủ 10 điểm
       this.quizService.getQuizList().subscribe((next: Quiz[]) => {
         this.quizList = shuffle(next);
         this.quizList.forEach((val) => {
@@ -73,6 +77,35 @@ export class QuizPageComponent {
         localStorage.setItem('quizList', JSON.stringify(this.currentQuizList));
       });
     }
+
+    setInterval(() => {
+      this.timer--;
+      this.timerMinutes = Math.floor(this.timer / 60);
+      this.timerSeconds = this.timer % 60;
+      if (this.timer == 0) {
+        // this.nextQuestion();
+        this.totalResult = this.currentQuizList.map((quiz, index) => {
+          let isCorrect = this.totalAnswer.some(
+            (answer) => quiz.correct_answer === answer.answer
+          );
+          let score: any = isCorrect ? this.totalAnswer[index]?.score : 0;
+          return {
+            isCurrentChoose: { ...this.totalAnswer[index], score: score },
+            isCorrect,
+          };
+        });
+        this.currentQuizList = this.currentQuizList.map((quiz, index) => {
+          return {
+            ...quiz,
+            result: this.totalResult[index],
+          };
+        });
+        this.isReview = true;
+        localStorage.setItem('result', JSON.stringify(this.currentQuizList));
+        localStorage.setItem('isSubmit', JSON.stringify(this.isReview));
+        localStorage.removeItem('quizList');
+      }
+    }, 1000);
   }
   handleSubmitQuiz() {
     // check đáp án đúng hay sai -> lấy ra đáp án vừa chọn và check đáp án đúng hay sai
@@ -86,6 +119,7 @@ export class QuizPageComponent {
         isCorrect,
       };
     });
+
     // nếu làm bài xong sẽ lưu bài trên localStorage
     if (
       this.totalResult.length === this.currentQuizList.length &&
