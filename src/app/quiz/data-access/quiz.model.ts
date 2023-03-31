@@ -53,6 +53,6 @@ export function shuffle(array: any) {
   }
   return array;
 }
-export const BACKEND_URL_QUIZ = 'http://localhost:3000';
+export const BACKEND_URL_QUIZ = 'https://json-server-quiz.vercel.app';
 
 export const markAPI = 'https://qlsv-mu.vercel.app/api/mark';

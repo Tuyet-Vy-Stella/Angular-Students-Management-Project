@@ -1,17 +1,14 @@
 import { QuizAnswer } from './../../data-access/quiz.model';
 import {
   Component,
-  EventEmitter,
   Input,
   OnInit,
-  Output,
   ViewChildren,
   QueryList,
   ElementRef,
   OnDestroy,
 } from '@angular/core';
-import { Observable, toArray, map } from 'rxjs';
-import { Quiz, shuffle } from '../../data-access/quiz.model';
+import { Quiz} from '../../data-access/quiz.model';
 import { QuizService } from '../../data-access/quiz.service';
 
 @Component({

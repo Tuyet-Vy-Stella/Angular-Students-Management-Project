@@ -2,8 +2,6 @@ import {
   Component,
   Input,
   OnInit,
-  QueryList,
-  ViewChildren,
   OnDestroy,
 } from '@angular/core';
 import { Quiz } from '../../data-access/quiz.model';
