@@ -20,7 +20,6 @@ export class QuizResultComponent implements OnInit {
 
   ngOnInit(): void {
     this.finalResult = JSON.parse(localStorage.getItem('result') as string);
-    console.log(this.finalResult);
     this.numberQuiz = this.finalResult.length;
     this.numberCorrect = this.finalResult.reduce((acc, val) => {
       let temp = 0;

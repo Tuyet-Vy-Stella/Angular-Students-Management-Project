@@ -24,20 +24,27 @@ export class QuizItemComponent implements OnInit, OnDestroy {
   @Input() quiz!: Quiz;
   shufflerAnswers!: string[];
   @ViewChildren('input') inputs!: QueryList<ElementRef>;
+  shufflerAnswer!: string[];
+  answers!: string[];
+  // quiz$!: Observable<Quiz>;
 
   // đưa đáp án chọn vào subject
-
   onChoose(data: QuizAnswer) {
     this.quizService.addAnswer(data);
   }
   constructor(private quizService: QuizService) {}
 
+  handleChoose(answer: string): QuizAnswer {
+    return {
+      quizID: this.quiz.id,
+      answer,
+      score: this.quiz.score,
+      isChoose: true,
+    };
+  }
+
   ngOnInit(): void {
-    if (this.quiz?.result) {
-      this.shufflerAnswers = this.quiz?.result.isCurrentChoose.allAnswer;
-    } else {
-      this.shufflerAnswers = this.quiz.allAnswers;
-    }
+    this.shufflerAnswers = this.quiz.allAnswers;
   }
 
   ngOnDestroy(): void {}
