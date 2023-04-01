@@ -1,68 +1,38 @@
 import { Injectable } from '@angular/core';
 import {
   BehaviorSubject,
+  catchError,
   combineLatest,
-  debounceTime,
-  distinctUntilChanged,
   map,
   Observable,
-  shareReplay,
-  Subject,
-  switchMap,
   tap,
+  throwError,
 } from 'rxjs';
-import {
-  IClassElement,
-  IClassroom,
-  IStudent,
-  ISubject,
-} from '../utils/classroom';
+import { IStudent, ISubject } from '../utils/classroom';
 import { HttpClient } from '@angular/common/http';
+import { DataStorageService } from './data-storage.service';
 
 @Injectable({ providedIn: 'root' })
 export class ClassroomService {
-  classList$ = new BehaviorSubject<IClassElement[]>([]);
+  classList$ = this.dataStorage.classList$;
   searchList$ = new BehaviorSubject<
     { name: string; id: number; active: boolean }[]
   >([]);
 
-  currentClassId$ = new Subject<number>();
+  currentClassId$ = this.dataStorage.currentClassId$;
   isSearchTeacher$ = new BehaviorSubject<boolean>(true);
   isTeacherTab$ = new BehaviorSubject(true);
 
-  currentClass$ = this.getCurrentClass().pipe(shareReplay(1));
+  currentClass$ = this.dataStorage.currentClass$;
 
-  // ID changes
-  classListInitialized$ = new BehaviorSubject<boolean>(false);
-
-  constructor(private http: HttpClient) {}
+  constructor(
+    private http: HttpClient,
+    private dataStorage: DataStorageService
+  ) {}
 
   public init(): void {
-    // Check Error here
-    if (this.classListInitialized$.value) return;
-
+    this.dataStorage.init();
     this.getSearchListByType();
-
-    this.http
-      .get<IClassElement[]>('https://qlsv-mu.vercel.app/api/class-list')
-      .subscribe((classes) => {
-        this.classList$.next(classes);
-        this.currentClassId$.next(classes[0].id);
-        this.classListInitialized$.next(true);
-      });
-  }
-
-  public getCurrentClass(): Observable<IClassroom> {
-    return this.currentClassId$.pipe(
-      debounceTime(300),
-      distinctUntilChanged(),
-      tap((data) => console.log(data)),
-      switchMap((id) => {
-        return this.http.get<IClassroom>(
-          `https://qlsv-mu.vercel.app/api/class/?class_id=${id}`
-        );
-      })
-    );
   }
 
   public getStudents(): Observable<IStudent[]> {
@@ -120,5 +90,20 @@ export class ClassroomService {
         })
       )
       .subscribe((value) => this.searchList$.next(value));
+  }
+
+  public deleteClass(id: number): Observable<{ message: string }> {
+    return this.http
+      .delete<{ message: string }>('https://qlsv-mu.vercel.app/api/class/', {
+        params: {
+          class_id: id,
+        },
+      })
+      .pipe(
+        catchError((e) => throwError(e)),
+        tap(() => {
+          this.dataStorage.deleteClassFromClassList(id);
+        })
+      );
   }
 }

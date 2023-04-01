@@ -1,5 +1,5 @@
 export interface IClassroom {
-  classId: number;
+  id: number;
   form_teacher_id: number;
   form_teacher: string;
   grade: string;
@@ -34,4 +34,9 @@ export interface IStudent {
   class_id: number;
   email: string;
   phone: string;
+}
+
+export interface ITeacher {
+  name: string;
+  id: number;
 }

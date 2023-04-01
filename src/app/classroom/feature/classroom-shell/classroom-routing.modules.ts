@@ -6,6 +6,7 @@ import { ClassroomAddComponent } from '../classroom-add/classroom-add.component'
 const routes: Routes = [
   { path: '', component: ClassroomDetailsComponent },
   { path: 'create', component: ClassroomAddComponent },
+  { path: ':id/edit', component: ClassroomAddComponent },
 ];
 
 @NgModule({
