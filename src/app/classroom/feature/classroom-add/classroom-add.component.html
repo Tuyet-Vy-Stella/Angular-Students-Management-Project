@@ -1,7 +1,7 @@
 <!--[ngClass]="{'text-white bg-blue-500' : el.active}"-->
 <!--<ng-container *ngIf="vm$ | async as vm">-->
 <div class="py-6 px-8 h-perfectly">
-  <h1 class="font-medium text-[1.4rem]">{{isEdit ? 'Edit' : 'Add'}} Classroom</h1>
+  <h1 class="font-medium text-[1.4rem]">{{(isEdit$ | async) ? 'Edit' : 'Add'}} Classroom</h1>
   <div class="mt-14 py-6 px-6 bg-white">
     <h2 class="font-medium text-[1.2rem]">Subject Information</h2>
 
@@ -12,7 +12,6 @@
           <label
             class="absolute text-[0.8rem] -top-2.5 left-3 bg-white px-1 text-gray-400 font-medium tracking-wider">Teacher</label>
           <select
-            #teacherSelect
             formControlName="teacherId"
             class="block w-full px-3 py-5 font-normal border border-gray-300 rounded-lg placeholder:font-md placeholder:text-gray-400 outline-none focus:border-blue-500 lg:px-4 lg:py-[0.8rem] lg:text-[0.9rem] bg-white">
             <option *ngFor="let teacher of teacherSearchList$ | async" [value]="teacher.id"

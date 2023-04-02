@@ -1,5 +1,7 @@
 <ng-container *ngIf="vm$ | async as vm">
-  <div class="py-6 px-8 ">
+
+
+  <div class="py-6 px-8">
     <div class="flex justify-between">
       <h1 class="font-medium text-[1.2rem]">Classroom {{vm.currentClass.grade + vm.currentClass.section}}</h1>
       <p class="text-[0.9rem] text-gray-500 font-medium"><span class="text-black">Dashboard</span> / Classroom </p>
@@ -86,16 +88,23 @@
     </div>
 
     <!--  Table-->
-    <div class="bg-white mt-8 px-4 py-9">
-      <div class="flex items-center space-x-1">
-        <span>Show</span>
-        <select name="cars" id="cars" class="bg-white border p-2 rounded w-16 border-gray-300">
-          <option value="10">10</option>
-          <option value="20">20</option>
-          <option value="25">25</option>
-          <option value="50">50</option>
-        </select>
-        <span>entries</span>
+    <div *ngIf="vm.teachers.length === 0" class="p-6">
+      <app-skeleton/>
+    </div>
+    <div class="bg-white mt-8 px-4 py-9" *ngIf="vm.teachers.length > 0">
+      <div class="flex items-center justify-between">
+        <div class="flex items-center space-x-1">
+          <span>Show</span>
+          <select name="cars" id="cars" class="bg-white border p-2 rounded w-16 border-gray-300">
+            <option value="10">10</option>
+            <option value="15">15</option>
+            <option value="20">20</option>
+          </select>
+          <span>entries</span>
+        </div>
+        <button class="p-4 bg-active text-white rounded" *ngIf="vm.isTeacherTab" (click)="onOpenAddTeacherModal()">Add
+          Teacher
+        </button>
       </div>
 
       <table class="w-full text-sm text-dark mt-6">
@@ -131,7 +140,7 @@
           <td>
             <div class="flex items-center gap-2">
               <a class="btn icon secondary sm rounded-full" type="button"
-                 [routerLink]="['..','students', student.id]">
+                 [routerLink]="['..','students', student.id, 'update']">
                 <fa-icon [icon]="icons.edit"></fa-icon>
               </a>
               <button class="btn icon secondary sm rounded-full" (click)="onOpenModal(2)">
@@ -160,7 +169,7 @@
                  [routerLink]="['..','teachers', teacher.teacher_id, 'edit']">
                 <fa-icon [icon]="icons.edit"></fa-icon>
               </a>
-              <button class="btn icon secondary sm rounded-full" (click)="onOpenModal(3)">
+              <button class="btn icon secondary sm rounded-full" (click)="onOpenModal(3, teacher.id)">
                 <fa-icon [icon]="icons.delete"></fa-icon>
               </button>
             </div>
@@ -172,22 +181,22 @@
       <div
         class="flex flex-col md:flex-row items-center justify-between p-6 gap-4 md:gap-0 border-t border-secondary border-solid">
           <span class="text-sm md:text-base"
-          >Showing 1 to 10 of 100 entries</span>
-        <div class="flex items-center gap-4 lg:gap-2 select-none">
-          <button class="btn icon rounded-lg">
-            <fa-icon [icon]="icons.arrowLeft"></fa-icon>
-          </button>
-          <button
-            class="btn icon rounded-lg"
-          >
-            3
-          </button>
-          <button
-            class="btn icon rounded-lg"
-          >
-            <fa-icon [icon]="icons.arrowRight"></fa-icon>
-          </button>
-        </div>
+          >Showing 1 to 10 of 10 entries</span>
+        <!--        <div class="flex items-center gap-4 lg:gap-2 select-none">-->
+        <!--          <button class="btn icon rounded-lg">-->
+        <!--            <fa-icon [icon]="icons.arrowLeft"></fa-icon>-->
+        <!--          </button>-->
+        <!--          <button-->
+        <!--            class="btn icon rounded-lg"-->
+        <!--          >-->
+        <!--            3-->
+        <!--          </button>-->
+        <!--          <button-->
+        <!--            class="btn icon rounded-lg"-->
+        <!--          >-->
+        <!--            <fa-icon [icon]="icons.arrowRight"></fa-icon>-->
+        <!--          </button>-->
+        <!--        </div>-->
       </div>
     </div>
 
@@ -197,4 +206,10 @@
     <app-modal (onClose)="handleCloseModal()" (onAccept)="onConfirmModal()" [title]="deleteModelContent.header"
                [content]="deleteModelContent.mainContent"/>
   </div>
+  <app-classroom-modal *ngIf="showAddModal"
+                       (onClose)="showAddModal = false"
+                       (onAccept)="onAcceptAddTeacherModal($event)"
+                       [teacherList$]="getAddListTeacher$"
+  ></app-classroom-modal>
 </ng-container>
+

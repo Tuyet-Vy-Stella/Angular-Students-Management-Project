@@ -65,6 +65,10 @@ export class ClassroomService {
           });
         }
 
+        teachers = teachers
+          .filter((teacher) => teacher.formed)
+          .concat(teachers.filter((teacher) => !teacher.formed));
+
         return teachers;
       })
     );
@@ -90,6 +94,61 @@ export class ClassroomService {
         })
       )
       .subscribe((value) => this.searchList$.next(value));
+  }
+
+  public deleteTeacher(id: number): Observable<{ message: string }> {
+    return this.http
+      .delete<{ message: string }>(
+        'https://qlsv-mu.vercel.app/api/class/delete-subject',
+        {
+          params: {
+            class_id: this.dataStorage.currentClass.id,
+            subject_id: id,
+          },
+        }
+      )
+      .pipe(
+        catchError((e) => throwError(e)),
+        tap((classroom) => {
+          this.dataStorage.currentClassId$.next(
+            this.dataStorage.currentClass.id
+          );
+        })
+      );
+  }
+
+  getAddListTeacher(): Observable<
+    {
+      id: number;
+      name: string;
+      subject_name: string;
+    }[]
+  > {
+    return this.http.get<{ id: number; name: string; subject_name: string }[]>(
+      'https://qlsv-mu.vercel.app/api/class/teacher_not_in_class?',
+      {
+        params: {
+          class_id: this.dataStorage.currentClass.id,
+        },
+      }
+    );
+  }
+
+  addNewTeacherToClass(id: number): Observable<{
+    id: number;
+    subject_id: number;
+    teacher_id: number;
+    class_id: number;
+  }> {
+    return this.http.post<{
+      id: number;
+      subject_id: number;
+      teacher_id: number;
+      class_id: number;
+    }>('https://qlsv-mu.vercel.app/api/class/add-subject', {
+      class_id: this.dataStorage.currentClass,
+      teacher_id: id,
+    });
   }
 
   public deleteClass(id: number): Observable<{ message: string }> {

@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 import {
   BehaviorSubject,
   debounceTime,
-  distinctUntilChanged,
   filter,
   Observable,
   shareReplay,
@@ -20,10 +19,14 @@ export class DataStorageService {
   teacherSearchList$ = new BehaviorSubject<ITeacher[]>([]);
 
   currentClass$ = this.getCurrentClass().pipe(
-    tap((value) => (this.currentClass = value)),
+    tap((value) => (this._currentClass = value)),
     shareReplay(1)
   );
-  currentClass!: IClassroom;
+  private _currentClass!: IClassroom;
+
+  get currentClass(): IClassroom {
+    return this._currentClass;
+  }
 
   constructor(private http: HttpClient) {}
 
@@ -53,7 +56,7 @@ export class DataStorageService {
     return this.currentClassId$.pipe(
       filter((value) => value !== -1),
       debounceTime(300),
-      distinctUntilChanged(),
+      // distinctUntilChanged(),
       // tap((data) => console.log(data)),
       switchMap((id) => {
         return this.http.get<IClassroom>(

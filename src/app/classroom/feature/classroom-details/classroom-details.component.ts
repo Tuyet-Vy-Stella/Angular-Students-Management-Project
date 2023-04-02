@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { icons } from '../../utils/icons';
 import { ClassroomService } from '../../data-access/classroom.service';
-import { combineLatest, map, startWith } from 'rxjs';
+import { combineLatest, map, Observable, startWith } from 'rxjs';
 import { ToastrService } from 'ngx-toastr';
 
 @Component({
@@ -11,11 +11,19 @@ import { ToastrService } from 'ngx-toastr';
 })
 export class ClassroomDetailsComponent implements OnInit {
   showModal = false;
+  showAddModal = false;
   icons = icons;
 
   isSearchTeacher$ = this.classroomService.isSearchTeacher$;
   currentClassId$ = this.classroomService.currentClassId$;
   isTeacherTab$ = this.classroomService.isTeacherTab$;
+  getAddListTeacher$!: Observable<
+    {
+      id: number;
+      name: string;
+      subject_name: string;
+    }[]
+  >;
 
   // Modal
   currentDeletedType!: number;
@@ -69,6 +77,15 @@ export class ClassroomDetailsComponent implements OnInit {
     this.showModal = false;
   }
 
+  onOpenAddTeacherModal() {
+    this.showAddModal = true;
+    this.getAddListTeacher$ = this.classroomService.getAddListTeacher();
+  }
+
+  onAcceptAddTeacherModal(event: number) {
+    console.log(event);
+  }
+
   onOpenModal(deleteType: number, id?: number) {
     this.currentDeletedType = deleteType;
 
@@ -79,13 +96,14 @@ export class ClassroomDetailsComponent implements OnInit {
 
     if (deleteType === 1) {
       this.deleteModelContent.header = 'Delete Class';
+    } else if (deleteType === 3) {
+      this.deleteModelContent.header = 'Delete Teacher';
     }
     this.showModal = true;
   }
 
   onConfirmModal() {
     this.showModal = false;
-    console.log(this.currentDeletedType);
     if (this.currentDeletedType === 1) {
       this.classroomService.deleteClass(this.currentDeletedId).subscribe({
         next: (value) => {
@@ -94,6 +112,16 @@ export class ClassroomDetailsComponent implements OnInit {
         error: (err) => {
           console.log(err);
           this.toastrService.error(err.error.detail);
+        },
+      });
+    } else if (this.currentDeletedType === 3) {
+      this.classroomService.deleteTeacher(this.currentDeletedId).subscribe({
+        next: () => {
+          this.toastrService.success('Update successfully. Please stand by');
+        },
+        error: (err) => {
+          console.log(err);
+          this.toastrService.error('Something went wrong. Try another time');
         },
       });
     }

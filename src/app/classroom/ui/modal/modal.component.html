@@ -1,0 +1,39 @@
+<div class="fixed top-0 left-0 right-0 bottom-0 bg-black/40 z-[9999]">
+  <div
+    class="w-[calc(100vw_-_3rem)] md:w-[31.25rem] min-h-[12.5rem] max-h-[18.75rem] bg-white absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 rounded-lg text-dark"
+  >
+    <div class="flex items-center justify-between px-6 py-4">
+      <h4 class="font-medium text-xl">Add Teacher</h4>
+      <fa-icon
+        [icon]="faXmarkIcon"
+        (click)="closeModal()"
+        class="btn icon secondary rounded-full"
+      />
+    </div>
+
+    <div class="px-6 py-4 text-sidebar leading-7 border-t border-b border-solid border-secondary">
+      <div class="relative">
+        <label
+          class="absolute text-[0.8rem] -top-2.5 left-3 bg-white px-1 text-gray-400 font-medium tracking-wider">Teacher</label>
+        <select
+          #teacherSelect
+          class="block w-full px-3 py-5 font-normal border border-gray-300 rounded-lg placeholder:font-md placeholder:text-gray-400 outline-none focus:border-blue-500 lg:px-4 lg:py-[0.8rem] lg:text-[0.9rem] bg-white">
+          <option *ngFor="let teacher of teacherList" [value]="teacher.id">
+            {{teacher.name}} - {{teacher.subject_name}}
+          </option>
+        </select>
+      </div>
+    </div>
+
+    <div class="px-6 py-4 flex justify-end">
+      <button class="btn text secondary rounded-lg mr-4"
+              (click)="closeModal()"
+      >Decline
+      </button>
+      <button class="btn text primary rounded-lg"
+              (click)="onClickAcceptButton()"
+      >Accept
+      </button>
+    </div>
+  </div>
+</div>

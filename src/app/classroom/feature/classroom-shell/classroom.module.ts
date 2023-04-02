@@ -5,9 +5,14 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ClassroomRoutingModules } from './classroom-routing.modules';
 import { ClassroomDetailsComponent } from '../classroom-details/classroom-details.component';
 import { ClassroomAddComponent } from '../classroom-add/classroom-add.component';
+import { ModalComponent } from '../../ui/modal/modal.component';
 
 @NgModule({
-  declarations: [ClassroomDetailsComponent, ClassroomAddComponent],
+  declarations: [
+    ClassroomDetailsComponent,
+    ClassroomAddComponent,
+    ModalComponent,
+  ],
   imports: [
     SharedModule,
     ReactiveFormsModule,
