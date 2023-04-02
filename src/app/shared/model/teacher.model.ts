@@ -8,6 +8,7 @@ export interface Teacher {
   phone: string
   joined_date: string
   subject_id: number
+  class_id: number[]
   created_at: string
 }
 

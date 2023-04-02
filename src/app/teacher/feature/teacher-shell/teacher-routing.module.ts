@@ -9,7 +9,7 @@ const routes: Routes = [
     children: [
       { path: '', component: TeacherListComponent },
       { path: ':new', component: TeacherEditComponent },
-      { path: ':id', component: TeacherEditComponent },
+      { path: ':id', redirectTo: ':id/edit', pathMatch: 'full' },
       { path: ':id/edit', component: TeacherEditComponent },
     ],
   },

@@ -54,6 +54,7 @@ export class AuthService {
     if (jwtToken && jwtTokenExpiration) {
       const expirationTime = new Date(jwtTokenExpiration);
       this.timer = setInterval(() => {
+        // console.log(new Date(), expirationTime);
         if (new Date() > expirationTime) {
           this.resetAuth();
         }

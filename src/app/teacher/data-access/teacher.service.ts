@@ -39,6 +39,10 @@ export class TeacherService {
     });
   }
 
+  getClassList() {
+    return this.http.get('https://qlsv-mu.vercel.app/api/class-list');
+  }
+
   deleteTeacher(id: number) {
     return this.http.delete('https://qlsv-mu.vercel.app/api/teacher/', {
       params: {
