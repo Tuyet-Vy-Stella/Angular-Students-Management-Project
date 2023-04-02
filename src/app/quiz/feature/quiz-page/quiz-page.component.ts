@@ -1,3 +1,4 @@
+import { fromEvent, fromEventPattern } from 'rxjs';
 import {
   Quiz,
   shuffle,
@@ -26,17 +27,30 @@ export class QuizPageComponent implements OnDestroy {
   studentId!: number;
   isReview = false;
   isSubmit = false;
-  isReloading = false
+  isReloading = false;
   showReview = false;
-  time: number = 1; // Phút
+  date!: any;
   timer!: any;
-  remainTime: number = this.time * 60 * 1000; // giây
+  time: number = 5; // Phút
+  minutes!: number;
+  remainTime!: number; // giây
   remainMinutes!: number;
   remainSeconds!: number;
+  windowScroll!: number;
   constructor(private quizService: QuizService, private route: Router) {}
 
   ngOnInit() {
+    fromEvent(document, 'scroll').subscribe((val) => {
+      this.windowScroll = window.scrollY;
+    });
 
+    let startAt = localStorage.getItem('startAt');
+    this.date = new Date();
+    this.minutes = this.date.getMinutes();
+    this.remainTime =
+      this.minutes - Number(startAt) >= 0
+        ? (this.time - (this.minutes - Number(startAt))) * 60 * 1000
+        : (this.time + Number(startAt) - (60 + this.minutes)) * 60 * 1000;
     this.timer = setInterval(() => {
       this.remainTime -= 1000;
       if (this.remainTime / 1000 >= 60) {
@@ -115,46 +129,12 @@ export class QuizPageComponent implements OnDestroy {
         });
         localStorage.setItem('quizList', JSON.stringify(this.currentQuizList));
       });
-
-      // this.timer = setInterval(() => {
-      //   this.remainTime -= 1000;
-      //   if (this.remainTime / 1000 >= 60) {
-      //     this.remainMinutes = Math.floor(this.remainTime / 1000 / 60);
-      //     this.remainSeconds = (this.remainTime / 1000) % 60;
-      //   } else {
-      //     this.remainMinutes = 0;
-      //     this.remainSeconds = this.remainTime / 1000;
-      //   }
-      //   if (this.remainTime <= 0) {
-      //     // check đáp án đúng hay sai -> lấy ra đáp án vừa chọn và check đáp án đúng hay sai
-      //     this.totalResult = this.currentQuizList.map((quiz, index) => {
-      //       let isCorrect = this.totalAnswer.some(
-      //         (answer) => quiz.correct_answer === answer.answer
-      //       );
-      //       let score: any = isCorrect ? this.totalAnswer[index]?.score : 0;
-      //       return {
-      //         isCurrentChoose: { ...this.totalAnswer[index], score: score },
-      //         isCorrect,
-      //       };
-      //     });
-      //     // nếu làm bài xong sẽ lưu bài trên localStorage
-      //     this.currentQuizList = this.currentQuizList.map((quiz, index) => {
-      //       return {
-      //         ...quiz,
-      //         result: this.totalResult[index],
-      //       };
-      //     });
-      //     this.isReview = true;
-      //     localStorage.setItem('result', JSON.stringify(this.currentQuizList));
-      //     localStorage.setItem('isSubmit', JSON.stringify(this.isReview));
-      //     localStorage.removeItem('quizList');
-      //     clearInterval(this.timer);
-      //   }
-      // }, 1000);
     }
   }
 
-  ngOnDestroy(): void {}
+  ngOnDestroy(): void {
+    // localStorage.clear()
+  }
 
   handleSubmitQuiz() {
     // check đáp án đúng hay sai -> lấy ra đáp án vừa chọn và check đáp án đúng hay sai
@@ -185,6 +165,9 @@ export class QuizPageComponent implements OnDestroy {
       localStorage.setItem('isSubmit', JSON.stringify(this.isReview));
       localStorage.removeItem('quizList');
       clearInterval(this.timer);
+      setTimeout(()=> {
+        this.postMark()
+      }, 100)
     } else {
       alert('Please fill all the input!!');
       this.isSubmit = false;
@@ -202,7 +185,9 @@ export class QuizPageComponent implements OnDestroy {
     // Post kết quả lên: Hạn chế sử dụng khi đang test để tránh rác database
     this.quizService.postMark(this.studentId, result).subscribe(console.log)
     localStorage.clear();
-    console.log('clear!!');
+  }
+
+  finishQuiz() {
     this.route.navigate(['/home']);
   }
 }
