@@ -109,7 +109,7 @@ export class ClassroomService {
       )
       .pipe(
         catchError((e) => throwError(e)),
-        tap((classroom) => {
+        tap(() => {
           this.dataStorage.currentClassId$.next(
             this.dataStorage.currentClass.id
           );
