@@ -27,6 +27,13 @@ const routes: Routes = [
       ),
   },
   {
+    path: 'classrooms',
+    loadChildren: () =>
+      import('./classroom/feature/classroom-shell/classroom.module').then(
+        (m) => m.ClassroomModule
+      ),
+  },
+  {
     path: 'quiz',
     loadChildren: () =>
       import('./quiz/feature/quiz-shell/quiz.module').then((m) => m.QuizModule),
