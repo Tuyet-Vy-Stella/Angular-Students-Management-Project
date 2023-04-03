@@ -26,6 +26,10 @@ export class QuizAuthComponent implements OnInit{
     private subjectService: SubjectService,
   ) { }
 
+  ngOnInit(): void {
+    localStorage.clear();
+  }
+
   infoUser = this.fb.group({
     "full_name": [""],
     "student_id": [ , [Validators.required, Validators.pattern(/^\d+$/)]],
@@ -55,11 +59,12 @@ export class QuizAuthComponent implements OnInit{
                 this.isLoading = false;
                 this.message = "Subject ID is not valid!";
               } else {
-                // console.log('Subject ID: ', data.id);
+                let startAt = new Date().getMinutes()
                 localStorage.setItem('subject_id', data.id.toString());
-
+                localStorage.setItem('isLogin', 'true');
+                localStorage.setItem('startAt', String(startAt))
                 this.showBackdrop = !this.showBackdrop;
-                this.router.navigate(['/quiz']);
+                this.router.navigate(['/quiz/page']);
               }
             }
           })
@@ -99,13 +104,10 @@ export class QuizAuthComponent implements OnInit{
 
   handleCancel() {
     this.showBackdrop = !this.showBackdrop;
+    this.router.navigate(['/home'])
   }
 
   onClearMessage() {
     this.message = '';
-  }
-
-  ngOnInit(): void {
-
   }
 }
