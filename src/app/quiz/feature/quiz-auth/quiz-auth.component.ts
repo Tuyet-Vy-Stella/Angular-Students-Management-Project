@@ -50,7 +50,6 @@ export class QuizAuthComponent implements OnInit {
       this.message = '';
       student.subscribe({
         next: (data) => {
-          console.log('Student ID: ', data.id);
           localStorage.setItem('student_id', data.id.toString());
           subject.subscribe({
             next: (data) => {
@@ -58,10 +57,10 @@ export class QuizAuthComponent implements OnInit {
                 this.isLoading = false;
                 this.message = 'Subject ID is not valid!';
               } else {
-                console.log('Subject ID: ', data.id);
+                let startAt = new Date().getMinutes()
                 localStorage.setItem('subject_id', data.id.toString());
                 localStorage.setItem('isLogin', 'true');
-
+                localStorage.setItem('startAt', String(startAt))
                 this.showBackdrop = !this.showBackdrop;
                 this.router.navigate(['/quiz/page']);
               }

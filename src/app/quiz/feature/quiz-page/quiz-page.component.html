@@ -1,10 +1,13 @@
 <div class="container pt-20 mx-auto p-52" *ngIf="!isReview">
   <h1 class="mb-4 text-xl font-bold">Questions</h1>
-  <p class="mb-4">
-    <strong>Time remaining: </strong>{{ remainMinutes }}{{remainSeconds > 0 ? ':' : ''}}{{ remainSeconds }}{{remainSeconds > 0 ? 's' : ''}}
+  <p class="mb-4" [class.text-red]="remainMinutes === 0 && remainSeconds <= 30">
+    <strong>Time remaining: </strong>{{ remainMinutes }}{{remainSeconds >= 0 ? ':' : ''}}{{remainSeconds >= 0 ? (remainSeconds < 10 ? ('0'+remainSeconds+'s') : (remainSeconds + 's')) : ''}}
+  </p>
+  <p class="mb-4 fixed bottom-16 right-10" [class.text-red]="remainMinutes === 0 && remainSeconds <= 30" [class.hidden]="windowScroll < 300">
+    <strong>Time remaining: </strong>{{ remainMinutes }}{{remainSeconds >= 0 ? ':' : ''}}{{remainSeconds >= 0 ? (remainSeconds < 10 ? ('0'+remainSeconds+'s') : (remainSeconds + 's')) : ''}}
   </p>
   <form>
-    <!-- <div *ngIf="!quizList; else quizLoad">
+    <div *ngIf="!quizList && currentQuizList.length === 0; else quizLoad">
       <app-skeleton-optimize
         class="py-4 mb-10"
         borderRadius="8px"
@@ -14,8 +17,8 @@
     </div>
     <ng-template #quizLoad>
       <app-quiz-list [quizList]="currentQuizList"></app-quiz-list>
-    </ng-template> -->
-    <app-quiz-list [quizList]="currentQuizList"></app-quiz-list>
+    </ng-template>
+    <!-- <app-quiz-list [quizList]="currentQuizList"></app-quiz-list> -->
     <button
       (click)="isSubmit = true"
       class="px-6 py-4 text-white bg-blue-500 rounded-lg hover:bg-blue-600"
@@ -58,7 +61,7 @@
   <div class="flex justify-center my-8">
     <button
       class="px-4 py-2 mr-4 font-bold text-white bg-blue-500 rounded hover:bg-blue-700"
-      (click)="postMark()"
+      (click)="finishQuiz()"
     >
       Finish
     </button>
