@@ -10,7 +10,8 @@ import { SubjectService } from 'src/app/subject/data-access/subject.service';
   templateUrl: './quiz-auth.component.html',
   styleUrls: ['./quiz-auth.component.scss'],
 })
-export class QuizAuthComponent implements OnInit {
+export class QuizAuthComponent implements OnInit{
+
   message = '';
   showBackdrop = false;
   isLoading = false;
@@ -22,18 +23,18 @@ export class QuizAuthComponent implements OnInit {
     private router: Router,
     private fb: FormBuilder,
     private studentService: StudentService,
-    private subjectService: SubjectService
-  ) {}
+    private subjectService: SubjectService,
+  ) { }
 
   ngOnInit(): void {
     localStorage.clear();
   }
 
   infoUser = this.fb.group({
-    full_name: [''],
-    student_id: [, [Validators.required, Validators.pattern(/[0-9\+\-\ ]/)]],
-    subject_id: [, [Validators.required, Validators.pattern(/[0-9\+\-\ ]/)]],
-  });
+    "full_name": [""],
+    "student_id": [ , [Validators.required, Validators.pattern(/^\d+$/)]],
+    "subject_id": [ , [Validators.required, Validators.pattern(/^\d+$/)]],
+  })
   get form() {
     return this.infoUser.controls;
   }
@@ -42,20 +43,21 @@ export class QuizAuthComponent implements OnInit {
     this.inputStudentID = Number(this.infoUser.value.student_id);
     this.inputSubjectID = Number(this.infoUser.value.subject_id);
 
-    const student = this.studentService.getStudentById(this.inputStudentID);
-    const subject = this.subjectService.getSubjectById(this.inputSubjectID);
+    const student = this.studentService.getStudentById(this.inputStudentID)
+    const subject = this.subjectService.getSubjectById(this.inputSubjectID)
 
     if (this.inputStudentID && this.inputSubjectID) {
       this.isLoading = true;
-      this.message = '';
+      this.message = "";
       student.subscribe({
         next: (data) => {
+          // console.log('Student ID: ', data.id);
           localStorage.setItem('student_id', data.id.toString());
           subject.subscribe({
             next: (data) => {
               if (data.id === undefined) {
                 this.isLoading = false;
-                this.message = 'Subject ID is not valid!';
+                this.message = "Subject ID is not valid!";
               } else {
                 let startAt = new Date().getMinutes()
                 localStorage.setItem('subject_id', data.id.toString());
@@ -64,39 +66,41 @@ export class QuizAuthComponent implements OnInit {
                 this.showBackdrop = !this.showBackdrop;
                 this.router.navigate(['/quiz/page']);
               }
-            },
-          });
+            }
+          })
         },
         error: (err) => {
           this.isLoading = false;
-          this.message = 'Student ID is not valid!';
-        },
-      });
+          this.message = "Student ID is not valid!";
+        }
+      })
     } else if (this.inputStudentID && this.inputSubjectID === 0) {
       this.isLoading = true;
-      this.message = '';
+      this.message = "";
       setTimeout(() => {
         this.isLoading = false;
-        this.message = 'Please enter a subject ID';
-      }, 2000);
+        this.message = "Please enter a subject ID"
+      }, 2000)
     } else if (this.inputStudentID === 0 && this.inputSubjectID) {
       this.isLoading = true;
-      this.message = '';
+      this.message = "";
       setTimeout(() => {
         this.isLoading = false;
-        this.message = 'Please enter a student ID';
-      }, 2000);
+        this.message = "Please enter a student ID"
+      }, 2000)
     } else if (this.inputStudentID === 0 && this.inputSubjectID === 0) {
       this.isLoading = true;
-      this.message = '';
+      this.message = "";
       setTimeout(() => {
         this.isLoading = false;
-        this.message = 'Please fill out all fields.';
-      }, 2000);
+        this.message = "Please fill out all fields."
+      }, 2000)
     }
   }
 
-  handleSubmit() {}
+  handleSubmit() {
+
+  }
 
   handleCancel() {
     this.showBackdrop = !this.showBackdrop;
