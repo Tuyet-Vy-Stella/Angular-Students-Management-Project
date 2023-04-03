@@ -28,8 +28,8 @@ export class QuizAuthComponent {
 
   infoUser = this.fb.group({
     "full_name": [""],
-    "student_id": [ , [Validators.required, Validators.pattern(/[0-9\+\-\ ]/)]],
-    "subject_id": [ , [Validators.required, Validators.pattern(/[0-9\+\-\ ]/)]],
+    "student_id": [ , [Validators.required, Validators.pattern(/^\d+$/)]],
+    "subject_id": [ , [Validators.required, Validators.pattern(/^\d+$/)]],
   })
   get form() {
     return this.infoUser.controls;
@@ -47,7 +47,7 @@ export class QuizAuthComponent {
       this.message = "";
       student.subscribe({
         next: (data) => {
-          console.log('Student ID: ', data.id);
+          // console.log('Student ID: ', data.id);
           localStorage.setItem('student_id', data.id.toString());
           subject.subscribe({
             next: (data) => {
@@ -55,7 +55,7 @@ export class QuizAuthComponent {
                 this.isLoading = false;
                 this.message = "Subject ID is not valid!";
               } else {
-                console.log('Subject ID: ', data.id);
+                // console.log('Subject ID: ', data.id);
                 localStorage.setItem('subject_id', data.id.toString());
 
                 this.showBackdrop = !this.showBackdrop;
