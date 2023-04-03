@@ -1,27 +1,34 @@
-import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
-import { map } from 'rxjs';
+import { HttpClient } from '@angular/common/http'
+import { Injectable } from '@angular/core'
+import { map } from 'rxjs'
 
-import { CreateStudentModel, Student } from './student.model';
+import { CreateStudentModel, Student } from './student.model'
+
+interface Class {
+  id: number
+  grade: string
+  section: string
+  form_teacher_id: number
+  form_teacher_name: string
+  created_at: string
+}
 
 @Injectable({
-  providedIn: 'root',
+  providedIn: 'root'
 })
 export class StudentService {
   constructor(private http: HttpClient) {}
 
   getStudentList() {
-    return this.http.get<Student[]>(
-      'https://qlsv-mu.vercel.app/api/student-list'
-    );
+    return this.http.get<Student[]>('https://qlsv-mu.vercel.app/api/student-list')
   }
 
   getStudentById(id: number) {
     return this.http.get<Student>('https://qlsv-mu.vercel.app/api/student/', {
       params: {
-        student_id: id,
-      },
-    });
+        student_id: id
+      }
+    })
   }
 
   createStudent(data: CreateStudentModel) {
@@ -31,25 +38,30 @@ export class StudentService {
         return {
           code: 200,
           success: true,
-          data: response,
-        };
+          data: response
+        }
       })
-    );
+    )
   }
 
   updateStudent(id: number, data: CreateStudentModel) {
     return this.http.put('https://qlsv-mu.vercel.app/api/student/', data, {
       params: {
-        student_id: id,
-      },
-    });
+        student_id: id
+      }
+    })
   }
 
   deleteStudent(id: number) {
     return this.http.delete('https://qlsv-mu.vercel.app/api/student/', {
       params: {
-        student_id: id,
-      },
-    });
+        student_id: id
+      }
+    })
+  }
+
+  // Temp
+  getClasses() {
+    return this.http.get<Class[]>('https://qlsv-mu.vercel.app/api/class-list')
   }
 }

@@ -1,6 +1,6 @@
+import { map } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { map } from 'rxjs';
 import { Subject } from '../../shared/model/subject.model';
 
 import { CreateTeacherModel, Teacher } from '../../shared/model/teacher.model';
@@ -37,6 +37,10 @@ export class TeacherService {
         subject_id: id,
       },
     });
+  }
+
+  getClassList() {
+    return this.http.get('https://qlsv-mu.vercel.app/api/class-list');
   }
 
   deleteTeacher(id: number) {

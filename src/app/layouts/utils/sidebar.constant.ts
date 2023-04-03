@@ -52,9 +52,9 @@ export const sidebarTabs = [
       {
         id: 32,
         name: 'Create Teacher',
-        link: 'teachers/create',
-      },
-    ],
+        link: 'teachers/new'
+      }
+    ]
   },
   {
     id: 4,
@@ -67,11 +67,11 @@ export const sidebarTabs = [
         name: 'Subject List',
         link: 'subjects',
       },
-      {
-        id: 42,
-        name: 'Create Subject',
-        link: 'subjects/create',
-      },
+      // {
+      //   id: 42,
+      //   name: 'Create Subject',
+      //   link: 'subjects/create',
+      // },
     ],
   },
   {
