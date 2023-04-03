@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 
@@ -10,7 +10,7 @@ import { SubjectService } from 'src/app/subject/data-access/subject.service';
   templateUrl: './quiz-auth.component.html',
   styleUrls: ['./quiz-auth.component.scss'],
 })
-export class QuizAuthComponent {
+export class QuizAuthComponent implements OnInit{
 
   message = '';
   showBackdrop = false;
@@ -24,7 +24,7 @@ export class QuizAuthComponent {
     private fb: FormBuilder,
     private studentService: StudentService,
     private subjectService: SubjectService,
-  ) { } 
+  ) { }
 
   infoUser = this.fb.group({
     "full_name": [""],
@@ -70,21 +70,21 @@ export class QuizAuthComponent {
         }
       })
     } else if (this.inputStudentID && this.inputSubjectID === 0) {
-      this.isLoading = true;  
+      this.isLoading = true;
       this.message = "";
       setTimeout(() => {
         this.isLoading = false;
         this.message = "Please enter a subject ID"
       }, 2000)
     } else if (this.inputStudentID === 0 && this.inputSubjectID) {
-      this.isLoading = true;  
+      this.isLoading = true;
       this.message = "";
       setTimeout(() => {
         this.isLoading = false;
         this.message = "Please enter a student ID"
       }, 2000)
     } else if (this.inputStudentID === 0 && this.inputSubjectID === 0) {
-      this.isLoading = true;  
+      this.isLoading = true;
       this.message = "";
       setTimeout(() => {
         this.isLoading = false;
@@ -103,5 +103,9 @@ export class QuizAuthComponent {
 
   onClearMessage() {
     this.message = '';
+  }
+
+  ngOnInit(): void {
+
   }
 }

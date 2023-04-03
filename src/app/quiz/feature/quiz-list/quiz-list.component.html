@@ -1,1 +1,5 @@
-<p>quiz-list works!</p>
+<div>
+  <ng-container *ngFor="let quiz of quizList; let idx = index">
+    <app-quiz-item [quiz]="quiz" [idx]="idx"></app-quiz-item>
+  </ng-container>
+</div>

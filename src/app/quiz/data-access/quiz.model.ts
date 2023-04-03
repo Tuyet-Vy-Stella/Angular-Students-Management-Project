@@ -1,3 +1,16 @@
+export type ResultExam = {
+  isCorrect: boolean;
+  isCurrentChoose: CurrentChoose;
+};
+
+export type CurrentChoose = {
+  allAnswer: string[];
+  answer: string;
+  quizID: number;
+  score: number;
+  isChoose: boolean;
+};
+
 export interface Quiz {
   id: number;
   score: number;
@@ -7,12 +20,21 @@ export interface Quiz {
   question: string;
   correct_answer: string;
   incorrect_answers: string[];
+  allAnswers: string[];
+  result?: ResultExam;
+}
+export interface QuizAnswer {
+  quizID: number;
+  answer: string;
+  score: number;
+  isChoose: boolean;
 }
 
-export enum Score {
-  easy = 'easy',
-  medium = 'medium',
-  hard = 'hard',
+export interface Mark {
+  student_id: number;
+  subject_id: number;
+  mark: number;
+  semester: number;
 }
 
 export function shuffle(array: any) {
@@ -29,7 +51,8 @@ export function shuffle(array: any) {
       array[currentIndex],
     ];
   }
-
   return array;
 }
-export const BACKEND_URL_QUIZ = 'http://localhost:3000';
+export const BACKEND_URL_QUIZ = 'https://json-server-quiz.vercel.app';
+
+export const markAPI = 'https://qlsv-mu.vercel.app/api/mark';

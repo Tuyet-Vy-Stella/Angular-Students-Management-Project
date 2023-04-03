@@ -37,7 +37,12 @@ export class AuthComponent implements OnInit {
   private loginSuccessHandle(res: IResponse) {
     this.isLoading = false;
     this.authService.user.next(res.name);
-    const loginTime = this.isRemembered ? 3 * 60 * 60 * 1000 : 60 * 60 * 1000;
+
+    const loginTime = this.isRemembered
+      ? 3 * 24 * 60 * 60 * 1000
+      : 60 * 60 * 1000;
+    // const loginTime = this.isRemembered ? 3 * 24 * 60 * 60 * 1000 : 20 * 1000;
+
     const expirationTime = new Date(new Date().getTime() + loginTime);
     this.cookieService.set('name', res.name);
     this.cookieService.set(

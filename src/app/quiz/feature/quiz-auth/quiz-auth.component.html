@@ -1,98 +1,76 @@
-<div
-    class="modal-backdrop flex flex-col justify-center items-center"
-    [ngClass]="{ hidden: showBackdrop }"
-  >
-    <div
-      *ngIf="message"
-      class="w-[95%] max-w-[450px] p-4 flex justify-between mx-auto mb-4 lg:max-w-[800px] bg-red-200 text-red-600 rounded-lg"
-    >
-      {{ message }}
-      <span class="underline text-blue-600 cursor-pointer" (click)="onClearMessage()">OK</span>
+<div class="flex flex-col items-center justify-center modal-backdrop" [ngClass]="{ hidden: showBackdrop }">
+  <div *ngIf="message"
+    class="w-[95%] max-w-[450px] p-4 flex justify-between mx-auto mb-4 lg:max-w-[800px] bg-red-200 text-red-600 rounded-lg">
+    {{ message }}
+    <span class="text-blue-600 underline cursor-pointer" (click)="onClearMessage()">OK</span>
+  </div>
+
+  <span *ngIf="isLoading" class="loader"></span>
+
+  <div *ngIf="!isLoading" class="w-full max-w-xl bg-[#f4f4f4] py-7 px-5 rounded-xl">
+    <div class="w-full max-w-xl bg-[#f4f4f4] flex justify-between py-7 px-5 rounded-xl">
+      <h1 class="text-[#252525] font-bold text-start text-5xl mb-5">
+        Sign in
+      </h1>
+      <div class="relative flex hidden mb-4 lg:block lg:w-1/2 align-right image-cover">
+        <img src="../../../../assets/images/logo.png" alt="Login-Img" class="h-[55px] object-fill bottom-0 absolute" />
+      </div>
     </div>
 
-    <span *ngIf="isLoading" class="loader"></span>
-
-    <div *ngIf="!isLoading" class="w-full max-w-xl bg-[#f4f4f4] py-7 px-5 rounded-xl">
-      <div class="w-full max-w-xl bg-[#f4f4f4] flex justify-between py-7 px-5 rounded-xl">
-        <h1 class="text-[#252525] font-bold text-start text-5xl mb-5">
-          Sign in
-        </h1>
-        <div class="hidden lg:block lg:w-1/2 flex align-right relative image-cover mb-4">
-          <img src="../../../../assets/images/logo.png" alt="Login-Img" class="h-[55px] object-fill bottom-0 absolute" />
+    <br />
+    <br />
+    <form class="" (ngSubmit)="onSubmit()" [formGroup]='infoUser'>
+      <div class="mb-6">
+        <label class="block mb-2 font-bold text-black" for="full-name">
+          Full name
+        </label>
+        <input
+          class="shadow appearance-none border-black-400 focus:border-green-500 ease-linear transition-all duration-500 border-[2px] rounded-xl w-full py-3 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+          id="full_name" formControlName="full_name" type="text" placeholder="Enter your first and last name" />
+      </div>
+      <div class="mb-6">
+        <label class="block mb-2 font-bold text-black" for="student-id">
+          Student ID <span class="text-red-600">*</span>
+        </label>
+        <input
+          class="shadow appearance-none border-black-400 focus:border-green-500 ease-linear transition-all duration-500 border-[2px] rounded-lg w-full py-3 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+          id="student_id" formControlName="student_id" type="text" placeholder="Enter your student ID" />
+        <div *ngIf="form.student_id.invalid && (form.student_id.dirty || form.student_id.touched)">
+          <div *ngIf="form.student_id.errors?.['required']">
+            <span class="text-red-600">Student ID is required.</span>
+          </div>
+          <div *ngIf="form.student_id.errors?.['pattern']">
+            <span class="text-red-600">Student ID must be numeric.</span>
+          </div>
         </div>
       </div>
-      
-      <br />
-      <br />
-      <form class="" (ngSubmit)="onSubmit()" [formGroup]='infoUser'>
-        <div class="mb-6">
-          <label class="block text-black font-bold mb-2" for="full-name">
-            Full name
-          </label>
-          <input
-            class="shadow appearance-none border-black-400 focus:border-green-500 ease-linear transition-all duration-500 border-[2px] rounded-xl w-full py-3 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-            id="full_name"
-            formControlName="full_name"
-            type="text"
-            placeholder="Enter your first and last name"
-          />
-        </div>
-        <div class="mb-6">
-          <label class="block font-bold mb-2 text-black" for="student-id">
-            Student ID <span class="text-red-600">*</span>
-          </label>
-          <input
-            class="shadow appearance-none border-black-400 focus:border-green-500 ease-linear transition-all duration-500 border-[2px] rounded-lg w-full py-3 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-            id="student_id"
-            formControlName="student_id"
-            type="text"
-            placeholder="Enter your student ID"
-          />
-          <div *ngIf="form.student_id.invalid && (form.student_id.dirty || form.student_id.touched)">
-            <div *ngIf="form.student_id.errors?.['required']">
-              <span class="text-red-600">Student ID is required.</span>
-            </div>
-            <div *ngIf="form.student_id.errors?.['pattern']">
-              <span class="text-red-600">Student ID must be numeric.</span>
-            </div>
+      <div class="mb-6">
+        <label class="block mb-2 font-bold text-black" for="full-name">
+          Subject ID <span class="text-red-600">*</span>
+        </label>
+        <input
+          class="shadow appearance-none border-black-400 focus:border-green-500 ease-linear transition-all duration-500 border-[2px] rounded-xl w-full py-3 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+          id="subject_id" formControlName="subject_id" type="text" placeholder="Enter subject ID" />
+        <div *ngIf="form.subject_id.invalid && (form.subject_id.dirty || form.subject_id.touched)">
+          <div *ngIf="form.subject_id.errors?.['required']">
+            <span class="text-red-600">Subject ID is required.</span>
+          </div>
+          <div *ngIf="form.subject_id.errors?.['pattern']">
+            <span class="text-red-600">Subject ID must be numeric.</span>
           </div>
         </div>
-        <div class="mb-6">
-          <label class="block text-black font-bold mb-2" for="full-name">
-            Subject ID <span class="text-red-600">*</span>
-          </label>
-          <input
-            class="shadow appearance-none border-black-400 focus:border-green-500 ease-linear transition-all duration-500 border-[2px] rounded-xl w-full py-3 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-            id="subject_id" 
-            formControlName="subject_id"
-            type="text"
-            placeholder="Enter subject ID"
-          />
-          <div *ngIf="form.subject_id.invalid && (form.subject_id.dirty || form.subject_id.touched)">
-            <div *ngIf="form.subject_id.errors?.['required']">
-              <span class="text-red-600">Subject ID is required.</span>
-            </div>
-            <div *ngIf="form.subject_id.errors?.['pattern']">
-              <span class="text-red-600">Subject ID must be numeric.</span>
-            </div>
-          </div>
-        </div>
-        <div class="flex items-center justify-around">
-          <button
-            (click)="handleSubmit()"
-            type="submit"
-            class="px-12 py-4 mt-4 disabled:opacity-50 font-semibold tracking-wide bg-[#3D5EE1] hover:bg-blue-500 hover:motion-safe:scale-110 text-white ease-linear rounded-lg transition-all duration-300"
-          >
-            Log in
-          </button>
-          <button
-            (click)="handleCancel()"
-            type="cancel"
-            class="px-12 py-4 mt-4 disabled:opacity-50 font-semibold tracking-wide bg-[#3D5EE1] hover:bg-blue-500 hover:motion-safe:scale-110 text-white ease-linear rounded-lg transition-all duration-300"
-          >
-            Cancel
-          </button>
-        </div>
-      </form>
-    </div>
+      </div>
+      <div class="flex items-center justify-around">
+        <button (click)="handleSubmit()" type="submit"
+          class="px-12 py-4 mt-4 disabled:opacity-50 font-semibold tracking-wide bg-[#3D5EE1] hover:bg-blue-500 hover:motion-safe:scale-110 text-white ease-linear rounded-lg transition-all duration-300">
+          Log in
+        </button>
+        <button (click)="handleCancel()" type="cancel"
+          class="px-12 py-4 mt-4 disabled:opacity-50 font-semibold tracking-wide bg-[#3D5EE1] hover:bg-blue-500 hover:motion-safe:scale-110 text-white ease-linear rounded-lg transition-all duration-300">
+          Cancel
+        </button>
+      </div>
+    </form>
   </div>
+  <button type="submit" class="px-4 py-2 text-white rounded bg-primary">Enroll</button>
+</div>
