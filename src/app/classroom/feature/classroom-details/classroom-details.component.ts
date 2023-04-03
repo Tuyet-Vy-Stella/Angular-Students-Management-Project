@@ -1,7 +1,14 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { icons } from '../../utils/icons';
 import { ClassroomService } from '../../data-access/classroom.service';
-import { combineLatest, map, Observable, startWith } from 'rxjs';
+import {
+  combineLatest,
+  map,
+  Observable,
+  startWith,
+  Subject,
+  takeUntil,
+} from 'rxjs';
 import { ToastrService } from 'ngx-toastr';
 
 @Component({
@@ -9,7 +16,7 @@ import { ToastrService } from 'ngx-toastr';
   templateUrl: './classroom-details.component.html',
   styleUrls: ['./classroom-details.component.scss'],
 })
-export class ClassroomDetailsComponent implements OnInit {
+export class ClassroomDetailsComponent implements OnInit, OnDestroy {
   showModal = false;
   showAddModal = false;
   icons = icons;
@@ -64,10 +71,17 @@ export class ClassroomDetailsComponent implements OnInit {
     )
   );
 
+  private destroy$ = new Subject<boolean>();
+
   constructor(
     private classroomService: ClassroomService,
     private toastrService: ToastrService
   ) {}
+
+  ngOnDestroy(): void {
+    this.destroy$.next(true);
+    this.destroy$.unsubscribe();
+  }
 
   ngOnInit(): void {
     this.classroomService.init();
@@ -83,7 +97,21 @@ export class ClassroomDetailsComponent implements OnInit {
   }
 
   onAcceptAddTeacherModal(event: number) {
-    console.log(event);
+    this.classroomService
+      .addNewTeacherToClass(event)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: (value) => {
+          this.toastrService.success('Add teacher successfully !!!');
+        },
+        error: (err) => {
+          console.log(err);
+          this.toastrService.error(err.error.detail);
+        },
+        complete: () => {
+          this.showAddModal = false;
+        },
+      });
   }
 
   onOpenModal(deleteType: number, id?: number) {
@@ -105,15 +133,20 @@ export class ClassroomDetailsComponent implements OnInit {
   onConfirmModal() {
     this.showModal = false;
     if (this.currentDeletedType === 1) {
-      this.classroomService.deleteClass(this.currentDeletedId).subscribe({
-        next: (value) => {
-          this.toastrService.success(value.message);
-        },
-        error: (err) => {
-          console.log(err);
-          this.toastrService.error(err.error.detail);
-        },
-      });
+      this.classroomService
+        .deleteClass(this.currentDeletedId)
+        .pipe(takeUntil(this.destroy$))
+        .subscribe({
+          next: (value) => {
+            this.toastrService.success(value.message);
+          },
+          error: (err) => {
+            console.log(err);
+            this.toastrService.error(
+              "Class still have students. Can't be deleted"
+            );
+          },
+        });
     } else if (this.currentDeletedType === 3) {
       this.classroomService.deleteTeacher(this.currentDeletedId).subscribe({
         next: () => {

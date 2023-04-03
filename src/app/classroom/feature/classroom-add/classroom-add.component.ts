@@ -7,7 +7,7 @@ import {
 } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { ClassroomEditService } from '../../data-access/classroom-edit.service';
-import { BehaviorSubject, Observable, Subscription } from 'rxjs';
+import { BehaviorSubject, Observable, Subject, takeUntil } from 'rxjs';
 import { ITeacher } from '../../utils/classroom';
 import { ToastrService } from 'ngx-toastr';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -41,8 +41,7 @@ export class ClassroomAddComponent implements OnInit, OnDestroy {
 
   error: string = '';
 
-  routeSub!: Subscription;
-  teacherOptionSub!: Subscription;
+  private destroy$ = new Subject<boolean>();
 
   constructor(
     private fb: FormBuilder,
@@ -98,25 +97,31 @@ export class ClassroomAddComponent implements OnInit, OnDestroy {
     if (this.createForm.valid && this.createForm.value) {
       this.isLoading = true;
       try {
-        this.classroomEditService.createNewClass(classroom).subscribe({
-          next: () => {
-            this.classroomEditService.updateTeacherSearchList(
-              this.createForm.get('teacherId')?.value ?? ''
-            );
-            this.toastrService.success('Create class successfully');
-            this.createForm.reset();
-            this.teacherActiveOption$.next(
-              '' + this.classroomEditService.teacherSearchList$.getValue()[0].id
-            );
-            this.gradeSelectEl.nativeElement.selectedIndex = 0;
-          },
-          error: () => {
-            this.toastrService.error('Something went wrong. Try another time');
-          },
-          complete: () => {
-            this.isLoading = false;
-          },
-        });
+        this.classroomEditService
+          .createNewClass(classroom)
+          .pipe(takeUntil(this.destroy$))
+          .subscribe({
+            next: () => {
+              this.classroomEditService.updateTeacherSearchList(
+                this.createForm.get('teacherId')?.value ?? ''
+              );
+              this.toastrService.success('Create class successfully');
+              this.createForm.reset();
+              this.teacherActiveOption$.next(
+                '' +
+                  this.classroomEditService.teacherSearchList$.getValue()[0].id
+              );
+              this.gradeSelectEl.nativeElement.selectedIndex = 0;
+            },
+            error: () => {
+              this.toastrService.error(
+                'Something went wrong. Try another time'
+              );
+            },
+            complete: () => {
+              this.isLoading = false;
+            },
+          });
       } catch (e: unknown) {
         if (e instanceof Error) {
           this.error = `${e.message}`;
@@ -127,7 +132,7 @@ export class ClassroomAddComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.routeSub = this.route.params.subscribe((params) => {
+    this.route.params.pipe(takeUntil(this.destroy$)).subscribe((params) => {
       this.currentEditID = params['id'];
       this.isEdit$.next(!!params['id']);
     });
@@ -143,13 +148,15 @@ export class ClassroomAddComponent implements OnInit, OnDestroy {
     this.teacherActiveOption$ = this.classroomEditService.teacherActiveOption$;
     this.classroomEditService.init();
 
-    this.teacherOptionSub = this.teacherActiveOption$.subscribe((data) => {
-      this.createForm.patchValue({ teacherId: '' + data });
-    });
+    this.teacherActiveOption$
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((data) => {
+        this.createForm.patchValue({ teacherId: '' + data });
+      });
   }
 
   ngOnDestroy(): void {
-    this.routeSub.unsubscribe();
-    this.teacherOptionSub.unsubscribe();
+    this.destroy$.next(true);
+    this.destroy$.unsubscribe();
   }
 }

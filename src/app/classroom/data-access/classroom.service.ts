@@ -140,15 +140,24 @@ export class ClassroomService {
     teacher_id: number;
     class_id: number;
   }> {
-    return this.http.post<{
-      id: number;
-      subject_id: number;
-      teacher_id: number;
-      class_id: number;
-    }>('https://qlsv-mu.vercel.app/api/class/add-subject', {
-      class_id: this.dataStorage.currentClass,
-      teacher_id: id,
-    });
+    return this.http
+      .post<{
+        id: number;
+        subject_id: number;
+        teacher_id: number;
+        class_id: number;
+      }>('https://qlsv-mu.vercel.app/api/class/add-subject', {
+        class_id: this.dataStorage.currentClass.id,
+        teacher_id: id,
+      })
+      .pipe(
+        catchError((e) => throwError(e)),
+        tap(() => {
+          this.dataStorage.currentClassId$.next(
+            this.dataStorage.currentClass.id
+          );
+        })
+      );
   }
 
   public deleteClass(id: number): Observable<{ message: string }> {
