@@ -63,3 +63,18 @@
     box-shadow: 16px 0 #18aefa, -16px 0 rgba(255, 255, 255, 0.25);
   }
 }
+
+@keyframes flash {
+  0% {
+    background-color: rgba(255, 255, 255, 0.25);
+    box-shadow: 16px 0 rgba(255, 255, 255, 0.25), -16px 0 #18AEFA ;
+  }
+  50% {
+    background-color: #18AEFA;
+    box-shadow: 16px 0 rgba(255, 255, 255, 0.25), -16px 0 rgba(255, 255, 255, 0.25);
+  }
+  100% {
+    background-color: white;
+    box-shadow: 16px 0 #18AEFA, -16px 0 rgba(255, 255, 255, 0.25);
+  }
+}

@@ -17,6 +17,7 @@ import { AuthInterceptor } from './auth/data-access/auth.interceptor';
 import { HeaderComponent } from './layouts/ui/header/header.component';
 import { SidebarComponent } from './layouts/ui/sidebar/sidebar.component';
 import { FooterComponent } from './layouts/ui/footer/footer.component';
+import { ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -32,6 +33,7 @@ import { FooterComponent } from './layouts/ui/footer/footer.component';
     BrowserModule,
     HttpClientModule,
     BrowserAnimationsModule,
+    ReactiveFormsModule,
     ToastrModule.forRoot({
       timeOut: 4000,
       positionClass: 'toast-top-right',
