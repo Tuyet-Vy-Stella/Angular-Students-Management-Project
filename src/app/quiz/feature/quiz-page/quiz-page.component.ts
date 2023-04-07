@@ -36,7 +36,7 @@ export class QuizPageComponent implements OnDestroy {
   remainTime!: number; // giây
   remainMinutes!: number;
   remainSeconds!: number;
-  windowScroll!: number;
+  windowScroll: number = 0;
   constructor(private quizService: QuizService, private route: Router) {}
 
   ngOnInit() {
@@ -61,28 +61,7 @@ export class QuizPageComponent implements OnDestroy {
         this.remainSeconds = this.remainTime / 1000;
       }
       if (this.remainTime <= 0) {
-        // check đáp án đúng hay sai -> lấy ra đáp án vừa chọn và check đáp án đúng hay sai
-        this.totalResult = this.currentQuizList.map((quiz, index) => {
-          let isCorrect = this.totalAnswer.some(
-            (answer) => quiz.correct_answer === answer.answer
-          );
-          let score: any = isCorrect ? this.totalAnswer[index]?.score : 0;
-          return {
-            isCurrentChoose: { ...this.totalAnswer[index], score: score },
-            isCorrect,
-          };
-        });
-        // nếu làm bài xong sẽ lưu bài trên localStorage
-        this.currentQuizList = this.currentQuizList.map((quiz, index) => {
-          return {
-            ...quiz,
-            result: this.totalResult[index],
-          };
-        });
-        this.isReview = true;
-        localStorage.setItem('result', JSON.stringify(this.currentQuizList));
-        localStorage.setItem('isSubmit', JSON.stringify(this.isReview));
-        localStorage.removeItem('quizList');
+        this.submitQuiz();
         clearInterval(this.timer);
       }
     }, 1000);
@@ -137,6 +116,22 @@ export class QuizPageComponent implements OnDestroy {
   }
 
   handleSubmitQuiz() {
+    this.submitQuiz();
+    if (
+      this.totalResult.length === this.currentQuizList.length &&
+      this.totalResult.length === this.totalAnswer.length
+    ) {
+      setTimeout(() => {
+        this.postMark();
+      }, 100);
+    } else {
+      alert('Please fill all the input!!');
+      this.isSubmit = false;
+      return;
+    }
+  }
+
+  submitQuiz() {
     // check đáp án đúng hay sai -> lấy ra đáp án vừa chọn và check đáp án đúng hay sai
     this.totalResult = this.currentQuizList.map((quiz, index) => {
       let isCorrect = this.totalAnswer.some(
@@ -149,30 +144,16 @@ export class QuizPageComponent implements OnDestroy {
       };
     });
     // nếu làm bài xong sẽ lưu bài trên localStorage
-    if (
-      this.totalResult.length === this.currentQuizList.length &&
-      this.totalResult.length === this.totalAnswer.length
-    ) {
-      // thêm phần kết quả sau khi làm bài vào trong mảng currentQuizList
-      this.currentQuizList = this.currentQuizList.map((quiz, index) => {
-        return {
-          ...quiz,
-          result: this.totalResult[index],
-        };
-      });
-      this.isReview = true;
-      localStorage.setItem('result', JSON.stringify(this.currentQuizList));
-      localStorage.setItem('isSubmit', JSON.stringify(this.isReview));
-      localStorage.removeItem('quizList');
-      clearInterval(this.timer);
-      setTimeout(()=> {
-        this.postMark()
-      }, 100)
-    } else {
-      alert('Please fill all the input!!');
-      this.isSubmit = false;
-      return;
-    }
+    this.currentQuizList = this.currentQuizList.map((quiz, index) => {
+      return {
+        ...quiz,
+        result: this.totalResult[index],
+      };
+    });
+    this.isReview = true;
+    localStorage.setItem('result', JSON.stringify(this.currentQuizList));
+    localStorage.setItem('isSubmit', JSON.stringify(this.isReview));
+    localStorage.removeItem('quizList');
   }
 
   postMark() {
@@ -183,7 +164,7 @@ export class QuizPageComponent implements OnDestroy {
       semester: 1,
     };
     // Post kết quả lên: Hạn chế sử dụng khi đang test để tránh rác database
-    this.quizService.postMark(this.studentId, result).subscribe(console.log)
+    this.quizService.postMark(this.studentId, result).subscribe(console.log);
     localStorage.clear();
   }
 
