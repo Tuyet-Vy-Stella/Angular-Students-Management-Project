@@ -4,6 +4,7 @@ import { map } from 'rxjs';
 import { Subject } from '../../shared/model/subject.model';
 
 import { CreateTeacherModel, Teacher } from '../../shared/model/teacher.model';
+import { Class } from 'src/app/shared/model/class.model';
 
 @Injectable({
   providedIn: 'root',
@@ -40,7 +41,7 @@ export class TeacherService {
   }
 
   getClassList() {
-    return this.http.get('https://qlsv-mu.vercel.app/api/class-list');
+    return this.http.get<Class[]>('https://qlsv-mu.vercel.app/api/class-list');
   }
 
   deleteTeacher(id: number) {

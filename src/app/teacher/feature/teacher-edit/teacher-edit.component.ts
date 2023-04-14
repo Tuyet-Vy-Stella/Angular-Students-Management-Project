@@ -1,10 +1,17 @@
 import { Component } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import {
+  FormArray,
+  FormControl,
+  FormGroup,
+  Validators,
+  FormBuilder,
+} from '@angular/forms';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { Subject } from 'src/app/shared/model/subject.model';
 
 import { TeacherService } from '../../data-access/teacher.service';
 import { ToastrService } from 'ngx-toastr';
+import { Class } from 'src/app/shared/model/class.model';
 
 @Component({
   selector: 'app-teacher-edit',
@@ -18,35 +25,32 @@ export class TeacherEditComponent {
   isFetchingToGetTeacher = false;
   createMode = false;
   teacherId: number | null = null;
-  classList: any;
-  classTeacherList: number[] = [];
+  classList: Class[] = [];
 
   constructor(
     private teacherService: TeacherService,
     private toastrService: ToastrService,
     private router: Router,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private fb: FormBuilder
   ) {}
+
+  get class_id(): FormArray {
+    return this.teacherForm.get('class_id') as FormArray;
+  }
 
   ngOnInit() {
     // Init create teacher form group
-    this.teacherForm = new FormGroup({
-      name: new FormControl(null, {
-        validators: [Validators.required, this.checkFieldEmpty],
-      }),
-      gender: new FormControl('male', [Validators.required]),
-      birthday: new FormControl(null, [Validators.required]),
-      address: new FormControl(null, [
-        Validators.required,
-        this.checkFieldEmpty,
-      ]),
-      phone: new FormControl(null, [
-        Validators.required,
-        Validators.pattern('[- +()0-9]+'),
-      ]),
-      email: new FormControl(null, [Validators.required, Validators.email]),
-      subject_id: new FormControl(null, [Validators.required]),
-      joined_date: new FormControl(null, [Validators.required]),
+    this.teacherForm = this.fb.group({
+      name: ['', [Validators.required, this.checkFieldEmpty]],
+      gender: ['male', [Validators.required]],
+      birthday: [null, [Validators.required]],
+      address: ['', [Validators.required, this.checkFieldEmpty]],
+      phone: [null, [Validators.required, Validators.pattern('[- +()0-9]+')]],
+      email: [null, [Validators.required, Validators.email]],
+      subject_id: [null, [Validators.required]],
+      joined_date: [null, [Validators.required]],
+      class_id: this.fb.array([]),
     });
 
     //  Set current mode
@@ -86,15 +90,16 @@ export class TeacherEditComponent {
           this.teacherService.getTeacherById(this.teacherId).subscribe({
             next: (response) => {
               const { id, created_at, class_id, ...rest } = response;
-              this.teacherForm.setValue(rest);
-              this.classTeacherList = [...class_id];
-              this.classTeacherList.map((item, index) => {
-                this.teacherForm.addControl(
-                  `class_id_${index}`,
-                  new FormControl(null, [Validators.required])
-                );
-                this.teacherForm.controls[`class_id_${index}`].setValue(item);
+              this.teacherForm.patchValue({
+                ...rest,
               });
+              const class_control = class_id.map((item: any) =>
+                this.fb.control(item)
+              );
+              this.teacherForm.setControl(
+                'class_id',
+                this.fb.array(class_control)
+              );
             },
             error: (error) => {
               this.isFetchingToGetTeacher = false;
@@ -120,47 +125,39 @@ export class TeacherEditComponent {
   }
 
   addClass() {
-    this.teacherForm.addControl(
-      `class_id_${this.classTeacherList.length}`,
-      new FormControl(null, [Validators.required])
-    );
-    this.classTeacherList.push(0);
+    this.class_id.push(this.fb.control(null, [Validators.required]));
   }
 
   removeClass() {
-    this.classTeacherList.pop();
-    this.teacherForm.removeControl(`class_id_${this.classTeacherList.length}`);
+    this.class_id.removeAt(this.class_id.length - 1);
   }
 
   onSubmit() {
     this.isFetchingToCreateOrUpdateTeacher = true;
     if (this.createMode) {
-      this.classTeacherList = this.classTeacherList.map(
-        (item, index) =>
-          (item = +this.teacherForm.controls[`class_id_${index}`].value)
-      );
       // Create teacher
       this.teacherService
         .createTeacher({
           ...this.teacherForm.value,
           // get unique class_id
-          class_id: this.classTeacherList.filter(
-            (item, index) => this.classTeacherList.indexOf(item) === index
+          class_id: this.class_id.value.filter(
+            (item: any, index: any) =>
+              this.class_id.value.indexOf(item) === index
           ),
         })
         .subscribe({
           next: () => {
             this.isFetchingToCreateOrUpdateTeacher = false;
-
             // Show alert
             this.toastrService.success('Create teacher successfully');
-
             // Reset form
             this.teacherForm.reset();
           },
           error: (error) => {
             this.isFetchingToCreateOrUpdateTeacher = false;
-            this.toastrService.error(error.error.detail || 'Create teacher failed. Please try again');
+            this.toastrService.error(
+              error.error.detail || 'Create teacher failed. Please try again'
+            );
           },
           complete: () => {
             this.isFetchingToCreateOrUpdateTeacher = false;
@@ -169,16 +166,13 @@ export class TeacherEditComponent {
     } else {
       // Update teacher
       if (this.teacherId) {
-        this.classTeacherList = this.classTeacherList.map(
-          (item, index) =>
-            (item = +this.teacherForm.controls[`class_id_${index}`].value)
-        );
         this.teacherService
           .updateTeacher(this.teacherId, {
             ...this.teacherForm.value,
             // get unique class_id
-            class_id: this.classTeacherList.filter(
-              (item, index) => this.classTeacherList.indexOf(item) === index
+            class_id: this.class_id.value.filter(
+              (item: any, index: any) =>
+                this.class_id.value.indexOf(item) === index
             ),
           })
           .subscribe({
