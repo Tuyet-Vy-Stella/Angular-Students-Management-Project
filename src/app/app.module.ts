@@ -11,44 +11,46 @@ import { AppRoutingModule } from './app-routing.module';
 
 import { AppComponent } from './app.component';
 
-import { AuthInterceptor } from './auth/data-access/auth.interceptor';
+import { AuthInterceptor } from '@core/interceptors/auth.interceptor';
 
 // Common
-import { HeaderComponent } from './layouts/ui/header/header.component';
-import { SidebarComponent } from './layouts/ui/sidebar/sidebar.component';
-import { FooterComponent } from './layouts/ui/footer/footer.component';
-import { ReactiveFormsModule } from '@angular/forms';
-
-@NgModule({
-  declarations: [
-    AppComponent,
+import {
     HeaderComponent,
     SidebarComponent,
     FooterComponent,
-  ],
+} from '@core/layouts';
+import { ReactiveFormsModule } from '@angular/forms';
 
-  imports: [
-    FontAwesomeModule,
-    AppRoutingModule,
-    BrowserModule,
-    HttpClientModule,
-    BrowserAnimationsModule,
-    ReactiveFormsModule,
-    ToastrModule.forRoot({
-      timeOut: 4000,
-      positionClass: 'toast-top-right',
-      preventDuplicates: false,
-      easing: 'ease-in-out',
-    }),
-  ],
-  providers: [
-    [CookieService],
-    {
-      provide: HTTP_INTERCEPTORS,
-      useClass: AuthInterceptor,
-      multi: true,
-    },
-  ],
-  bootstrap: [AppComponent],
+@NgModule({
+    declarations: [
+        AppComponent,
+        HeaderComponent,
+        SidebarComponent,
+        FooterComponent,
+    ],
+
+    imports: [
+        FontAwesomeModule,
+        AppRoutingModule,
+        BrowserModule,
+        HttpClientModule,
+        BrowserAnimationsModule,
+        ReactiveFormsModule,
+        ToastrModule.forRoot({
+            timeOut: 4000,
+            positionClass: 'toast-top-right',
+            preventDuplicates: false,
+            easing: 'ease-in-out',
+        }),
+    ],
+    providers: [
+        [CookieService],
+        {
+            provide: HTTP_INTERCEPTORS,
+            useClass: AuthInterceptor,
+            multi: true,
+        },
+    ],
+    bootstrap: [AppComponent],
 })
 export class AppModule {}

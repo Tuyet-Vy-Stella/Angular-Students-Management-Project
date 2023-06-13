@@ -1,0 +1,214 @@
+<ng-container *ngIf="vm$ | async as vm">
+
+
+    <div class="py-6 px-8">
+        <div class="flex justify-between">
+            <h1 class="font-medium text-[1.2rem]">Classroom {{vm.currentClass.grade + vm.currentClass.section}}</h1>
+            <p class="text-[0.9rem] text-gray-500 font-medium"><span class="text-black">Dashboard</span> / Classroom
+            </p>
+        </div>
+        <div class="mt-16 py-6 px-4 bg-white">
+            <div class="flex space-x-4">
+                <div class="relative">
+                    <div class="flex w-[12rem] px-3 py-4 justify-between border border-gray-100 rounded cursor-pointer"
+                        appDropDown #r="appDropDown">
+                        <div class="flex items-center">
+                            <fa-icon *ngIf="vm.isSearchTeacher" [icon]="icons.teacher"
+                                class="text-blue-600 mr-2"></fa-icon>
+                            <fa-icon *ngIf="!vm.isSearchTeacher" [icon]="icons.class"
+                                class="text-blue-600 mr-2"></fa-icon>
+                            <p class="text-blue-900 font-medium">{{vm.isSearchTeacher ? 'Teacher' : 'Class'}}</p>
+                        </div>
+                        <fa-icon [icon]="icons.downArrow"></fa-icon>
+                    </div>
+                    <div class="absolute z-20 top-[110%] left-0 bg-white w-full shadow-2xl py-4 px-2 hidden"
+                        [ngClass]="{'hidden' : !r.isOpen}">
+                        <p class="font-bold text-blue-600 mb-4">Search Type</p>
+                        <ul class="space-y-1">
+                            <li class=" py-3 text-center text-[0.9rem] text-blue-900 font-medium cursor-pointer border border-gray-200
+                    duration-200 hover:text-white hover:bg-blue-500 rounded"
+                                [ngClass]="{ 'bg-blue-500 text-white' : vm.isSearchTeacher}"
+                                (click)="isSearchTeacher$.next(true)">Teacher
+                            </li>
+                            <li class=" py-3 text-center text-[0.9rem] text-blue-900 font-medium cursor-pointer border border-gray-200
+                    duration-200 hover:text-white hover:bg-blue-500 rounded"
+                                [ngClass]="{ 'bg-blue-500 text-white' : !vm.isSearchTeacher}"
+                                (click)="isSearchTeacher$.next(false)">
+                                Class
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="relative">
+                    <div class="flex w-[16rem] px-3 py-4 justify-between border border-gray-100 rounded cursor-pointer"
+                        appDropDown #r2="appDropDown">
+                        <p class="text-blue-900 font-medium">{{ vm.isSearchTeacher ? vm.currentClass.form_teacher :
+                            vm.currentClass.grade + vm.currentClass.section}}</p>
+                        <fa-icon [icon]="icons.downArrow"></fa-icon>
+                    </div>
+                    <div class="absolute z-20 top-[110%] left-0 bg-white w-full shadow-2xl py-4 px-2 "
+                        [ngClass]="{'hidden' : !r2.isOpen}">
+                        <p class="font-bold text-blue-600 mb-4">By {{vm.isSearchTeacher ? 'Teacher' : 'Class'}}</p>
+                        <ul class="space-y-1 max-h-60 overflow-y-scroll">
+                            <li class=" py-3 text-center text-[0.9rem] text-blue-900 font-medium cursor-pointer border border-gray-200
+                    duration-200 hover:text-white hover:bg-blue-500 rounded" *ngFor="let el of vm.dropDownList"
+                                [ngClass]="{'text-white bg-blue-500' : el.active}"
+                                (click)="currentClassId$.next(el.id)">{{ el.name }}</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="flex justify-between mt-6 border-b border-b-gray-200 items-center">
+            <div class="flex space-x-9 px-4">
+                <p class="font-bold py-5 cursor-pointer"
+                    [ngClass]="{'border-b-2 border-blue-600 text-blue-600' : vm.isTeacherTab}"
+                    (click)="isTeacherTab$.next(true)">Teachers</p>
+                <p class="text-black font-bold py-5 cursor-pointer"
+                    [ngClass]="{'border-b-2 border-blue-600 text-blue-600' : !vm.isTeacherTab}"
+                    (click)="isTeacherTab$.next(false)">Students</p>
+            </div>
+            <div>
+                <button>
+                    <a [routerLink]="[vm.currentClass.id, 'edit']">
+                        <fa-icon [icon]="icons.edit" class="text-xl text-blue-700 mr-8"></fa-icon>
+                    </a>
+                </button>
+                <button>
+                    <fa-icon [icon]="icons.delete" class="text-xl text-red-600 mr-8"
+                        (click)="onOpenModal(1, vm.currentClass.id)"></fa-icon>
+                </button>
+                <a class="py-4 px-6 text-white bg-active rounded-lg font-bold cursor-pointer" [routerLink]="['create']">
+                    <fa-icon [icon]="icons.add" class="text-white"></fa-icon>
+                    New Classroom
+                </a>
+            </div>
+        </div>
+
+        <!--  Table-->
+        <div *ngIf="vm.teachers.length === 0" class="p-6">
+            <app-skeleton />
+        </div>
+        <div class="bg-white mt-8 px-4 py-9" *ngIf="vm.teachers.length > 0">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center space-x-1">
+                    <span>Show</span>
+                    <select name="cars" id="cars" class="bg-white border p-2 rounded w-16 border-gray-300">
+                        <option value="10">10</option>
+                        <option value="15">15</option>
+                        <option value="20">20</option>
+                    </select>
+                    <span>entries</span>
+                </div>
+                <button class="p-4 bg-active text-white rounded" *ngIf="vm.isTeacherTab"
+                    (click)="onOpenAddTeacherModal()">Add
+                    Teacher
+                </button>
+            </div>
+
+            <table class="w-full text-sm text-dark mt-6">
+                <thead>
+                    <tr *ngIf="vm.isTeacherTab">
+                        <th>ID</th>
+                        <th>Name</th>
+                        <th>Position</th>
+                        <th>Subject</th>
+                        <th>Actions</th>
+                    </tr>
+                    <tr *ngIf="!vm.isTeacherTab">
+                        <th>ID</th>
+                        <th>Name</th>
+                        <th>Gender</th>
+                        <th>Phone</th>
+                        <th>Email</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody *ngIf="!vm.isTeacherTab">
+                    <tr *ngFor="let student of vm.students; let i = index">
+                        <td>{{ i + 1 }}</td>
+                        <td class="" [routerLink]="['..','students', student.id]">
+                            <div class="flex items-center gap-2 w-max cursor-pointer group">
+                                <img class="w-[2.5rem] h-[2.5rem] rounded-full" src="../assets/images/intern.jpeg"
+                                    alt="" />
+                                <span class="group-hover:text-active">{{ student.name }}</span>
+                            </div>
+                        </td>
+                        <td>{{student.gender}}</td>
+                        <td>{{student.phone}}</td>
+                        <td>{{student.email}}</td>
+                        <td>
+                            <div class="flex items-center gap-2">
+                                <a class="btn icon secondary sm rounded-full" type="button"
+                                    [routerLink]="['..','students', student.id, 'update']">
+                                    <fa-icon [icon]="icons.edit"></fa-icon>
+                                </a>
+                                <!--              <button class="btn icon secondary sm rounded-full" (click)="onOpenModal(2)">-->
+                                <!--                <fa-icon [icon]="icons.delete"></fa-icon>-->
+                                <!--              </button>-->
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+
+                <tbody *ngIf="vm.isTeacherTab">
+                    <tr *ngFor="let teacher of vm.teachers; let i = index">
+                        <td>{{ i + 1 }}</td>
+                        <td class="" [routerLink]="['..','teachers', teacher.teacher_id, 'edit']">
+                            <div class="flex items-center gap-2 w-max cursor-pointer group">
+                                <img class="w-[2.5rem] h-[2.5rem] rounded-full" src="../assets/images/mentor.jpeg"
+                                    alt="" />
+                                <span class="group-hover:text-active">{{ teacher.teacher }}</span>
+                            </div>
+                        </td>
+                        <td>{{ teacher.formed ? 'Formed Teacher' : 'Subject Teacher'}}</td>
+                        <td>{{ teacher.name ? teacher.name : '' }}</td>
+
+                        <td>
+                            <div class="flex items-center gap-2">
+                                <a class="btn icon secondary sm rounded-full" type="button"
+                                    [routerLink]="['..','teachers', teacher.teacher_id, 'edit']">
+                                    <fa-icon [icon]="icons.edit"></fa-icon>
+                                </a>
+                                <button class="btn icon secondary sm rounded-full" (click)="onOpenModal(3, teacher.id)">
+                                    <fa-icon [icon]="icons.delete"></fa-icon>
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <!--      <div-->
+            <!--        class="flex flex-col md:flex-row items-center justify-between p-6 gap-4 md:gap-0 border-t border-secondary border-solid">-->
+            <!--          <span class="text-sm md:text-base"-->
+            <!--          >Showing 1 to 10 of 10 entries</span>-->
+            <!--                <div class="flex items-center gap-4 lg:gap-2 select-none">-->
+            <!--                  <button class="btn icon rounded-lg">-->
+            <!--                    <fa-icon [icon]="icons.arrowLeft"></fa-icon>-->
+            <!--                  </button>-->
+            <!--                  <button-->
+            <!--                    class="btn icon rounded-lg"-->
+            <!--                  >-->
+            <!--                    3-->
+            <!--                  </button>-->
+            <!--                  <button-->
+            <!--                    class="btn icon rounded-lg"-->
+            <!--                  >-->
+            <!--                    <fa-icon [icon]="icons.arrowRight"></fa-icon>-->
+            <!--                  </button>-->
+            <!--                </div>-->
+            <!--      </div>-->
+        </div>
+
+    </div>
+
+    <div *ngIf="showModal">
+        <app-modal (onClose)="handleCloseModal()" (onAccept)="onConfirmModal()" [title]="deleteModelContent.header"
+            [content]="deleteModelContent.mainContent" />
+    </div>
+    <app-classroom-modal *ngIf="showAddModal" (onClose)="showAddModal = false"
+        (onAccept)="onAcceptAddTeacherModal($event)" [teacherList$]="getAddListTeacher$"></app-classroom-modal>
+</ng-container>
