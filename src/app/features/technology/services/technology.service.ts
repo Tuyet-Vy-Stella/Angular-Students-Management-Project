@@ -13,13 +13,13 @@ export class SubjectService implements OnInit {
 
     getListSubject() {
         return this.http.get<Subject[]>(
-            'https://qlsv-mu.vercel.app/api/technology-list'
+            'https://qlsv-mu.vercel.app/api/subject-list'
         );
     }
 
     /* Create new Subject */
     createSubject(name: string) {
-        return this.http.post('https://qlsv-mu.vercel.app/api/technology', {
+        return this.http.post('https://qlsv-mu.vercel.app/api/subject', {
             name: name,
         });
     }

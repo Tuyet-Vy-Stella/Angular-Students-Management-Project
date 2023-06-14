@@ -11,6 +11,7 @@ import {
 import { IStudent, ISubject } from '../utils/project';
 import { HttpClient } from '@angular/common/http';
 import { DataStorageService } from './data-storage.service';
+import { Class } from '../models/project.model';
 
 @Injectable({ providedIn: 'root' })
 export class ClassroomService {
@@ -25,6 +26,9 @@ export class ClassroomService {
 
     currentClass$ = this.dataStorage.currentClass$;
 
+    $loadingTeacher = new BehaviorSubject(false);
+    $loadingStudent = new BehaviorSubject<boolean>(true);
+
     constructor(
         private http: HttpClient,
         private dataStorage: DataStorageService
@@ -36,9 +40,14 @@ export class ClassroomService {
     }
 
     public getStudents(): Observable<IStudent[]> {
+        console.log('x');
+        this.$loadingStudent.next(true);
         return this.currentClass$.pipe(
             map((classroom) => {
                 return classroom.student;
+            }),
+            tap(() => {
+                this.$loadingStudent.next(false);
             })
         );
     }
@@ -130,7 +139,7 @@ export class ClassroomService {
     > {
         return this.http.get<
             { id: number; name: string; subject_name: string }[]
-        >('https://qlsv-mu.vercel.app/api/class/mentor_not_in_class?', {
+        >('https://qlsv-mu.vercel.app/api/class/teacher_not_in_class?', {
             params: {
                 class_id: this.dataStorage.currentClass.id,
             },
@@ -179,5 +188,11 @@ export class ClassroomService {
                     this.dataStorage.deleteClassFromClassList(id);
                 })
             );
+    }
+
+    getClasses() {
+        return this.http.get<Class[]>(
+            'https://qlsv-mu.vercel.app/api/class-list'
+        );
     }
 }

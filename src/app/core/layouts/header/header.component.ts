@@ -2,6 +2,7 @@ import { Subject } from 'rxjs';
 import {
     Component,
     ElementRef,
+    EventEmitter,
     Output,
     Renderer2,
     ViewChild,
@@ -23,9 +24,11 @@ export class HeaderComponent {
     name!: string;
     showDropdown = false;
     icons = { faBars, faBell, faMaximize, faChevronDown };
-    @Output() clickMenuIconEvent = new Subject<void>();
+    
     @ViewChild('dropdown') dropdown!: ElementRef;
     @ViewChild('userMenu') userMenu!: ElementRef;
+
+    @Output() onDisplay = new EventEmitter<boolean>();
 
     constructor(
         private renderer: Renderer2,
@@ -45,10 +48,6 @@ export class HeaderComponent {
                 this.showDropdown = false;
             }
         });
-    }
-
-    onClickMenuIcon() {
-        this.clickMenuIconEvent.next();
     }
 
     onClickUserMenu() {

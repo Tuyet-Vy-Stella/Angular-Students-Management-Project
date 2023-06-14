@@ -43,7 +43,7 @@ export class DataStorageService {
 
         this.http
             .get<ITeacher[]>(
-                'https://qlsv-mu.vercel.app/api/class/mentor_not_form_teacher'
+                'https://qlsv-mu.vercel.app/api/class/teacher_not_form_teacher'
             )
             .subscribe((data) => {
                 this.teacherSearchList$.next(data);

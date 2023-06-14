@@ -5,7 +5,6 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ToastrModule } from 'ngx-toastr';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { CookieService } from 'ngx-cookie-service';
-
 // Module
 import { AppRoutingModule } from './app-routing.module';
 
@@ -14,20 +13,16 @@ import { AppComponent } from './app.component';
 import { AuthInterceptor } from '@core/interceptors/auth.interceptor';
 
 // Common
-import {
-    HeaderComponent,
-    SidebarComponent,
-    FooterComponent,
-} from '@core/layouts';
-import { ReactiveFormsModule } from '@angular/forms';
+
+import { CoreModule } from '@core/core.module';
+import { ReactiveFormsModule, FormsModule } from '@angular/forms';
+import { registerLocaleData } from '@angular/common';
+import en from '@angular/common/locales/en';
+
+registerLocaleData(en);
 
 @NgModule({
-    declarations: [
-        AppComponent,
-        HeaderComponent,
-        SidebarComponent,
-        FooterComponent,
-    ],
+    declarations: [AppComponent],
 
     imports: [
         FontAwesomeModule,
@@ -42,6 +37,8 @@ import { ReactiveFormsModule } from '@angular/forms';
             preventDuplicates: false,
             easing: 'ease-in-out',
         }),
+        FormsModule,
+        CoreModule,
     ],
     providers: [
         [CookieService],

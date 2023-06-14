@@ -10,6 +10,7 @@ import {
     takeUntil,
 } from 'rxjs';
 import { ToastrService } from 'ngx-toastr';
+import { MenuItem } from 'primeng/api';
 
 @Component({
     selector: 'app-classroom-details',
@@ -17,6 +18,43 @@ import { ToastrService } from 'ngx-toastr';
     styleUrls: ['./project-details.component.scss'],
 })
 export class ClassroomDetailsComponent implements OnInit, OnDestroy {
+    internCols = [
+        {
+            field: 'id',
+            header: '#',
+        },
+        {
+            field: 'name',
+            header: 'Name',
+        },
+        {
+            field: 'email',
+            header: 'Email',
+        },
+        {
+            field: 'gender',
+            header: 'Gender',
+        },
+        {
+            field: 'phone',
+            header: 'Phone',
+        },
+    ];
+
+    mentorCols = [
+        {
+            header: '#',
+            field: 'teacher_id',
+        },
+        {
+            header: 'Technology',
+            field: 'name',
+        },
+        {
+            header: 'Name',
+            field: 'teacher',
+        },
+    ];
     showModal = false;
     showAddModal = false;
     icons = icons;
@@ -51,6 +89,7 @@ export class ClassroomDetailsComponent implements OnInit, OnDestroy {
         this.isTeacherTab$,
         this.isSearchTeacher$,
         this.classroomService.searchList$.pipe(startWith([])),
+        this.classroomService.$loadingStudent,
     ]).pipe(
         map(
             ([
@@ -60,6 +99,7 @@ export class ClassroomDetailsComponent implements OnInit, OnDestroy {
                 isTeacherTab,
                 isSearchTeacher,
                 dropDownList,
+                loadingStudent,
             ]) => ({
                 teachers,
                 students,
@@ -67,9 +107,16 @@ export class ClassroomDetailsComponent implements OnInit, OnDestroy {
                 isTeacherTab,
                 isSearchTeacher,
                 dropDownList,
+                loadingStudent,
             })
         )
     );
+    items: MenuItem[] = [
+        { label: 'Mentors', icon: 'pi pi-fw pi-home', id: 'mentor' },
+        { label: 'Interns', icon: 'pi pi-fw pi-calendar', id: 'intern' },
+    ];
+
+    activeItem: MenuItem = this.items[0];
 
     private destroy$ = new Subject<boolean>();
 
@@ -112,6 +159,10 @@ export class ClassroomDetailsComponent implements OnInit, OnDestroy {
                     this.showAddModal = false;
                 },
             });
+    }
+
+    onActiveItemChange(event: MenuItem) {
+        this.activeItem = event;
     }
 
     onOpenModal(deleteType: number, id?: number) {

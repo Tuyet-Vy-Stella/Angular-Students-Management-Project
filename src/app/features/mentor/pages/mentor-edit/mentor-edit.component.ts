@@ -12,6 +12,7 @@ import { TeacherService } from '../../services/mentor.service';
 import { ToastrService } from 'ngx-toastr';
 import { Subject } from 'app/features/technology/models/technology.model';
 import { Class } from 'app/features/project/models/project.model';
+// import { map } from 'rxjs';
 
 @Component({
     selector: 'app-teacher-edit',
@@ -62,6 +63,7 @@ export class TeacherEditComponent {
         // Fetch subject list
         this.teacherService.getSubjects().subscribe({
             next: (response) => {
+                console.log(response);
                 this.subjectList = response;
             },
             error: (error) => {
@@ -75,7 +77,10 @@ export class TeacherEditComponent {
         // Fetch class list
         this.teacherService.getClassList().subscribe({
             next: (response) => {
-                this.classList = response;
+                this.classList = response.map((item) => ({
+                    ...item,
+                    name: item.grade + item.section,
+                }));
             },
             error: (error) => {
                 this.toastrService.error(

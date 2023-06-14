@@ -1,4 +1,3 @@
-import { ToastrService } from 'ngx-toastr';
 import { Component } from '@angular/core';
 import {
     faBorderAll,
@@ -10,16 +9,30 @@ import {
     faPlus,
     faTrash,
 } from '@fortawesome/free-solid-svg-icons';
+import { ToastrService } from 'ngx-toastr';
+import { ConfirmationService } from 'primeng/api';
 
+import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
+import { tap } from 'rxjs';
+import { InternCreateComponent } from '../../components';
 import { Student } from '../../models/intern.model';
 import { StudentService } from '../../services/intern.service';
+import { Router } from '@angular/router';
 
 @Component({
     selector: 'app-student-list',
     templateUrl: './intern-list.component.html',
     styleUrls: ['./intern-list.component.scss'],
+    providers: [ConfirmationService, DialogService],
 })
-export class StudentListComponent {
+export class InternListComponent {
+    constructor(
+        private studentService: StudentService,
+        private toastrService: ToastrService,
+        private confirmationService: ConfirmationService,
+        private dialogService: DialogService,
+        private router: Router
+    ) {}
     icons = {
         faList,
         faBorderAll,
@@ -32,163 +45,131 @@ export class StudentListComponent {
     };
     studentList: Student[] = [];
     studentListToShow: Student[] = [];
-    numberOfEntriesPerPage: number = 10;
-    currentPage: number = 1;
-    pageNumbers: number[] = [];
+
     isFetchingStudentList = false;
     isFetchingToDeleteStudent = false;
-    showModal = false;
-    studentIdToDelete: number | null = null;
-    tableViewMode = true;
+    isDelete = false;
+    ref!: DynamicDialogRef;
+    // tableViewMode = true;
 
-    constructor(
-        private studentService: StudentService,
-        private toastrService: ToastrService
-    ) {}
+    first: number = 0;
+    rows: number = 10;
+    page: number = 0;
+
+    cols = [
+        {
+            field: 'id',
+            header: '#',
+        },
+        {
+            field: 'name',
+            header: 'Name',
+            link: ['id'],
+        },
+        {
+            field: 'class_name',
+            header: 'Class',
+        },
+        {
+            field: 'gender',
+            header: 'Gender',
+        },
+        {
+            field: 'phone',
+            header: 'Phone',
+        },
+        {
+            field: 'email',
+            header: 'Email',
+        },
+    ];
 
     ngOnInit() {
         // Fetch student data
+        this.fetchStudentList();
+    }
+
+    fetchStudentList() {
         this.isFetchingStudentList = true;
-        this.studentService.getStudentList().subscribe({
-            next: (response) => {
-                if (response) {
+        this.studentService
+            .getStudentList()
+            .pipe(
+                tap(() => {
                     this.isFetchingStudentList = false;
+                })
+            )
+            .subscribe({
+                next: (response) => {
+                    if (response) {
+                        // Update student list
+                        this.studentList = response;
 
-                    // Update student list
-                    this.studentList = response;
-
-                    // Update student list to show
-                    this.studentListToShow = this.studentList.slice(
-                        0,
-                        this.numberOfEntriesPerPage
-                    );
-
-                    // Update page numbers
-                    this.updatePageNumbers();
-                }
-            },
-            error: (error) => {
-                this.isFetchingStudentList = false;
-                console.log(error);
-            },
-        });
+                        // Update student list to show
+                        this.studentListToShow = this.studentList.slice(
+                            this.first,
+                            this.rows
+                        );
+                    }
+                },
+            });
     }
 
-    // Update page numbers
-    updatePageNumbers() {
-        this.pageNumbers = Array.from(
-            {
-                length: Math.ceil(
-                    this.studentList.length / this.numberOfEntriesPerPage
-                ),
-            },
-            (_, index) => index + 1
-        );
-    }
+    confirm(student: Student) {
+        const studentId = student.id;
+        this.confirmationService.confirm({
+            header: 'Delete Intern',
+            message: 'Are you sure that you want to delete this intern?',
+            icon: 'pi pi-exclamation-triangle',
+            accept: () => {
+                const nameStudent = this.studentList.find(
+                    (student) => student.id === studentId
+                )?.name;
+                this.isFetchingToDeleteStudent = true;
 
-    // On click previous page button
-    onClickPreviousPage() {
-        this.onClickPageNumber(this.currentPage - 1);
-    }
-
-    // On click next page button
-    onClickNextPage() {
-        this.onClickPageNumber(this.currentPage + 1);
-    }
-
-    // On change number of entries per page
-    onChangeNumberOfEntriesPerPage(e: Event) {
-        const value = +(<HTMLInputElement>e.target).value;
-        if (value) {
-            // Update number of entries per page
-            this.numberOfEntriesPerPage = value;
-
-            // Update student list to show
-            this.studentListToShow = this.studentList.slice(
-                0,
-                this.numberOfEntriesPerPage
-            );
-
-            // Update page numbers array
-            this.updatePageNumbers();
-
-            // Update current page
-            this.currentPage = 1;
-        }
-    }
-
-    // On click different page number
-    onClickPageNumber(newPageNumber: number) {
-        // Update current page
-        this.currentPage = newPageNumber;
-
-        // Update student list to show
-        this.studentListToShow = this.studentList.slice(
-            (this.currentPage - 1) * this.numberOfEntriesPerPage,
-            this.currentPage * this.numberOfEntriesPerPage
-        );
-    }
-
-    // On click delete button
-    onClickDeleteButton(studentId: number) {
-        this.showModal = true;
-        this.studentIdToDelete = studentId;
-    }
-
-    // On click modal close button
-    handleCloseModal() {
-        this.showModal = false;
-        this.studentIdToDelete = null;
-    }
-
-    // Handle delete student
-    handleDeleteStudent() {
-        if (this.studentIdToDelete) {
-            // Hide modal
-            this.showModal = false;
-
-            // Active loading spinner
-            this.isFetchingToDeleteStudent = true;
-
-            // Listen fetch event
-            this.studentService
-                .deleteStudent(this.studentIdToDelete)
-                .subscribe({
+                // Listen fetch event
+                this.studentService.deleteStudent(studentId).subscribe({
                     next: () => {
                         this.isFetchingToDeleteStudent = false;
                         this.toastrService.success(
-                            `Delete student with id (${this.studentIdToDelete}) successfully`,
-                            'Delete Student'
+                            `Delete intern "${nameStudent}" successfully`
                         );
 
                         // Remove this student on student list
                         this.studentList = this.studentList.filter(
-                            (student) => student.id !== this.studentIdToDelete
+                            (student) => student.id !== studentId
                         );
 
-                        // Set student list to show
-                        this.onClickPageNumber(this.currentPage);
-
                         // Reset student id to delete
-                        this.studentIdToDelete = null;
                     },
-                    error: (error) => {
+                    error: () => {
                         this.isFetchingToDeleteStudent = false;
-                        console.error(error);
                         this.toastrService.error(
-                            `Delete student with id (${this.studentIdToDelete}) failure`,
-                            'Delete Student'
+                            `Delete intern "${nameStudent}" failure`
                         );
-
-                        // Reset student id to delete
-                        this.studentIdToDelete = null;
                     },
                 });
-        }
+            },
+        });
     }
 
-    // Switch view mode
-    switchToTableViewMode(isTableViewMode: boolean) {
-        this.tableViewMode = isTableViewMode;
+    handleAddIntern() {
+        this.ref = this.dialogService.open(InternCreateComponent, {
+            header: 'Create a Intern',
+            width: '70%',
+            contentStyle: { overflow: 'auto' },
+            baseZIndex: 10000,
+            maximizable: true,
+            data: {
+                onClose: () => {
+                    this.ref.close();
+                },
+            },
+        });
+    }
+
+    handleUpdateIntern(student: Student) {
+        this.router.navigate([`/students/${student.id}`], {
+            queryParams: { edit: true },
+        });
     }
 }

@@ -4,14 +4,7 @@ import { map } from 'rxjs';
 
 import { CreateStudentModel, Student } from '../models/intern.model';
 
-interface Class {
-    id: number;
-    grade: string;
-    section: string;
-    form_teacher_id: number;
-    form_teacher_name: string;
-    created_at: string;
-}
+
 
 @Injectable({
     providedIn: 'root',
@@ -21,13 +14,13 @@ export class StudentService {
 
     getStudentList() {
         return this.http.get<Student[]>(
-            'https://qlsv-mu.vercel.app/api/intern-list'
+            'https://qlsv-mu.vercel.app/api/student-list'
         );
     }
 
     getStudentById(id: number) {
         return this.http.get<Student>(
-            'https://qlsv-mu.vercel.app/api/intern/',
+            'https://qlsv-mu.vercel.app/api/student/',
             {
                 params: {
                     student_id: id,
@@ -38,7 +31,7 @@ export class StudentService {
 
     createStudent(data: CreateStudentModel) {
         return this.http
-            .post('https://qlsv-mu.vercel.app/api/intern', data)
+            .post('https://qlsv-mu.vercel.app/api/student', data)
             .pipe(
                 // Success (map: modify response, tap: handle side & not modify response)
                 map((response) => {
@@ -52,7 +45,7 @@ export class StudentService {
     }
 
     updateStudent(id: number, data: CreateStudentModel) {
-        return this.http.put('https://qlsv-mu.vercel.app/api/intern/', data, {
+        return this.http.put('https://qlsv-mu.vercel.app/api/student/', data, {
             params: {
                 student_id: id,
             },
@@ -60,7 +53,7 @@ export class StudentService {
     }
 
     deleteStudent(id: number) {
-        return this.http.delete('https://qlsv-mu.vercel.app/api/intern/', {
+        return this.http.delete('https://qlsv-mu.vercel.app/api/student/', {
             params: {
                 student_id: id,
             },
@@ -68,9 +61,5 @@ export class StudentService {
     }
 
     // Temp
-    getClasses() {
-        return this.http.get<Class[]>(
-            'https://qlsv-mu.vercel.app/api/class-list'
-        );
-    }
+
 }

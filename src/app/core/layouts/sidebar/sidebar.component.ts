@@ -1,5 +1,5 @@
 import { NavigationEnd, Router } from '@angular/router';
-import { Component } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { faChevronRight } from '@fortawesome/free-solid-svg-icons';
 
 import { sidebarTabs } from '../sidebar.constant';
@@ -16,6 +16,9 @@ export class SidebarComponent {
     parentTabSelected = 1;
     childTabSelected = 11;
     showChild = true;
+
+    @Input() display = false;
+    @Output() onDisplay = new EventEmitter<boolean>();
 
     constructor(private router: Router) {}
 
@@ -55,5 +58,6 @@ export class SidebarComponent {
 
         // Set child tab selected
         this.childTabSelected = childId;
+        this.onDisplay.emit(false);
     }
 }

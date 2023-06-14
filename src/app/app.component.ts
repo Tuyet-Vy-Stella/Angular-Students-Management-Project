@@ -14,6 +14,8 @@ export class AppComponent {
     classes = 'main mini-sidebar';
     name: string | undefined = '';
 
+    displaySidebar = false;
+
     constructor(
         private router: Router,
         private authService: AuthService,
@@ -43,5 +45,9 @@ export class AppComponent {
     onClickOverlay() {
         this.isMiniSidebar = true;
         this.classes = 'main mini-sidebar';
+    }
+
+    handleDisplaySidebar(display: boolean) {
+        this.displaySidebar = display;
     }
 }

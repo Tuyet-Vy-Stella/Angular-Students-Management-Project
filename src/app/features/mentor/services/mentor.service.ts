@@ -13,13 +13,13 @@ export class TeacherService {
 
     getTeachers() {
         return this.http.get<Teacher[]>(
-            'https://qlsv-mu.vercel.app/api/mentor-list'
+            'https://qlsv-mu.vercel.app/api/teacher-list'
         );
     }
 
     getTeacherById(id: number) {
         return this.http.get<Teacher>(
-            'https://qlsv-mu.vercel.app/api/mentor/',
+            'https://qlsv-mu.vercel.app/api/teacher/',
             {
                 params: {
                     teacher_id: id,
@@ -30,13 +30,13 @@ export class TeacherService {
 
     getSubjects() {
         return this.http.get<Subject[]>(
-            'https://qlsv-mu.vercel.app/api/technology-list'
+            'https://qlsv-mu.vercel.app/api/subject-list'
         );
     }
 
     getSubjectById(id: number) {
         return this.http.get<Subject>(
-            'https://qlsv-mu.vercel.app/api/technology/',
+            'https://qlsv-mu.vercel.app/api/subject/',
             {
                 params: {
                     subject_id: id,
@@ -52,7 +52,7 @@ export class TeacherService {
     }
 
     deleteTeacher(id: number) {
-        return this.http.delete('https://qlsv-mu.vercel.app/api/mentor/', {
+        return this.http.delete('https://qlsv-mu.vercel.app/api/teacher/', {
             params: {
                 teacher_id: id,
             },
@@ -61,7 +61,7 @@ export class TeacherService {
 
     createTeacher(data: CreateTeacherModel) {
         return this.http
-            .post('https://qlsv-mu.vercel.app/api/mentor', data)
+            .post('https://qlsv-mu.vercel.app/api/teacher', data)
             .pipe(
                 // Success (map: modify response, tap: handle side & not modify response)
                 map((response) => {
@@ -75,7 +75,7 @@ export class TeacherService {
     }
 
     updateTeacher(id: number, data: CreateTeacherModel) {
-        return this.http.put('https://qlsv-mu.vercel.app/api/mentor/', data, {
+        return this.http.put('https://qlsv-mu.vercel.app/api/teacher/', data, {
             params: {
                 teacher_id: id,
             },

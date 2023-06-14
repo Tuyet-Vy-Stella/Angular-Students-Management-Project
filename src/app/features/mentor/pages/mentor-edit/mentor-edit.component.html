@@ -1,224 +1,91 @@
 <div class="p-6 min-h-screen-except-header">
-  <!-- Spinner -->
-  <div *ngIf="isFetchingToCreateOrUpdateTeacher || isFetchingToGetTeacher">
-    <app-loading-spinner />
-  </div>
+    <!-- Spinner -->
+    <div *ngIf="isFetchingToCreateOrUpdateTeacher || isFetchingToGetTeacher">
+        <app-loading-spinner />
+    </div>
 
-  <!-- Title -->
-  <h4 class="font-medium text-xl md:text-2xl">
-    <span *ngIf="createMode">Create Teacher</span>
-    <span *ngIf="!createMode">Update Teacher</span>
-  </h4>
+    <!-- Title -->
+    <h4 class="font-medium text-xl md:text-2xl">
+        <span *ngIf="createMode">Create Teacher</span>
+        <span *ngIf="!createMode">Update Teacher</span>
+    </h4>
 
-  <!-- Form -->
-  <form
-    *ngIf="!isFetchingToGetTeacher"
-    class="mt-6 bg-light rounded-lg p-6"
-    [formGroup]="teacherForm"
-    (ngSubmit)="teacherForm.valid && onSubmit()"
-  >
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-12">
-      <!-- Name -->
-      <div class="field-item">
-        <label>Name</label>
-        <input type="text" formControlName="name" />
-        <span
-          *ngIf="
-            !teacherForm.get('name')?.valid && teacherForm.get('name')?.touched
-          "
-          class="error-message"
-        >
-          <span
-            *ngIf="teacherForm.get('name')?.errors?.['required']; else empty"
-            >This field is required!</span
-          >
-          <ng-template #empty
-            ><span *ngIf="teacherForm.get('name')?.errors?.['empty']"
-              >This field must not be empty!</span
-            ></ng-template
-          >
-        </span>
-      </div>
+    <!-- Form -->
+    <form [formGroup]="teacherForm" (ngSubmit)="teacherForm.valid && onSubmit()">
+        <div class="flex gap-4">
+            <div class="flex-1 bg-light px-4 py-6 rounded-md border-1">
+                <h3 class="text-lg mb-4 font-medium">Basic Information</h3>
+                <div class="grid grid-cols-2 gap-x-2 gap-y-4">
+                    <!-- Name -->
+                    <div class="flex flex-col gap-2 ">
+                        <label class="text-sm text-gray-500 font-medium" htmlFor="username">Username</label>
+                        <input pInputText id="username" formControlName="name" />
+                    </div>
 
-      <!-- Gender -->
-      <div class="field-item">
-        <label>Gender</label>
-        <select formControlName="gender">
-          <option value="male">Male</option>
-          <option value="female">Female</option>
-        </select>
-        <span
-          class="error-message"
-          *ngIf="
-            !teacherForm.get('gender')?.valid &&
-            teacherForm.get('gender')?.touched
-          "
-          >Gender is required!</span
-        >
-      </div>
+                    <!-- Birthday -->
+                    <div class="flex flex-col gap-2 col-start-2 col-end-3">
+                        <label class="text-sm text-gray-500 font-medium" htmlFor="birthday">Birthday</label>
+                        <p-calendar id="birthday" formControlName="birthday"></p-calendar>
+                    </div>
 
-      <!-- Birthday -->
-      <div class="field-item">
-        <label>Birthday</label>
-        <input type="date" formControlName="birthday" />
-        <span
-          class="error-message"
-          *ngIf="
-            !teacherForm.get('birthday')?.valid &&
-            teacherForm.get('birthday')?.touched
-          "
-        >
-          This field is required!
-        </span>
-      </div>
+                    <!-- Gender -->
+                    <div class="flex flex-col gap-2 col-start-1 col-end-2">
+                        <label class="text-sm text-gray-500 font-medium" htmlFor="gender">Gender</label>
+                        <p-dropdown formControlName="gender" [options]="['male', 'female']"></p-dropdown>
+                    </div>
 
-      <!-- Address -->
-      <div class="field-item">
-        <label>Address</label>
-        <input type="text" formControlName="address" />
-        <span
-          class="error-message"
-          *ngIf="
-            !teacherForm.get('address')?.valid &&
-            teacherForm.get('address')?.touched
-          "
-        >
-          <span
-            *ngIf="teacherForm.get('address')?.errors?.['required']; else empty"
-            >This field is required!</span
-          >
-          <ng-template #empty
-            ><span *ngIf="teacherForm.get('address')?.errors?.['empty']"
-              >This field must not be empty!</span
-            ></ng-template
-          >
-        </span>
-      </div>
+                    <!-- Joined Date -->
+                    <div class="flex flex-col gap-2 col-start-2 col-end-3">
+                        <label class="text-sm text-gray-500 font-medium" htmlFor="joined_date">Joined Date</label>
+                        <p-calendar id="joined_date" formControlName="joined_date"></p-calendar>
+                    </div>
 
-      <!-- Phone -->
-      <div class="field-item">
-        <label>Phone Number</label>
-        <input type="text" formControlName="phone" />
-        <span
-          class="error-message"
-          *ngIf="
-            !teacherForm.get('phone')?.valid &&
-            teacherForm.get('phone')?.touched
-          "
-        >
-          <span
-            *ngIf="teacherForm.get('phone')?.errors?.['required']; else notFormattedError"
-            >Phone number is required!</span
-          >
-          <ng-template #notFormattedError
-            >Phone number is not right formatted!</ng-template
-          >
-        </span>
-      </div>
+                    <div class="flex flex-col gap-2 col-start-1 col-span-3">
+                        <label class="text-sm text-gray-500 font-medium" htmlFor="technology">Technology</label>
+                        <p-dropdown formControlName="subject_id" [options]="subjectList" optionLabel="name"
+                            optionValue="id"></p-dropdown>
+                    </div>
 
-      <!-- Email -->
-      <div class="field-item">
-        <label>Email</label>
-        <input type="text" formControlName="email" />
-        <span
-          class="error-message"
-          *ngIf="
-            !teacherForm.get('email')?.valid &&
-            teacherForm.get('email')?.touched
-          "
-        >
-          <span
-            *ngIf="teacherForm.get('email')?.errors?.['required']; else emailError"
-            >Email is required!</span
-          >
-          <ng-template #emailError>
-            <span *ngIf="teacherForm.get('email')?.errors?.['email']"
-              >Email is not right formatted!</span
-            >
-          </ng-template>
-        </span>
-      </div>
+                    <ng-container formArrayName="class_id">
+                        <div class="flex flex-col gap-2 col-start-1 col-span-3"
+                            *ngFor="let class of class_id.controls; let i = index">
+                            <label class="text-sm text-gray-500 font-medium" htmlFor="technology">Project</label>
+                            <p-dropdown [formControlName]="i" optionLabel="name" [options]="classList" optionValue="id">
+                                <ng-template let-class pTemplate="item">
+                                    {{ class.grade + " " + class.section }}
+                                </ng-template>
+                            </p-dropdown>
+                        </div>
+                    </ng-container>
 
-      <!-- Subject -->
-      <div class="field-item">
-        <label>Subject</label>
-        <select formControlName="subject_id">
-          <option *ngFor="let subject of subjectList" [value]="subject.id">
-            {{ subject.name }}
-          </option>
-        </select>
-        <span
-          class="error-message"
-          *ngIf="
-            !teacherForm.get('grade')?.valid &&
-            teacherForm.get('grade')?.touched
-          "
-        >
-          Gender is required!
-        </span>
-      </div>
 
-      <!-- Join Date -->
-      <div class="field-item">
-        <label>Join Date</label>
-        <input type="date" formControlName="joined_date" />
-        <span
-          class="error-message"
-          *ngIf="
-            !teacherForm.get('joined_date')?.valid &&
-            teacherForm.get('joined_date')?.touched
-          "
-        >
-          This field is required!
-        </span>
-      </div>
+                </div>
+            </div>
+            <div class="flex-1 bg-light px-4 py-6 rounded-md border-1">
+                <h3 class="text-lg mb-4 font-medium">Communications</h3>
+                <div class="flex-1 flex flex-col gap-4">
+                    <!-- Email -->
+                    <div class="flex flex-col gap-2">
+                        <label class="text-sm text-gray-500 font-medium" htmlFor="email">Email</label>
+                        <input pInputText id="email" aria-describedby="username-help" formControlName="email" />
+                    </div>
 
-      <!-- Select class -->
-      <div formArrayName="class_id" class="flex flex-wrap">
-        <div
-          class="field-item mr-3 mb-6"
-          *ngFor="let class of class_id.controls; let i = index"
-        >
-          <label>Class {{ i + 1 }}</label>
-          <select [formControlName]="i">
-            <option *ngFor="let classItem of classList" [value]="+classItem.id">
-              {{ classItem.grade + " " + classItem.section }}
-            </option>
-          </select>
+                    <!-- Phone number -->
+                    <div class="flex flex-col gap-2">
+                        <label class="text-sm text-gray-500 font-medium" htmlFor="phone">Phone Number</label>
+                        <input pInputText id="phone" aria-describedby="phone-help" formControlName="phone" />
+                    </div>
 
-          <span
-            class="error-message"
-            *ngIf="!class_id.controls[i].valid && class_id.controls[i].touched"
-          >
-            Class required!
-          </span>
+                    <!-- Address -->
+                    <div class="flex flex-col gap-2">
+                        <label class="text-sm text-gray-500 font-medium" htmlFor="address">Address</label>
+                        <input pInputText id="address" formControlName="address" />
+                    </div>
+                </div>
+            </div>
         </div>
-      </div>
-    </div>
-    <div class="flex">
-      <button
-        type="submit"
-        [disabled]="!teacherForm.valid"
-        class="btn text primary rounded-lg"
-      >
-        Submit
-      </button>
-      <button
-        type="button"
-        class="btn text primary rounded-lg w-1/12 ml-2"
-        (click)="addClass()"
-        [disabled]="class_id.length === 10"
-      >
-        Add Class
-      </button>
-      <button
-        type="button"
-        class="btn text danger rounded-lg w-1/12 ml-2"
-        (click)="removeClass()"
-        [disabled]="class_id.length === 1"
-      >
-        Remove
-      </button>
-    </div>
-  </form>
+        <div class="w-full flex justify-end mt-4 px-4">
+            <p-button type="submit" label="Submit" [disabled]="!teacherForm.valid"></p-button>
+        </div>
+    </form>
 </div>
