@@ -1,8 +1,6 @@
-<div>
+<ng-container>
     <!-- Spinner -->
-    <div *ngIf="isFetchingToCreateOrUpdateStudent">
-        <app-loading-spinner />
-    </div>
+    <app-loading-spinner *ngIf="isFetchingToCreateOrUpdateStudent" />
     <!-- Skeleton for get student data -->
 
     <!-- Form -->
@@ -32,7 +30,7 @@
                     </div>
 
                     <div class="col-start-1 col-end-3 flex flex-col gap-2">
-                        <label class="text-sm text-gray-500 font-medium" htmlFor="class">Class</label>
+                        <label class="text-sm text-gray-500 font-medium" htmlFor="class">Project</label>
                         <p-dropdown formControlName="class_id" [options]="classList" optionValue="id"
                             optionLabel="section"></p-dropdown>
                     </div>
@@ -57,4 +55,4 @@
             <p-button type="submit" label="Submit" [disabled]="!studentForm.valid"></p-button>
         </div>
     </form>
-</div>
+</ng-container>

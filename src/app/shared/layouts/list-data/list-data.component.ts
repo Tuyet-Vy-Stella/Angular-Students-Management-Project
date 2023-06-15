@@ -44,6 +44,7 @@ export class ListDataComponent implements OnChanges {
     @Input() deleting!: boolean;
     @Input() globalFilterFields: string[] = [];
     @Input() isCaption: boolean = true;
+    @Input() disableActions: boolean = false;
 
     @Output() onAdd = new EventEmitter();
     @Output() onDelete = new EventEmitter<any>();
@@ -56,7 +57,6 @@ export class ListDataComponent implements OnChanges {
     dataToShow!: any[];
 
     ngOnChanges(changes: SimpleChanges): void {
-        console.log(changes);
         this.dataToShow = changes['data'].currentValue.slice(
             this.page * this.rows,
             (this.page + 1) * this.rows

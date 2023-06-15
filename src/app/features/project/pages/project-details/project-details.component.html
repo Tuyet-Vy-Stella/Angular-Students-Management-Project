@@ -190,35 +190,49 @@
 </ng-container> -->
 
 <div class="bg-light mt-8" *ngIf="vm$ | async as vm">
-    <div class="px-4 pt-6 flex gap-4">
-        <div class="flex flex-col">
-            <label class="text-sm text-gray-500 font-medium  mb-2">Type</label>
-            <p-dropdown [options]="['Mentor', 'Project']">
-                <ng-template let-item pTemplate="item">
-                    <div (click)="isSearchTeacher$.next(item === 'Mentor')" class="flex align-items-center gap-2">
-                        <div>{{ item }}</div>
-                    </div>
-                </ng-template>
-            </p-dropdown>
-        </div>
-        <div class="flex flex-col">
-            <label class="text-sm text-gray-500 font-medium mb-2">{{vm.isSearchTeacher ? 'Mentor' : 'Project'}}</label>
-            <p-dropdown [options]="vm.dropDownList" optionLabel="name">
-                <ng-template let-item pTemplate="item">
-                    <div (click)="currentClassId$.next(item.id)" class="flex align-items-center gap-2">
-                        <div>{{ item.name }}</div>
-                    </div>
-                </ng-template>
-            </p-dropdown>
-        </div>
-    </div>
     <div class="pt-6 px-4"><p-tabMenu [model]="items" [activeItem]="activeItem"
             (activeItemChange)="onActiveItemChange($event)"></p-tabMenu></div>
 
     <!-- Table -->
-    <app-list-data [fetching]="vm.loadingStudent" [isCaption]="false" *ngIf="activeItem.id === 'intern'"
-        [data]="vm.students" [cols]="internCols"></app-list-data>
-    <app-list-data [isCaption]="false" *ngIf="activeItem.id === 'mentor'" [data]="vm.teachers"
-        [cols]="mentorCols"></app-list-data>
+    <app-list-data [disableActions]="true" [fetching]="vm.loadingStudent" [isCaption]="false"
+        *ngIf="activeItem.id === 'intern'" [data]="vm.students" [cols]="internCols">
+        <ng-container class="caption" [ngTemplateOutlet]="filterTemplate"></ng-container>
+    </app-list-data>
+
+    <app-list-data [disableActions]="true" [fetching]="vm.loadingTeacher" [isCaption]="false"
+        *ngIf="activeItem.id === 'mentor'" [data]="vm.teachers" [cols]="mentorCols"><ng-container class="caption"
+            [ngTemplateOutlet]="filterTemplate"></ng-container></app-list-data>
 
 </div>
+
+<ng-template #filterTemplate>
+    <div class="flex justify-between items-end flex-1  gap-8">
+        <div *ngIf="vm$ | async as vm" class="px-4 z-10 flex flex-1  gap-4">
+            <div class="flex flex-col w-1/2">
+                <label class="text-sm text-gray-500 font-medium  mb-2">Type</label>
+                <p-dropdown [options]="['Mentor', 'Project']">
+                    <ng-template let-item pTemplate="item">
+                        <div (click)="isSearchTeacher$.next(item === 'Mentor')" class="flex align-items-center gap-2">
+                            <div>{{ item }}</div>
+                        </div>
+                    </ng-template>
+                </p-dropdown>
+            </div>
+            <div class="flex-1 flex flex-col w-1/2">
+                <label class="text-sm text-gray-500 font-medium mb-2">{{vm.isSearchTeacher ? 'Mentor' :
+                    'Project'}}</label>
+                <p-dropdown [options]="vm.dropDownList" optionLabel="name" optionValue="id">
+                    <ng-template let-item pTemplate="item">
+                        <div (click)="currentClassId$.next(item.id)" class="flex align-items-center gap-2">
+                            <div>{{ item.name }}</div>
+                        </div>
+                    </ng-template>
+                </p-dropdown>
+            </div>
+        </div>
+
+        <div class="flex-1 flex justify-end">
+            <p-button label="Add Project" (onClick)="handleAddClassroom()"></p-button>
+        </div>
+    </div>
+</ng-template>

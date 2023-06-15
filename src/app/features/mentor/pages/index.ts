@@ -1,2 +1,2 @@
-export * from './mentor-edit/mentor-edit.component'
-export * from './mentor-list/mentor-list.component'
+export * from './mentor-detail/mentor-detail.component';
+export * from './mentor-list/mentor-list.component';

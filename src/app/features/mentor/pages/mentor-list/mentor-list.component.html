@@ -1,1 +1,7 @@
-<app-list-data title="Mentor" [data]="teacherList" [fetching]="isLoading" [cols]="cols"></app-list-data>
+<div class="mt-8">
+    <app-list-data title="Mentor" [data]="teacherList" [fetching]="isLoading" [cols]="cols"
+        (onUpdate)="handleUpdateMentor($event)" (onDelete)="handleDeleteMentor($event)"
+        (onAdd)="handleAddMentor()"></app-list-data>
+
+</div>
+<p-confirmDialog [style]="{width: '50vw'}"></p-confirmDialog>

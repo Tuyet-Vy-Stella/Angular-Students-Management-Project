@@ -33,9 +33,10 @@ registerLocaleData(en);
         ReactiveFormsModule,
         ToastrModule.forRoot({
             timeOut: 4000,
-            positionClass: 'toast-top-right',
+            positionClass: 'toast-top-center',
             preventDuplicates: false,
             easing: 'ease-in-out',
+            toastClass: 'custom-toastr ngx-toastr',
         }),
         FormsModule,
         CoreModule,

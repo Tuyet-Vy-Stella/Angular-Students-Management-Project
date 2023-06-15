@@ -6,7 +6,7 @@ import { RouterModule } from '@angular/router';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { InputTextModule } from 'primeng/inputtext';
 import { ButtonModule } from 'primeng/button';
-
+import { AvatarModule } from 'primeng/avatar';
 @NgModule({
     declarations: [HeaderComponent, SidebarComponent, FooterComponent],
     imports: [
@@ -16,6 +16,7 @@ import { ButtonModule } from 'primeng/button';
         FontAwesomeModule,
         InputTextModule,
         ButtonModule,
+        AvatarModule,
     ],
     exports: [HeaderComponent, SidebarComponent, FooterComponent],
 })

@@ -95,16 +95,12 @@ export class InternFormComponent {
                 .subscribe({
                     next: (response) => {
                         this.toastrService.success(
-                            'Update student successfully',
-                            'Update student'
+                            'Update student successfully'
                         );
                     },
                     error: (error) => {
                         this.isFetchingToCreateOrUpdateStudent = false;
-                        this.toastrService.error(
-                            'Update student failure',
-                            'Update student'
-                        );
+                        this.toastrService.error('Update student failure');
                     },
                     complete: () => {
                         this.isFetchingToCreateOrUpdateStudent = false;
@@ -115,10 +111,7 @@ export class InternFormComponent {
             this.studentService.createStudent(bodyData).subscribe(
                 () => {
                     // Show success toast
-                    this.toastrService.success(
-                        'Create student successfully',
-                        'Create student'
-                    );
+                    this.toastrService.success('Create student successfully');
 
                     // Reset form
                     this.studentForm.reset({
@@ -127,10 +120,7 @@ export class InternFormComponent {
                 },
                 () => {
                     this.isFetchingToCreateOrUpdateStudent = false;
-                    this.toastrService.error(
-                        'Create student failure',
-                        'Create student'
-                    );
+                    this.toastrService.error('Create student failure');
                 },
                 () => (this.isFetchingToCreateOrUpdateStudent = false)
             );

@@ -8,7 +8,7 @@ import {
 import { FormBuilder, Validators } from '@angular/forms';
 import { ClassroomEditService } from '../../services/project-edit.service';
 import { BehaviorSubject, Observable, Subject, takeUntil } from 'rxjs';
-import { ITeacher } from '../../utils/project';
+import { ITeacher } from '../../models/project.model';
 import { ToastrService } from 'ngx-toastr';
 import { ActivatedRoute, Router } from '@angular/router';
 

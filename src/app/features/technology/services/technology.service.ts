@@ -1,11 +1,11 @@
-import { Injectable, OnInit } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Subject } from '../models/technology.model';
 
 @Injectable({
     providedIn: 'root',
 })
-export class SubjectService implements OnInit {
+export class SubjectService {
     nameSubject: string = '';
     subjectList: Subject[] = [];
 
@@ -57,6 +57,4 @@ export class SubjectService implements OnInit {
             .delete(`https://qlsv-mu.vercel.app/api/technology/?subject_id=${id}
     `);
     }
-
-    ngOnInit(): void {}
 }

@@ -2,12 +2,9 @@
     <div class="row flex items-center box-border mb-8 gap-6">
         <div class="columns-3xs bg-light rounded-lg box-border p-6 " *ngFor="let column of columns">
             <div class="item flex items-center justify-between">
-                <div class="text">
+                <div class="text w-full flex items-center justify-between">
                     <h6 class="top text-fs14 text-footer">{{column.title}}</h6>
                     <h3 class="bottom text-fs22 font-semibold">{{column.count}}</h3>
-                </div>
-                <div class="pic border rounded-lg bg-dash">
-                    <img src="{{column.img}}" alt="">
                 </div>
             </div>
         </div>

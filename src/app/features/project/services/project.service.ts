@@ -8,7 +8,7 @@ import {
     tap,
     throwError,
 } from 'rxjs';
-import { IStudent, ISubject } from '../utils/project';
+import { IStudent, ISubject } from '../models/project.model';
 import { HttpClient } from '@angular/common/http';
 import { DataStorageService } from './data-storage.service';
 import { Class } from '../models/project.model';
@@ -40,7 +40,6 @@ export class ClassroomService {
     }
 
     public getStudents(): Observable<IStudent[]> {
-        console.log('x');
         this.$loadingStudent.next(true);
         return this.currentClass$.pipe(
             map((classroom) => {
@@ -52,11 +51,12 @@ export class ClassroomService {
         );
     }
 
-    public getTeachers(): Observable<ISubject[]> {
+    public getTeachers() {
+        this.$loadingTeacher.next(true);
         return this.currentClass$.pipe(
             map((classroom) => {
                 let isTaught = false;
-                let teachers = classroom.subject.map((subject) => {
+                let teachers = classroom.subject.map((subject: ISubject) => {
                     if (subject.teacher === classroom.form_teacher) {
                         isTaught = true;
                         subject.formed = true;
@@ -75,10 +75,15 @@ export class ClassroomService {
                 }
 
                 teachers = teachers
-                    .filter((teacher) => teacher.formed)
-                    .concat(teachers.filter((teacher) => !teacher.formed));
+                    .filter((teacher: ISubject) => teacher.formed)
+                    .concat(
+                        teachers.filter((teacher: ISubject) => !teacher.formed)
+                    );
 
                 return teachers;
+            }),
+            tap(() => {
+                this.$loadingTeacher.next(false);
             })
         );
     }

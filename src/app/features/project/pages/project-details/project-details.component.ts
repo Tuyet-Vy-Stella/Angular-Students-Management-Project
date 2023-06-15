@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { icons } from '../../utils/icons';
 import { ClassroomService } from '../../services/project.service';
 import {
@@ -10,14 +10,29 @@ import {
     takeUntil,
 } from 'rxjs';
 import { ToastrService } from 'ngx-toastr';
-import { MenuItem } from 'primeng/api';
+import { ConfirmationService, MenuItem } from 'primeng/api';
+import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
+import { ClassroomAddComponent } from '../project-add/project-add.component';
+import { InternListComponent } from 'app/features/intern/pages';
 
 @Component({
     selector: 'app-classroom-details',
     templateUrl: './project-details.component.html',
     styleUrls: ['./project-details.component.scss'],
+    providers: [DialogService, ConfirmationService],
 })
 export class ClassroomDetailsComponent implements OnInit, OnDestroy {
+    constructor(
+        private classroomService: ClassroomService,
+        private toastrService: ToastrService,
+        private dialogService: DialogService,
+        private confirmService: ConfirmationService
+    ) {}
+
+    @ViewChild(InternListComponent) x!: InternListComponent;
+
+    ref!: DynamicDialogRef;
+
     internCols = [
         {
             field: 'id',
@@ -90,6 +105,7 @@ export class ClassroomDetailsComponent implements OnInit, OnDestroy {
         this.isSearchTeacher$,
         this.classroomService.searchList$.pipe(startWith([])),
         this.classroomService.$loadingStudent,
+        this.classroomService.$loadingTeacher,
     ]).pipe(
         map(
             ([
@@ -100,6 +116,7 @@ export class ClassroomDetailsComponent implements OnInit, OnDestroy {
                 isSearchTeacher,
                 dropDownList,
                 loadingStudent,
+                loadingTeacher,
             ]) => ({
                 teachers,
                 students,
@@ -108,6 +125,7 @@ export class ClassroomDetailsComponent implements OnInit, OnDestroy {
                 isSearchTeacher,
                 dropDownList,
                 loadingStudent,
+                loadingTeacher,
             })
         )
     );
@@ -119,11 +137,6 @@ export class ClassroomDetailsComponent implements OnInit, OnDestroy {
     activeItem: MenuItem = this.items[0];
 
     private destroy$ = new Subject<boolean>();
-
-    constructor(
-        private classroomService: ClassroomService,
-        private toastrService: ToastrService
-    ) {}
 
     ngOnDestroy(): void {
         this.destroy$.next(true);
@@ -179,6 +192,19 @@ export class ClassroomDetailsComponent implements OnInit, OnDestroy {
             this.deleteModelContent.header = 'Delete Teacher';
         }
         this.showModal = true;
+    }
+
+    handleAddClassroom() {
+        this.ref = this.dialogService.open(ClassroomAddComponent, {
+            header: 'Add Classroom',
+            width: '50%',
+            contentStyle: { overflow: 'auto' },
+            baseZIndex: 10000,
+            maximizable: true,
+            data: {
+                action: 'add',
+            },
+        });
     }
 
     onConfirmModal() {

@@ -68,7 +68,7 @@ export class InternListComponent {
         },
         {
             field: 'class_name',
-            header: 'Class',
+            header: 'Project',
         },
         {
             field: 'gender',
@@ -154,16 +154,11 @@ export class InternListComponent {
 
     handleAddIntern() {
         this.ref = this.dialogService.open(InternCreateComponent, {
-            header: 'Create a Intern',
+            header: 'Create Intern',
             width: '70%',
             contentStyle: { overflow: 'auto' },
             baseZIndex: 10000,
             maximizable: true,
-            data: {
-                onClose: () => {
-                    this.ref.close();
-                },
-            },
         });
     }
 

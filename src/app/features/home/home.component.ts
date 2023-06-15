@@ -11,27 +11,23 @@ export class HomeComponent implements OnInit {
     columns = [
         {
             id: 1,
-            title: 'Students',
-            count: '50055',
-            img: '../../assets/images/icons/dash-icon-01.svg',
+            title: 'Projects',
+            count: '50+',
         },
         {
             id: 2,
-            title: 'Awards',
-            count: '50+',
-            img: '../../assets/images/icons/dash-icon-02.svg',
+            title: 'Mentors',
+            count: '20',
         },
         {
             id: 3,
-            title: 'Departments',
-            count: '30+',
-            img: '../../assets/images/icons/dash-icon-03.svg',
+            title: 'Interns',
+            count: '400',
         },
         {
             id: 4,
-            title: 'Revenue',
-            count: '$505',
-            img: '../../assets/images/icons/dash-icon-04.svg',
+            title: 'Technologies',
+            count: '20+',
         },
     ];
 

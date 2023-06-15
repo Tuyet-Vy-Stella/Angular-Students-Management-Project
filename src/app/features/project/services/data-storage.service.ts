@@ -8,7 +8,7 @@ import {
     switchMap,
     tap,
 } from 'rxjs';
-import { IClassElement, IClassroom, ITeacher } from '../utils/project';
+import { IClassElement, IClassroom, ITeacher } from '../models/project.model';
 import { HttpClient } from '@angular/common/http';
 
 @Injectable({ providedIn: 'root' })

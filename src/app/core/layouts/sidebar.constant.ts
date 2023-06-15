@@ -31,11 +31,6 @@ export const sidebarTabs = [
                 name: 'Intern List',
                 link: 'students',
             },
-            {
-                id: 22,
-                name: 'Create Intern',
-                link: 'students/create',
-            },
         ],
     },
     {
@@ -48,11 +43,6 @@ export const sidebarTabs = [
                 id: 31,
                 name: 'Mentor List',
                 link: 'teachers',
-            },
-            {
-                id: 32,
-                name: 'Create Mentor',
-                link: 'teachers/new',
             },
         ],
     },
@@ -67,11 +57,6 @@ export const sidebarTabs = [
                 name: 'Technology List',
                 link: 'subjects',
             },
-            // {
-            //   id: 42,
-            //   name: 'Create Subject',
-            //   link: 'subjects/create',
-            // },
         ],
     },
     {
@@ -84,11 +69,6 @@ export const sidebarTabs = [
                 id: 51,
                 name: 'Project List',
                 link: 'classrooms',
-            },
-            {
-                id: 52,
-                name: 'Create Project',
-                link: 'classrooms/create',
             },
         ],
     },

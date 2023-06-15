@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { IClassElement, ITeacher } from '../utils/project';
+import { IClassElement, ITeacher } from '../models/project.model';
 import {
     BehaviorSubject,
     catchError,

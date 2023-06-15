@@ -7,7 +7,7 @@ import { DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
     templateUrl: './intern-create.component.html',
     styleUrls: ['./intern-create.component.scss'],
 })
-export class InternCreateComponent implements OnInit {
+export class InternCreateComponent {
     @ViewChild(InternListComponent, { read: InternListComponent })
     internList: InternListComponent | undefined;
 
@@ -15,15 +15,4 @@ export class InternCreateComponent implements OnInit {
         public ref: DynamicDialogRef,
         public config: DynamicDialogConfig
     ) {}
-    ngOnInit(): void {
-        console.log({
-            ref: this.ref,
-            config: this.config.data.onClose,
-        });
-    }
-    handleClose() {
-        console.log(this.internList);
-        this.config.data.onClose();
-        // this.internList.ref.close();
-    }
 }
