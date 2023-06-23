@@ -5,18 +5,16 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ToastrModule } from 'ngx-toastr';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { CookieService } from 'ngx-cookie-service';
-// Module
 import { AppRoutingModule } from './app-routing.module';
 
 import { AppComponent } from './app.component';
 
 import { AuthInterceptor } from '@core/interceptors/auth.interceptor';
 
-// Common
-
 import { CoreModule } from '@core/core.module';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { registerLocaleData } from '@angular/common';
+import { JWT_OPTIONS, JwtHelperService } from '@auth0/angular-jwt';
 import en from '@angular/common/locales/en';
 
 registerLocaleData(en);
@@ -42,11 +40,15 @@ registerLocaleData(en);
         CoreModule,
     ],
     providers: [
-        [CookieService],
+        [CookieService, JwtHelperService],
         {
             provide: HTTP_INTERCEPTORS,
             useClass: AuthInterceptor,
             multi: true,
+        },
+        {
+            provide: JWT_OPTIONS,
+            useValue: JWT_OPTIONS,
         },
     ],
     bootstrap: [AppComponent],

@@ -1,8 +1,8 @@
 <div class="min-h-screen-except-header pb-8">
     <!-- Content -->
-    <div class="mt-6 min-h-[37.5rem] rounded-lg ">
+    <div class="min-h-[37.5rem] rounded-lg ">
         <!-- Heading -->
-        <div class="bg-light rounded-lg mb-6 border">
+        <div class="bg-light rounded-lg mb-2 border">
             <!-- Heading Info -->
             <div *ngIf="!isFetchingToGet; else skeleton;"
                 class="flex flex-col md:flex-row items-center justify-between p-3 gap-2 md:gap-[7rem]"
@@ -13,106 +13,33 @@
                         <img src="../assets/images/avt.jpg" alt="" class="w-20 h-20  rounded-full" />
                     </div>
                     <div>
-                        <p class="text-xl text-dark font-medium">{{ teacherForm.get('name')?.value || 'No information'
+                        <p class="text-xl text-dark font-medium">{{ mentorForm.get('name')?.value || 'No information'
                             }}</p>
                         <p class="text-sm text-sidebar font-normal">
-                            <span class="capitalize">{{teacherForm.get('gender')?.value || 'Male'}}</span>
+                            <span class="capitalize">{{mentorForm.get('gender')?.value || 'Male'}}</span>
                             <span class="mx-2">•</span>
-                            <span class="capitalize">{{teacherForm.get('email')?.value || 'No information'}}</span>
+                            <span class="capitalize">{{mentorForm.get('email')?.value || 'No information'}}</span>
                         </p>
                     </div>
                 </div>
             </div>
+
+            <div class="px-4">
+                <app-tab-menu [items]="items" [activeItem]="activeItem"
+                    (onActiveChange)="activeItem = $event"></app-tab-menu>
+            </div>
         </div>
+
 
         <!-- <app-mentor-form #mentorForm *ngIf="!isFetching" [teacher]="teacher"></app-mentor-form> -->
         <ng-container *ngIf="!isFetchingToGet">
             <!-- Spinner -->
             <app-loading-spinner *ngIf="isFetchingToCreateOrUpdateTeacher" />
 
+            <app-mentor-info *ngIf="activeItem.id==='info'" [mentor]="mentor"></app-mentor-info>
             <!-- Form -->
-            <form [formGroup]="teacherForm" (ngSubmit)="teacherForm.valid && onSubmit()">
-                <div class="flex gap-4">
-                    <div class="flex-1 bg-light px-4 py-6 rounded-md border-1">
-                        <h3 class="text-lg mb-4 font-medium">Basic Information</h3>
-                        <div class="grid grid-cols-2 gap-x-2 gap-y-4">
-                            <!-- Name -->
-                            <div class="flex flex-col gap-2 ">
-                                <label class="text-sm text-gray-500 font-medium" htmlFor="username">Username</label>
-                                <input pInputText id="username" formControlName="name" />
-                            </div>
-
-                            <!-- Birthday -->
-                            <div class="flex flex-col gap-2 col-start-2 col-end-3">
-                                <label class="text-sm text-gray-500 font-medium" htmlFor="birthday">Birthday</label>
-                                <p-calendar id="birthday" formControlName="birthday"></p-calendar>
-                            </div>
-
-                            <!-- Gender -->
-                            <div class="flex flex-col gap-2 col-start-1 col-end-2">
-                                <label class="text-sm text-gray-500 font-medium" htmlFor="gender">Gender</label>
-                                <p-dropdown formControlName="gender" [options]="['male', 'female']"></p-dropdown>
-                            </div>
-
-                            <!-- Joined Date -->
-                            <div class="flex flex-col gap-2 col-start-2 col-end-3">
-                                <label class="text-sm text-gray-500 font-medium" htmlFor="joined_date">Joined
-                                    Date</label>
-                                <p-calendar id="joined_date" formControlName="joined_date"></p-calendar>
-                            </div>
-
-                            <div class="flex flex-col gap-2 col-start-1 col-span-3">
-                                <label class="text-sm text-gray-500 font-medium" htmlFor="technology">Technology</label>
-                                <p-dropdown formControlName="subject_id" [options]="subjectList" optionLabel="name"
-                                    optionValue="id"></p-dropdown>
-                            </div>
-
-                            <ng-container formArrayName="class_id">
-                                <div class="flex flex-col gap-2 even:col-start-1 even:col-end-2 odd:col-start-2 odd:col-end-3 "
-                                    *ngFor="let class of class_id.controls; let i = index">
-                                    <label class="text-sm text-gray-500 font-medium"
-                                        htmlFor="technology">Project</label>
-                                    <p-dropdown [formControlName]="i" optionLabel="name" [options]="classList"
-                                        optionValue="id">
-                                        <ng-template let-class pTemplate="item">
-                                            {{ class.grade + " " + class.section }}
-                                        </ng-template>
-                                    </p-dropdown>
-                                </div>
-                            </ng-container>
-                            <div class="col-start-1"> <p-button label="Add Project" (onClick)="addClass()"></p-button>
-                            </div>
-
-
-                        </div>
-                    </div>
-                    <div class="flex-1 bg-light px-4 py-6 rounded-md border-1">
-                        <h3 class="text-lg mb-4 font-medium">Communications</h3>
-                        <div class="flex-1 flex flex-col gap-4">
-                            <!-- Email -->
-                            <div class="flex flex-col gap-2">
-                                <label class="text-sm text-gray-500 font-medium" htmlFor="email">Email</label>
-                                <input pInputText id="email" aria-describedby="username-help" formControlName="email" />
-                            </div>
-
-                            <!-- Phone number -->
-                            <div class="flex flex-col gap-2">
-                                <label class="text-sm text-gray-500 font-medium" htmlFor="phone">Phone Number</label>
-                                <input pInputText id="phone" aria-describedby="phone-help" formControlName="phone" />
-                            </div>
-
-                            <!-- Address -->
-                            <div class="flex flex-col gap-2">
-                                <label class="text-sm text-gray-500 font-medium" htmlFor="address">Address</label>
-                                <input pInputText id="address" formControlName="address" />
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="w-full flex justify-end mt-4 px-4">
-                    <p-button type="submit" label="Submit" [disabled]="!teacherForm.valid"></p-button>
-                </div>
-            </form>
+            <app-mentor-form *ngIf="activeItem.id === 'edit'" [mentorForm]="mentorForm"
+                (onSubmit)="handleSubmit()"></app-mentor-form>
         </ng-container>
         <!-- Main Content -->
 

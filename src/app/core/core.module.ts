@@ -1,14 +1,28 @@
 import { SidebarModule } from 'primeng/sidebar';
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
-import { HeaderComponent, SidebarComponent, FooterComponent } from './layouts';
+import {
+    HeaderComponent,
+    SidebarComponent,
+    FooterComponent,
+    BreadcrumbComponent,
+} from './components';
 import { RouterModule } from '@angular/router';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { InputTextModule } from 'primeng/inputtext';
 import { ButtonModule } from 'primeng/button';
 import { AvatarModule } from 'primeng/avatar';
+import { FormsModule } from '@angular/forms';
+import { BreadcrumbModule } from 'primeng/breadcrumb';
+import { AdminLayoutComponent } from './layouts';
 @NgModule({
-    declarations: [HeaderComponent, SidebarComponent, FooterComponent],
+    declarations: [
+        HeaderComponent,
+        SidebarComponent,
+        FooterComponent,
+        BreadcrumbComponent,
+        AdminLayoutComponent,
+    ],
     imports: [
         CommonModule,
         SidebarModule,
@@ -17,7 +31,14 @@ import { AvatarModule } from 'primeng/avatar';
         InputTextModule,
         ButtonModule,
         AvatarModule,
+        FormsModule,
+        BreadcrumbModule,
     ],
-    exports: [HeaderComponent, SidebarComponent, FooterComponent],
+    exports: [
+        HeaderComponent,
+        SidebarComponent,
+        FooterComponent,
+        BreadcrumbComponent,
+    ],
 })
 export class CoreModule {}

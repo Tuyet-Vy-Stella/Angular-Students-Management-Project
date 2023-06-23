@@ -12,9 +12,9 @@
         <div class="relative">
             <span class="p-input-icon-left">
                 <i class="pi pi-search"></i>
-                <input type="text" pInputText placeholder="Search" />
+                <input [(ngModel)]="searchInput" type="text" pInputText placeholder="Search" />
             </span>
-            <div
+            <div *ngIf="searchInput"
                 class="py-4 absolute top-[calc(100%_+_10px)] bg-light w-[200%] max-h-[60vh] overflow-y-auto min-h-[40vh] shadow border">
                 <div class="pl-4 pt-2 font-medium">Interns</div>
                 <ul>

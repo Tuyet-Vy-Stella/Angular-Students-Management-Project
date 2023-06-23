@@ -2,17 +2,16 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { tap } from 'rxjs';
-import { Teacher } from '../../models/mentor.model';
-import { TeacherService } from '../../services/mentor.service';
+import { MentorService } from '../../services/mentor.service';
 import {
-    FormArray,
     FormBuilder,
     FormControl,
     FormGroup,
     Validators,
 } from '@angular/forms';
-import { Subject } from 'app/features/technology/models/technology.model';
-import { Class } from 'app/features/project/models/project.model';
+import { mentors } from '../../mentor.data';
+import { MenuItem } from 'primeng/api';
+import { Mentor } from '../../models/mentor.model';
 
 @Component({
     selector: 'app-mentor-detail',
@@ -22,21 +21,28 @@ import { Class } from 'app/features/project/models/project.model';
 export class MentorDetailComponent implements OnInit {
     constructor(
         private route: ActivatedRoute,
-        private teacherService: TeacherService,
+        private mentorService: MentorService,
         private toastrService: ToastrService,
         private router: Router,
         private fb: FormBuilder
     ) {}
 
-    teacherForm!: FormGroup;
-    subjectList: Subject[] = [];
+    mentorForm!: FormGroup;
     isFetchingToCreateOrUpdateTeacher = false;
     isFetchingToGet = false;
     createMode = false;
-    teacherId!: number;
-    classList: Class[] = [];
+    mentorId!: string;
+    mentor?: Mentor;
+
+    items: MenuItem[] = [
+        { label: 'Info', icon: 'pi pi-fw pi-home', id: 'info' },
+        { label: 'Edit', icon: 'pi pi-fw pi-calendar', id: 'edit' },
+    ];
+
+    activeItem: MenuItem = this.items[0];
+
     ngOnInit(): void {
-        this.teacherForm = this.fb.group({
+        this.mentorForm = this.fb.group({
             name: ['', [Validators.required, this.checkFieldEmpty]],
             gender: ['male', [Validators.required]],
             birthday: [null, [Validators.required]],
@@ -46,80 +52,47 @@ export class MentorDetailComponent implements OnInit {
                 [Validators.required, Validators.pattern('[- +()0-9]+')],
             ],
             email: [null, [Validators.required, Validators.email]],
-            subject_id: [null, [Validators.required]],
-            joined_date: [null, [Validators.required]],
-            class_id: this.fb.array([]),
         });
 
         this.fetchMentor();
 
-        // Fetch subject list
-        this.teacherService.getSubjects().subscribe({
-            next: (response) => {
-                this.subjectList = response;
-            },
-            error: (error) => {
-                this.toastrService.error(
-                    'Get subject list failed. Please try again'
-                );
-            },
-        });
-
         this.createMode = this.router.url.includes('create');
-
-        // Fetch class list
-        this.teacherService.getClassList().subscribe({
-            next: (response) => {
-                this.classList = response.map((item) => ({
-                    ...item,
-                    name: item.grade + item.section,
-                }));
-            },
-            error: (error) => {
-                this.toastrService.error(
-                    'Get class list failed. Please try again'
-                );
-            },
-        });
     }
 
     fetchMentor() {
         this.route.params.subscribe((params: Params) => {
-            const id = +params['id'];
+            const id = params['id'];
             if (!id) {
                 this.isFetchingToGet = false;
-                this.addClass();
                 return;
             }
-            this.teacherId = id;
+            this.mentorId = id;
             this.isFetchingToGet = true;
-            this.teacherService
-                .getTeacherById(id)
-                .pipe(
-                    tap(() => {
-                        this.isFetchingToGet = false;
-                    })
-                )
-                .subscribe({
-                    next: (response) => {
-                        const { id, created_at, class_id, ...rest } = response;
-                        this.teacherForm.patchValue({
-                            ...rest,
-                        });
-                        const class_control = class_id.map((item: any) =>
-                            this.fb.control(item)
-                        );
-                        this.teacherForm.setControl(
-                            'class_id',
-                            this.fb.array(class_control)
-                        );
-                    },
-                    error: (error) => {
-                        this.toastrService.error(
-                            'Get teacher failed. Please try again'
-                        );
-                    },
-                });
+            this.mentor = mentors.find((mentor) => mentor.id === id);
+            this.mentorForm.patchValue({
+                ...this.mentor,
+            });
+            this.isFetchingToGet = false;
+            // this.mentorService
+            //     .getMentorById(id)
+            //     .pipe(
+            //         tap(() => {
+            //             this.isFetchingToGet = false;
+            //         })
+            //     )
+            //     .subscribe({
+            //         next: (response) => {
+            //             const { id, ...rest } = response;
+            //             this.mentorForm.patchValue({
+            //                 ...rest,
+            //             });
+            //         },
+            //         error: () => {
+            //             this.toastrService.error(
+            //                 'Get teacher failed. Please try again'
+            //             );
+            //         },
+            //     });
         });
     }
 
@@ -132,30 +105,13 @@ export class MentorDetailComponent implements OnInit {
         return null;
     }
 
-    get class_id(): FormArray {
-        return this.teacherForm.get('class_id') as FormArray;
-    }
-
-    addClass() {
-        this.class_id.push(this.fb.control(null, [Validators.required]));
-    }
-
-    removeClass() {
-        this.class_id.removeAt(this.class_id.length - 1);
-    }
-
-    onSubmit() {
+    handleSubmit() {
         this.isFetchingToCreateOrUpdateTeacher = true;
-        if (this.teacherId) {
+        if (this.mentorId) {
             // Update teacher
-            this.teacherService
-                .updateTeacher(this.teacherId, {
-                    ...this.teacherForm.value,
-                    // get unique class_id
-                    class_id: this.class_id.value.filter(
-                        (item: any, index: any) =>
-                            this.class_id.value.indexOf(item) === index
-                    ),
+            this.mentorService
+                .updateMentor(this.mentorId, {
+                    ...this.mentorForm.value,
                 })
                 .subscribe({
                     next: () => {
@@ -165,7 +121,7 @@ export class MentorDetailComponent implements OnInit {
                         );
                         this.router.navigate(['/mentors']);
                     },
-                    error: (error) => {
+                    error: () => {
                         this.isFetchingToCreateOrUpdateTeacher = false;
                     },
                     complete: () => {
@@ -175,30 +131,24 @@ export class MentorDetailComponent implements OnInit {
         } else {
             if (!this.createMode) return;
             // Create teacher
-            this.teacherService
+            this.mentorService
                 .createTeacher({
-                    ...this.teacherForm.value,
-                    // get unique class_id
-                    class_id: this.class_id.value.filter(
-                        (item: any, index: any) =>
-                            this.class_id.value.indexOf(item) === index
-                    ),
+                    ...this.mentorForm.value,
                 })
                 .subscribe({
                     next: () => {
                         this.isFetchingToCreateOrUpdateTeacher = false;
                         // Show alert
                         this.toastrService.success(
-                            'Create teacher successfully'
+                            'Create mentor successfully'
                         );
                         // Reset form
-                        this.teacherForm.reset();
+                        this.mentorForm.reset();
                     },
-                    error: (error) => {
+                    error: () => {
                         this.isFetchingToCreateOrUpdateTeacher = false;
                         this.toastrService.error(
-                            error.error.detail ||
-                                'Create teacher failed. Please try again'
+                            'Create mentor failed. Please try again'
                         );
                     },
                     complete: () => {

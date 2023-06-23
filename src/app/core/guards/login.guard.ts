@@ -25,6 +25,7 @@ export class LoginGuard implements CanActivate {
             take(1),
             map((user) => {
                 const isAuth = !!user;
+                console.log({ isAuth });
                 if (isAuth) {
                     return this.router.createUrlTree(['/']);
                 }

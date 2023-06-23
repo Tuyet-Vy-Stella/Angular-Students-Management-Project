@@ -6,7 +6,11 @@ import { NgModule } from '@angular/core';
 import { StudentRoutingModule } from './intern-routing.module';
 import { SharedModule } from '@shared/shared.module';
 
-import { InternFormComponent, InternCreateComponent } from './components';
+import {
+    InternFormComponent,
+    InternCreateComponent,
+    InternReportComponent,
+} from './components';
 import { StudentDetailComponent, InternListComponent } from './pages';
 import { ButtonModule } from 'primeng/button';
 import { InputTextModule } from 'primeng/inputtext';
@@ -19,6 +23,7 @@ import { InfoInternComponent } from './components/info-intern/info-intern.compon
 import { DropdownModule } from 'primeng/dropdown';
 import { CalendarModule } from 'primeng/calendar';
 import { DynamicDialogModule } from 'primeng/dynamicdialog';
+import { jqxSchedulerModule } from 'jqwidgets-ng/jqxscheduler'
 
 @NgModule({
     declarations: [
@@ -27,6 +32,7 @@ import { DynamicDialogModule } from 'primeng/dynamicdialog';
         StudentDetailComponent,
         InfoInternComponent,
         InternCreateComponent,
+        InternReportComponent,
     ],
     imports: [
         CommonModule,
@@ -45,6 +51,7 @@ import { DynamicDialogModule } from 'primeng/dynamicdialog';
         DropdownModule,
         CalendarModule,
         DynamicDialogModule,
+        jqxSchedulerModule,
     ],
 })
 export class StudentModule {}

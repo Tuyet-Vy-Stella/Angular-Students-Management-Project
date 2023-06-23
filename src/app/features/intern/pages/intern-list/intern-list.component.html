@@ -1,6 +1,4 @@
-<div class="pt-8">
-    <app-list-data (onUpdate)="handleUpdateIntern($event)" (onDelete)="confirm($event)" (onAdd)="handleAddIntern()"
-        [data]="studentList" [fetching]="isFetchingStudentList" [deleting]="isFetchingToDeleteStudent" [cols]="cols"
-        title="Intern"></app-list-data>
-</div>
+<app-list-data (onUpdate)="handleUpdateIntern($event)" (onDelete)="confirm($event)" (onAdd)="handleAddIntern()"
+    [data]="studentList" [fetching]="isFetchingStudentList" [deleting]="isFetchingToDeleteStudent" [cols]="cols"
+    title="Intern"></app-list-data>
 <p-confirmDialog [style]="{width: '50vw'}"></p-confirmDialog>

@@ -4,6 +4,7 @@ import { Request } from '@shared/model/request';
 import { CookieService } from 'ngx-cookie-service';
 import { Router } from '@angular/router';
 import { BehaviorSubject, catchError, throwError } from 'rxjs';
+import { JwtHelperService } from '@auth0/angular-jwt';
 
 export interface IResponse {
     access_token: string;
@@ -19,7 +20,8 @@ export class AuthService {
     constructor(
         private http: HttpClient,
         private cookieService: CookieService,
-        private router: Router
+        private router: Router,
+        public jwtHelper: JwtHelperService
     ) {}
 
     login(email: string, password: string) {
@@ -40,6 +42,11 @@ export class AuthService {
         return throwError(error.error.detail);
     }
 
+    isAuthenticated(): boolean {
+        const token = this.cookieService.get('token');
+        return !this.jwtHelper.isTokenExpired(token);
+    }
+
     resetAuth() {
         this.user.next('');
         this.cookieService.deleteAll('/');
@@ -54,7 +61,6 @@ export class AuthService {
         if (jwtToken && jwtTokenExpiration) {
             const expirationTime = new Date(jwtTokenExpiration);
             this.timer = setInterval(() => {
-                // console.log(new Date(), expirationTime);
                 if (new Date() > expirationTime) {
                     this.resetAuth();
                 }

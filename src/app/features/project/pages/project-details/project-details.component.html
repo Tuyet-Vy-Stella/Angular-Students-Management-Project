@@ -189,7 +189,7 @@
         (onAccept)="onAcceptAddTeacherModal($event)" [teacherList$]="getAddListTeacher$"></app-classroom-modal>
 </ng-container> -->
 
-<div class="bg-light mt-8" *ngIf="vm$ | async as vm">
+<div class="bg-light " *ngIf="vm$ | async as vm">
     <div class="pt-6 px-4"><p-tabMenu [model]="items" [activeItem]="activeItem"
             (activeItemChange)="onActiveItemChange($event)"></p-tabMenu></div>
 

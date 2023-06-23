@@ -11,12 +11,12 @@ export const sidebarTabs = [
         id: 1,
         name: 'Dashboard',
         icon: faGauge,
-        prefix: '',
+        prefix: 'home',
         children: [
             {
                 id: 11,
                 name: 'Admin Dashboard',
-                link: '',
+                link: 'home',
             },
         ],
     },
@@ -24,12 +24,12 @@ export const sidebarTabs = [
         id: 2,
         name: 'Interns',
         icon: faGraduationCap,
-        prefix: 'students',
+        prefix: 'interns',
         children: [
             {
                 id: 21,
                 name: 'Intern List',
-                link: 'students',
+                link: 'interns',
             },
         ],
     },
@@ -37,25 +37,25 @@ export const sidebarTabs = [
         id: 3,
         name: 'Mentors',
         icon: faChalkboardUser,
-        prefix: 'teachers',
+        prefix: 'mentors',
         children: [
             {
                 id: 31,
                 name: 'Mentor List',
-                link: 'teachers',
+                link: 'mentors',
             },
         ],
     },
     {
         id: 4,
-        name: 'Technologies',
+        name: 'Teams',
         icon: faBookReader,
-        prefix: 'subjects',
+        prefix: 'teams',
         children: [
             {
                 id: 41,
-                name: 'Technology List',
-                link: 'subjects',
+                name: 'Team List',
+                link: 'teams',
             },
         ],
     },
@@ -68,7 +68,7 @@ export const sidebarTabs = [
             {
                 id: 51,
                 name: 'Project List',
-                link: 'classrooms',
+                link: 'projects',
             },
         ],
     },

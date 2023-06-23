@@ -1,6 +1,6 @@
 <div class="min-h-screen-except-header">
     <!-- Content -->
-    <div class="mt-6 min-h-[37.5rem] rounded-lg ">
+    <div class="min-h-[37.5rem] rounded-lg ">
         <!-- Heading -->
         <div class="bg-light rounded-lg mb-6 border">
             <!-- Heading Info -->
@@ -24,8 +24,8 @@
             </div>
 
             <div class="px-4 py-2">
-                <app-tab-menu [items]="items" [activeItem]="activeItem"
-                    (onActiveItemChange)="handleActiveItemChange($event)"></app-tab-menu>
+                <app-tab-menu (onActiveChange)="activeItem = $event" [items]="items"
+                    [activeItem]="activeItem"></app-tab-menu>
             </div>
         </div>
 
@@ -35,6 +35,7 @@
             <app-info-intern *ngIf="activeItem.id === 'info'" [student]="student"></app-info-intern>
 
             <app-intern-form *ngIf="activeItem.id === 'edit'" [student]="student"></app-intern-form>
+            <app-intern-report *ngIf="activeItem.id === 'report'"></app-intern-report>
         </ng-container>
         <!-- Main Content -->
 

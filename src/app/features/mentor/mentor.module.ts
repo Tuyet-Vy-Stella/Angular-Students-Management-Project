@@ -11,10 +11,21 @@ import { ButtonModule } from 'primeng/button';
 import { CalendarModule } from 'primeng/calendar';
 import { SkeletonModule } from 'primeng/skeleton';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
+import { TableModule } from 'primeng/table';
+import { RouterModule } from '@angular/router';
+import { MentorFormComponent, MentorInfoComponent } from './components';
+import { PaginatorModule } from 'primeng/paginator';
+import { TabMenuModule } from 'primeng/tabmenu';
 
 @NgModule({
-    declarations: [TeacherListComponent, MentorDetailComponent],
+    declarations: [
+        TeacherListComponent,
+        MentorDetailComponent,
+        MentorFormComponent,
+        MentorInfoComponent,
+    ],
     imports: [
+        TableModule,
         CommonModule,
         SharedModule,
         TeacherRoutingModule,
@@ -26,6 +37,9 @@ import { ConfirmDialogModule } from 'primeng/confirmdialog';
         CalendarModule,
         SkeletonModule,
         ConfirmDialogModule,
+        RouterModule,
+        PaginatorModule,
+        TabMenuModule
     ],
 })
 export class TeacherModule {}

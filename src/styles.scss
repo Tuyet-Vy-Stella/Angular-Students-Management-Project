@@ -2,6 +2,11 @@
 @tailwind components;
 @tailwind utilities;
 
+@import "jqwidgets-ng/jqwidgets/styles/jqx.base.css";
+@import "jqwidgets-ng/jqwidgets/styles/jqx.light.css";
+@import "./primeng.scss";
+@import "./scheduler.scss";
+
 .custom-toastr {
     box-shadow: 0 0 6px #9f9d9d !important;
     top: 10px !important;
@@ -115,14 +120,14 @@ html *::-webkit-scrollbar-track {
     }
 
     .main {
-        @apply w-full overflow-x-hidden;
+        @apply w-full;
 
         .sidebar {
             @apply fixed left-0 top-header bottom-0 w-sidebar bg-white text-sidebar py-4 transition-200-ease-in-out;
         }
 
         .main-content {
-            @apply bg-content min-h-screen pt-8 ml-0 transition-200-ease-in-out;
+            @apply bg-content min-h-screen mt-[60px] ml-0 transition-200-ease-in-out;
         }
 
         &.mini-sidebar {

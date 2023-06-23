@@ -24,7 +24,8 @@ export class HeaderComponent {
     name!: string;
     showDropdown = false;
     icons = { faBars, faBell, faMaximize, faChevronDown };
-    
+    searchInput = '';
+
     @ViewChild('dropdown') dropdown!: ElementRef;
     @ViewChild('userMenu') userMenu!: ElementRef;
 
@@ -36,8 +37,8 @@ export class HeaderComponent {
     ) {}
 
     ngOnInit() {
-        this.authService.user.subscribe((name) => {
-            this.name = name;
+        this.authService.user.subscribe((user) => {
+            this.name = user;
         });
 
         this.renderer.listen('window', 'click', (e: Event) => {

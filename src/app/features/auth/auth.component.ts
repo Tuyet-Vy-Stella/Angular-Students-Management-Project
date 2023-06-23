@@ -1,8 +1,7 @@
 import { Router } from '@angular/router';
 import { CookieService } from 'ngx-cookie-service';
 import { Component, OnInit } from '@angular/core';
-import { AuthIcon } from './auth-icon';
-import { NgForm } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AuthService, IResponse } from './services/auth.service';
 
 @Component({
@@ -12,36 +11,36 @@ import { AuthService, IResponse } from './services/auth.service';
 })
 export class AuthComponent implements OnInit {
     message = '';
-    icons = new AuthIcon();
-    isShowPassword = false;
     isRemembered = false;
     isLoading = false;
+
+    formLogin!: FormGroup;
 
     constructor(
         private authService: AuthService,
         private cookieService: CookieService,
-        private router: Router
+        private router: Router,
+        private fb: FormBuilder
     ) {}
-    onToggleShowPassword() {
-        this.isShowPassword = !this.isShowPassword;
-    }
 
-    onToggleRemembered() {
-        this.isRemembered = !this.isRemembered;
-    }
-
-    onClearMessage() {
-        this.message = '';
+    ngOnInit(): void {
+        this.formLogin = this.fb.group({
+            email: this.fb.control('', [Validators.required, Validators.email]),
+            password: this.fb.control('', [
+                Validators.required,
+                Validators.minLength(6),
+            ]),
+            isRemember: this.fb.control(false),
+        });
     }
 
     private loginSuccessHandle(res: IResponse) {
         this.isLoading = false;
         this.authService.user.next(res.name);
 
-        const loginTime = this.isRemembered
+        const loginTime = this.formLogin.value.isRemember
             ? 3 * 24 * 60 * 60 * 1000
             : 60 * 60 * 1000;
-        // const loginTime = this.isRemembered ? 3 * 24 * 60 * 60 * 1000 : 20 * 1000;
 
         const expirationTime = new Date(new Date().getTime() + loginTime);
         this.cookieService.set('name', res.name);
@@ -54,18 +53,20 @@ export class AuthComponent implements OnInit {
         this.router.navigate(['/']);
     }
 
-    onSubmit(f: NgForm) {
+    handleSubmit() {
         this.isLoading = true;
-        this.authService.login(f.value.email, f.value.password).subscribe(
+        const { email, password } = this.formLogin.value;
+        this.authService.login(email, password).subscribe(
             (res) => {
+                this.router.navigate(['']);
                 this.loginSuccessHandle(res);
                 this.authService.setLogoutAuto();
             },
             (error) => {
+                this.formLogin.setErrors(error);
                 this.isLoading = false;
                 this.message = error;
             }
         );
     }
-    ngOnInit(): void {}
 }

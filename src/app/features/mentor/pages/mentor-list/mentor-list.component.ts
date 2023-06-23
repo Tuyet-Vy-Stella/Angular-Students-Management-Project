@@ -1,10 +1,11 @@
 import { Component } from '@angular/core';
-import { Teacher } from '../../models/mentor.model';
-import { TeacherService } from '../../services/mentor.service';
+import { Mentor } from '../../models/mentor.model';
+import { MentorService } from '../../services/mentor.service';
 import { ToastrService } from 'ngx-toastr';
 import { Router } from '@angular/router';
 import { tap } from 'rxjs';
 import { ConfirmationService } from 'primeng/api';
+import {mentors} from '../../mentor.data'
 
 @Component({
     selector: 'app-teacher-list',
@@ -14,53 +15,28 @@ import { ConfirmationService } from 'primeng/api';
 })
 export class TeacherListComponent {
     constructor(
-        private teacherService: TeacherService,
+        private mentorService: MentorService,
         private toastrService: ToastrService,
         private route: Router,
         private confirmationService: ConfirmationService
     ) {}
 
-    teacherList: Teacher[] = [];
+    mentorList: Mentor[] = [];
     searchKeyword: string = '';
     isLoading = false;
     teacherIdToDelete: number = 0;
+    mentors: Mentor[] = mentors;
+    rows=10;
 
-    cols = [
-        {
-            field: 'id',
-            header: '#',
-        },
-        {
-            field: 'name',
-            header: 'Name',
-            link: ['id'],
-        },
-        {
-            field: 'email',
-            header: 'Email',
-        },
-        {
-            field: 'gender',
-            header: 'Gender',
-        },
-        {
-            field: 'phone',
-            header: 'Phone',
-        },
-        {
-            field: 'joined_date',
-            header: 'Joined Date',
-        },
-    ];
 
     ngOnInit() {
-        this.fetchMentors();
+        // this.fetchMentors();
     }
 
     fetchMentors() {
         this.isLoading = true;
-        this.teacherService
-            .getTeachers()
+        this.mentorService
+            .getMentors()
             .pipe(
                 tap(() => {
                     this.isLoading = false;
@@ -68,7 +44,7 @@ export class TeacherListComponent {
             )
             .subscribe({
                 next: (response) => {
-                    this.teacherList = response;
+                    this.mentorList = response.content;
                 },
                 error: (error) => {
                     this.toastrService.error(
@@ -78,15 +54,19 @@ export class TeacherListComponent {
             });
     }
 
-    handleUpdateMentor(mentor: Teacher) {
-        this.route.navigate([`/teachers/${mentor.id}`]);
+    handleUpdateMentor(mentor: Mentor) {
+        this.route.navigate([`/mentors/${mentor.id}`]);
     }
 
     handleAddMentor() {
-        this.route.navigate(['/teachers/create']);
+        this.route.navigate(['/mentors/create']);
     }
 
-    handleDeleteMentor(mentor: Teacher) {
+    x($e: any) {
+        console.log($e)
+    }
+
+    handleDeleteMentor(mentor: Mentor) {
         const { id, name } = mentor;
         this.confirmationService.confirm({
             header: 'Delete Mentor',
@@ -95,10 +75,10 @@ export class TeacherListComponent {
 
             accept: () => {
                 this.isLoading = true;
-                this.teacherService.deleteTeacher(id).subscribe({
+                this.mentorService.deleteMentor(id).subscribe({
                     next: (response) => {
                         if (response) {
-                            this.teacherList = this.teacherList.filter(
+                            this.mentorList = this.mentorList.filter(
                                 (teacher) => teacher.id !== id
                             );
                             this.toastrService.success(

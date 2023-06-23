@@ -10,5 +10,5 @@ export class TabMenuComponent {
     @Input() items!: MenuItem[];
     @Input() activeItem!: MenuItem;
 
-    @Output() onActiveItemChange = new EventEmitter<MenuItem>();
+    @Output() onActiveChange = new EventEmitter<MenuItem>();
 }

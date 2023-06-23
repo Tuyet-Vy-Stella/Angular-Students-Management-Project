@@ -1,84 +1,39 @@
-import { map } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { CreateTeacherModel, Teacher } from '../models/mentor.model';
-import { Subject } from 'app/features/technology/models/technology.model';
-import { Class } from 'app/features/project/models/project.model';
+import {  Mentor } from '../models/mentor.model';
+import { ResponsePagination } from '@shared/model/common';
 
 @Injectable({
     providedIn: 'root',
 })
-export class TeacherService {
+export class MentorService {
     constructor(private http: HttpClient) {}
 
-    getTeachers() {
-        return this.http.get<Teacher[]>(
-            'https://qlsv-mu.vercel.app/api/teacher-list'
+    getMentors() {
+        return this.http.get<ResponsePagination<Mentor>>(
+            'http://localhost:8080/api/v1/mentors'
         );
     }
 
-    getTeacherById(id: number) {
-        return this.http.get<Teacher>(
-            'https://qlsv-mu.vercel.app/api/teacher/',
-            {
-                params: {
-                    teacher_id: id,
-                },
-            }
+    getMentorById(id: string) {
+        return this.http.get<Mentor>(
+            'http://localhost:8080/api/v1/mentors/' + id,
         );
     }
 
-    getSubjects() {
-        return this.http.get<Subject[]>(
-            'https://qlsv-mu.vercel.app/api/subject-list'
+    deleteMentor(id: string) {
+        return this.http.delete<Mentor>(
+            'http://localhost:8080/api/v1/mentors/' + id,
         );
     }
 
-    getSubjectById(id: number) {
-        return this.http.get<Subject>(
-            'https://qlsv-mu.vercel.app/api/subject/',
-            {
-                params: {
-                    subject_id: id,
-                },
-            }
-        );
-    }
-
-    getClassList() {
-        return this.http.get<Class[]>(
-            'https://qlsv-mu.vercel.app/api/class-list'
-        );
-    }
-
-    deleteTeacher(id: number) {
-        return this.http.delete('https://qlsv-mu.vercel.app/api/teacher/', {
-            params: {
-                teacher_id: id,
-            },
-        });
-    }
-
-    createTeacher(data: CreateTeacherModel) {
+    createTeacher(mentor: Mentor) {
         return this.http
-            .post('https://qlsv-mu.vercel.app/api/teacher', data)
-            .pipe(
-                // Success (map: modify response, tap: handle side & not modify response)
-                map((response) => {
-                    return {
-                        code: 200,
-                        success: true,
-                        data: response,
-                    };
-                })
-            );
+            .post('http://localhost:8080/api/v1/mentors/', mentor)
+
     }
 
-    updateTeacher(id: number, data: CreateTeacherModel) {
-        return this.http.put('https://qlsv-mu.vercel.app/api/teacher/', data, {
-            params: {
-                teacher_id: id,
-            },
-        });
+    updateMentor(id: string, mentor: Mentor) {
+        return this.http.put('http://localhost:8080/api/v1/mentors/' + id, mentor);
     }
 }
