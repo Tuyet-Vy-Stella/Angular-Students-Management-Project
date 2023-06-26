@@ -4,49 +4,42 @@
             <fa-icon [icon]="icons.faSignature" class="text-active"></fa-icon>
             <div class="">
                 <p class="text-dark font-medium leading-5">{{ 'name' | pascalcase }}</p>
-                <p class="text-sidebar text-sm mt-1">{{ student.name }}</p>
-            </div>
-        </div>
-        <div class="flex gap-4 mt-4">
-            <fa-icon [icon]="icons.faUsers" class="text-active"></fa-icon>
-            <div class="">
-                <p class="text-dark font-medium leading-5">Project</p>
-                <p class="text-sidebar text-sm mt-1">{{ student.class_name }}</p>
+                <p class="text-sidebar text-sm mt-1">{{ intern.name }}</p>
             </div>
         </div>
         <div class="flex gap-4 mt-4">
             <fa-icon [icon]="icons.faTransgender" class="text-active"></fa-icon>
             <div class="">
                 <p class="text-dark font-medium leading-5">Gender</p>
-                <p class="text-sidebar text-sm mt-1">{{ student.gender }}</p>
+                <p class="text-sidebar text-sm mt-1">{{ intern.gender }}</p>
             </div>
         </div>
         <div class="flex gap-4 mt-4">
             <fa-icon [icon]="icons.faPhone" class="text-active"></fa-icon>
             <div class="">
                 <p class="text-dark font-medium leading-5">Phone</p>
-                <p class="text-sidebar text-sm mt-1">{{ student.phone }}</p>
+                <p class="text-sidebar text-sm mt-1">{{ intern.phone }}</p>
             </div>
         </div>
         <div class="flex gap-4 mt-4">
             <fa-icon [icon]="icons.faEnvelope" class="text-active"></fa-icon>
             <div class="">
                 <p class="text-dark font-medium leading-5">Email</p>
-                <p class="text-sidebar text-sm mt-1">{{ student.email }}</p>
+                <p class="text-sidebar text-sm mt-1">{{ intern.email }}</p>
             </div>
         </div>
         <div class="flex gap-4 mt-4">
             <fa-icon [icon]="icons.faLocationDot" class="text-active"></fa-icon>
             <div class="">
                 <p class="text-dark font-medium leading-5">Address</p>
-                <p class="text-sidebar text-sm mt-1">{{ student.address }}</p>
+                <p class="text-sidebar text-sm mt-1">{{ intern.address }}</p>
             </div>
         </div>
         <div class="flex gap-4 mt-4">
             <fa-icon [icon]="icons.faCakeCandles" class="text-active"></fa-icon>
             <div class="">
                 <p class="text-dark font-medium leading-5">Birthday</p>
-                <p class="text-sidebar text-sm mt-1">{{ student.birthday }}</p>
+                <p class="text-sidebar text-sm mt-1">{{ intern.birthday }}</p>
             </div>
         </div>
     </div>

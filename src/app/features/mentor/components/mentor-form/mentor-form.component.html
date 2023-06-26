@@ -1,47 +1,53 @@
-<form [formGroup]="mentorForm" (ngSubmit)="mentorForm.valid && onSubmit.emit">
+<form [formGroup]="mentorForm" (ngSubmit)="handleSubmit()">
     <div class="flex gap-4">
-        <div class="flex-1 bg-light px-4 py-6 rounded-md border-1">
+        <div [ngClass]="{'p-0': isDialog, 'px-4 py-6': !isDialog}" class="flex-1 bg-light rounded-md border-1">
             <h3 class="text-lg mb-4 font-medium">Basic Information</h3>
             <div class="grid grid-cols-2 gap-x-2 gap-y-4">
-                    <!-- Name -->
+                <!-- Name -->
                 <div class="flex flex-col gap-2 ">
-                    <label class="text-sm text-gray-500 font-medium" htmlFor="username">Username</label>
-                    <input pInputText id="username" formControlName="name" />
+                    <label class="text-sm text-gray-500 font-medium" htmlFor="username">Full Name</label>
+                    <input placeholder="Full name" pInputText id="username" formControlName="name" />
                 </div>
 
                 <!-- Birthday -->
                 <div class="flex flex-col gap-2 col-start-2 col-end-3">
                     <label class="text-sm text-gray-500 font-medium" htmlFor="birthday">Birthday</label>
-                    <p-calendar id="birthday" formControlName="birthday"></p-calendar>
+                    <p-calendar placeholder="Birthday" appendTo="body" id="birthday"
+                        formControlName="birthday"></p-calendar>
                 </div>
 
                 <!-- Gender -->
                 <div class="flex flex-col gap-2 col-start-1 col-end-2">
                     <label class="text-sm text-gray-500 font-medium" htmlFor="gender">Gender</label>
-                    <p-dropdown formControlName="gender" [options]="['male', 'female']"></p-dropdown>
+                    <p-dropdown placeholder="Gender" optionLabel="title" optionValue="value" formControlName="gender"
+                        [options]="genders">
+                    </p-dropdown>
                 </div>
 
             </div>
         </div>
-        <div class="flex-1 bg-light px-4 py-6 rounded-md border-1">
-            <h3 class="text-lg mb-4 font-medium">Communications</h3>
+        <div [ngClass]="{'p-0': isDialog, 'px-4 py-6': !isDialog}"
+            class="flex-1 bg-light px-4 py-6 rounded-md border-1">
+            <h3 class="text-lg mb-4 font-medium">Contact Information</h3>
             <div class="flex-1 flex flex-col gap-4">
                 <!-- Email -->
                 <div class="flex flex-col gap-2">
                     <label class="text-sm text-gray-500 font-medium" htmlFor="email">Email</label>
-                    <input pInputText id="email" aria-describedby="username-help" formControlName="email" />
+                    <input placeholder="Email" pInputText id="email" aria-describedby="username-help"
+                        formControlName="email" />
                 </div>
 
                 <!-- Phone number -->
                 <div class="flex flex-col gap-2">
                     <label class="text-sm text-gray-500 font-medium" htmlFor="phone">Phone Number</label>
-                    <input pInputText id="phone" aria-describedby="phone-help" formControlName="phone" />
+                    <input placeholder="Phone number" pInputText id="phone" aria-describedby="phone-help"
+                        formControlName="phone" />
                 </div>
 
                 <!-- Address -->
                 <div class="flex flex-col gap-2">
                     <label class="text-sm text-gray-500 font-medium" htmlFor="address">Address</label>
-                    <input pInputText id="address" formControlName="address" />
+                    <input placeholder="Address" pInputText id="address" formControlName="address" />
                 </div>
             </div>
         </div>

@@ -2,12 +2,11 @@
 @tailwind components;
 @tailwind utilities;
 
-@import "jqwidgets-ng/jqwidgets/styles/jqx.base.css";
-@import "jqwidgets-ng/jqwidgets/styles/jqx.light.css";
 @import "./primeng.scss";
-@import "./scheduler.scss";
 
 .custom-toastr {
+    display: flex;
+    justify-content: center;
     box-shadow: 0 0 6px #9f9d9d !important;
     top: 10px !important;
     font-size: 14px;
@@ -83,42 +82,6 @@ html *::-webkit-scrollbar-track {
         @apply transition-all duration-200 ease-in-out;
     }
 
-    .btn {
-        @apply flex items-center justify-center text-dark bg-light transition-200-ease-in-out border border-solid border-transparent cursor-pointer select-none hover:bg-primary hover:border-primary hover:text-light;
-
-        &.danger {
-            @apply text-light bg-red-500 border-red-500 hover:bg-red-600 hover:border-red-600;
-        }
-
-        &.icon {
-            @apply w-[2.375rem] h-[2.375rem];
-
-            &.trash {
-                @apply hover:bg-red-500 hover:border-red-500;
-            }
-
-            &.sm {
-                @apply w-[2rem] h-[2rem] text-sm;
-            }
-        }
-
-        &.text {
-            @apply px-4 py-2;
-        }
-
-        &.primary {
-            @apply text-light bg-primary border-primary;
-        }
-
-        &.secondary {
-            @apply text-sidebar bg-content hover:text-light hover:bg-primary hover:border-primary;
-        }
-
-        &:disabled {
-            @apply opacity-40 pointer-events-none hover:bg-light hover:border-transparent hover:text-dark;
-        }
-    }
-
     .main {
         @apply w-full;
 
@@ -128,59 +91,6 @@ html *::-webkit-scrollbar-track {
 
         .main-content {
             @apply bg-content min-h-screen mt-[60px] ml-0 transition-200-ease-in-out;
-        }
-
-        &.mini-sidebar {
-            .sidebar {
-                @apply -translate-x-full lg:-translate-x-0 w-sidebar lg:w-mini-sidebar hover:w-sidebar z-[999];
-
-                .parent-item {
-                    @apply justify-center;
-
-                    span:nth-child(1) {
-                        @apply w-fit;
-                    }
-
-                    span + span,
-                    .chevron-right-icon {
-                        @apply hidden;
-                    }
-                }
-
-                ul.child-list {
-                    @apply hidden;
-                }
-
-                &:hover {
-                    .parent-item {
-                        @apply justify-between;
-
-                        span:nth-child(1) {
-                            @apply w-8;
-                        }
-
-                        span + span,
-                        .chevron-right-icon {
-                            @apply block;
-                        }
-                    }
-
-                    ul.child-list {
-                        @apply block;
-                    }
-                }
-            }
-
-            .header-logo {
-                @apply px-0 lg:px-2 w-auto lg:w-mini-sidebar justify-start lg:justify-center;
-
-                img.header-full-logo {
-                    @apply block lg:hidden opacity-100 lg:opacity-0;
-                }
-                img.header-small-logo {
-                    @apply hidden lg:block opacity-0 lg:opacity-100;
-                }
-            }
         }
     }
 }

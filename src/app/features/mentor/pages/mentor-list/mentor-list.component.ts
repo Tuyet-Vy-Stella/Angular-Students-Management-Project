@@ -1,17 +1,20 @@
 import { Component } from '@angular/core';
+import { Router } from '@angular/router';
+import {
+    ColListData,
+    PaginationListData,
+} from '@shared/components/list-data/list-data.model';
+import { ToastrService } from 'ngx-toastr';
+import { ConfirmationService } from 'primeng/api';
 import { Mentor } from '../../models/mentor.model';
 import { MentorService } from '../../services/mentor.service';
-import { ToastrService } from 'ngx-toastr';
-import { Router } from '@angular/router';
-import { tap } from 'rxjs';
-import { ConfirmationService } from 'primeng/api';
-import {mentors} from '../../mentor.data'
+import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
 
 @Component({
     selector: 'app-teacher-list',
     templateUrl: './mentor-list.component.html',
     styleUrls: ['./mentor-list.component.scss'],
-    providers: [ConfirmationService],
+    providers: [ConfirmationService, DialogService],
 })
 export class TeacherListComponent {
     constructor(
@@ -20,51 +23,71 @@ export class TeacherListComponent {
         private route: Router,
         private confirmationService: ConfirmationService
     ) {}
-
+    ref!: DynamicDialogRef;
     mentorList: Mentor[] = [];
     searchKeyword: string = '';
-    isLoading = false;
-    teacherIdToDelete: number = 0;
-    mentors: Mentor[] = mentors;
-    rows=10;
+    isFetching = false;
+    isDeleting = false;
+    isAddDialog = false;
 
+    pagination: PaginationListData = {
+        limit: 10,
+        page: 0,
+        total: 10,
+    };
+
+    cols: ColListData[] = [
+        {
+            field: 'name',
+            type: 'link',
+            url: ['mentors', 'id'],
+        },
+        {
+            field: 'email',
+        },
+        {
+            field: 'phone',
+        },
+        {
+            field: 'address',
+        },
+        {
+            field: 'birthday',
+            type: 'date',
+        },
+    ];
 
     ngOnInit() {
-        // this.fetchMentors();
+        this.fetchMentors();
     }
 
     fetchMentors() {
-        this.isLoading = true;
-        this.mentorService
-            .getMentors()
-            .pipe(
-                tap(() => {
-                    this.isLoading = false;
-                })
-            )
-            .subscribe({
-                next: (response) => {
-                    this.mentorList = response.content;
-                },
-                error: (error) => {
-                    this.toastrService.error(
-                        'Get teacher list failed. Please try again later'
-                    );
-                },
-            });
+        this.isFetching = true;
+        this.mentorService.getMentors().subscribe({
+            next: (response) => {
+                this.mentorList = response.content;
+                this.pagination.total = response.totalElements;
+            },
+            error: () => {
+                this.toastrService.error(
+                    'Get teacher list failed. Please try again later'
+                );
+            },
+            complete: () => {
+                this.isFetching = false;
+            },
+        });
+    }
+
+    handleSubmitSuccess(mentor: Mentor) {
+        this.mentorList.unshift(mentor);
     }
 
     handleUpdateMentor(mentor: Mentor) {
         this.route.navigate([`/mentors/${mentor.id}`]);
     }
 
-    handleAddMentor() {
-        this.route.navigate(['/mentors/create']);
-    }
-
-    x($e: any) {
-        console.log($e)
-    }
+    handleAddMentor() {}
 
     handleDeleteMentor(mentor: Mentor) {
         const { id, name } = mentor;
@@ -74,7 +97,7 @@ export class TeacherListComponent {
             icon: 'pi pi-exclamation-triangle',
 
             accept: () => {
-                this.isLoading = true;
+                this.isDeleting = true;
                 this.mentorService.deleteMentor(id).subscribe({
                     next: (response) => {
                         if (response) {
@@ -87,7 +110,7 @@ export class TeacherListComponent {
                         }
                     },
                     error: (error) => {
-                        this.isLoading = false;
+                        this.isDeleting = false;
                         this.toastrService.error(
                             `Mentor ${name} could not be deleted!.`,
                             error.error.message || 'Please try again later'
@@ -95,7 +118,7 @@ export class TeacherListComponent {
                         console.log(error);
                     },
                     complete: () => {
-                        this.isLoading = false;
+                        this.isDeleting = false;
                     },
                 });
             },

@@ -8,3 +8,11 @@ export interface Mentor {
     phone: string;
 }
 
+export interface MentorParams {
+    name: string;
+    email: string;
+    gender: string;
+    birthday: string;
+    address: string;
+    phone: string;
+}

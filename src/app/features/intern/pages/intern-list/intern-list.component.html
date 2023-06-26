@@ -1,4 +1,16 @@
-<app-list-data (onUpdate)="handleUpdateIntern($event)" (onDelete)="confirm($event)" (onAdd)="handleAddIntern()"
-    [data]="studentList" [fetching]="isFetchingStudentList" [deleting]="isFetchingToDeleteStudent" [cols]="cols"
-    title="Intern"></app-list-data>
-<p-confirmDialog [style]="{width: '50vw'}"></p-confirmDialog>
+<app-list-data
+    (onUpdate)="handleUpdateIntern($event)"
+    (onAdd)="isAddDialog = true"
+    [data]="internList"
+    [fetching]="isFetching"
+    [deleting]="isDeleting"
+    [cols]="cols"
+    title="Intern"
+    [pagination]="pagination"
+    [actions]="['update', 'delete']"
+></app-list-data>
+
+<p-dialog [draggable]="false" [resizable]="false" header="Add Intern" [style]="{'width': '70vw'}" [(visible)]="isAddDialog">
+    <app-intern-form (onSubmitSuccess)="handleAddInternSuccess($event)" [isDialog]="true"></app-intern-form>
+</p-dialog>
+

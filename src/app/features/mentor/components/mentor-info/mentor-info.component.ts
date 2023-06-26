@@ -14,7 +14,6 @@ export class MentorInfoComponent {
     mentors = mentors;
     teams = teams;
 
-    keys!: keyof Mentor[];
     rows = 10;
 
     items: MenuItem[] = [

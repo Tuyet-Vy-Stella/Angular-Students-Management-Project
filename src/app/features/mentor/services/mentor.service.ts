@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import {  Mentor } from '../models/mentor.model';
+import { Mentor } from '../models/mentor.model';
 import { ResponsePagination } from '@shared/model/common';
 
 @Injectable({
@@ -17,23 +17,27 @@ export class MentorService {
 
     getMentorById(id: string) {
         return this.http.get<Mentor>(
-            'http://localhost:8080/api/v1/mentors/' + id,
+            'http://localhost:8080/api/v1/mentors/' + id
         );
     }
 
     deleteMentor(id: string) {
         return this.http.delete<Mentor>(
-            'http://localhost:8080/api/v1/mentors/' + id,
+            'http://localhost:8080/api/v1/mentors/' + id
         );
     }
 
-    createTeacher(mentor: Mentor) {
-        return this.http
-            .post('http://localhost:8080/api/v1/mentors/', mentor)
-
+    createMentor(mentor: Mentor) {
+        return this.http.post<Mentor>(
+            'http://localhost:8080/api/v1/mentors',
+            mentor
+        );
     }
 
     updateMentor(id: string, mentor: Mentor) {
-        return this.http.put('http://localhost:8080/api/v1/mentors/' + id, mentor);
+        return this.http.put<Mentor>(
+            'http://localhost:8080/api/v1/mentors/' + id,
+            mentor
+        );
     }
 }

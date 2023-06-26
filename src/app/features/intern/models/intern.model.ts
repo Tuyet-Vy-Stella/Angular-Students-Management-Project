@@ -1,13 +1,28 @@
-export interface Student {
-  id: number
-  name: string
-  class_name: string
-  gender: string
-  phone: string
-  email: string
-  address: string
-  birthday: string
-  created_at: string
+import { Mentor } from 'app/features/mentor/models/mentor.model';
+
+export interface Intern {
+    id: string;
+    name: string;
+    email: string;
+    phone: string;
+    gender: string;
+    address: string;
+    birthday: string;
+    technology: string;
+    description: string;
+    status: string;
+    mentor: Mentor;
 }
 
-export type CreateStudentModel = Omit<Student, 'id' | 'created_at' | 'class_name'>
+export interface InternParams {
+    name: string;
+    email: string;
+    phone: string;
+    gender: string;
+    address: string;
+    birthday: string;
+    technology: string;
+    description: string;
+    status: string;
+    mentor: string;
+}

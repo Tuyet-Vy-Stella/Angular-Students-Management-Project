@@ -4,7 +4,7 @@
         <!-- Heading -->
         <div class="bg-light rounded-lg mb-6 border">
             <!-- Heading Info -->
-            <div *ngIf="student; else skeleton;"
+            <div *ngIf="intern; else skeleton;"
                 class="flex flex-col md:flex-row items-center justify-between p-3 gap-2 md:gap-[7rem]"
                 style="background-image: url('../assets/images/bg-intern.png')">
                 <!-- Avatar -->
@@ -13,11 +13,11 @@
                         <img src="../assets/images/avt.jpg" alt="" class="w-20 h-20  rounded-full" />
                     </div>
                     <div>
-                        <p class="text-xl text-dark font-medium">{{ student.name }}</p>
+                        <p class="text-xl text-dark font-medium">{{ intern.name }}</p>
                         <p class="text-sm text-sidebar font-normal">
-                            <span class="capitalize">{{student.class_name}}</span>
+                            <!-- <span class="capitalize">{{student}}</span> -->
                             <span class="mx-2">•</span>
-                            <span class="capitalize">{{student.gender}}</span>
+                            <span class="capitalize">{{intern.gender}}</span>
                         </p>
                     </div>
                 </div>
@@ -31,12 +31,10 @@
 
 
         <!-- Left -->
-        <ng-container *ngIf="student">
-            <app-info-intern *ngIf="activeItem.id === 'info'" [student]="student"></app-info-intern>
+        <app-info-intern *ngIf="activeItem.id === 'info'" [intern]="intern"></app-info-intern>
 
-            <app-intern-form *ngIf="activeItem.id === 'edit'" [student]="student"></app-intern-form>
-            <app-intern-report *ngIf="activeItem.id === 'report'"></app-intern-report>
-        </ng-container>
+        <app-intern-form *ngIf="activeItem.id === 'edit'" [intern]="intern"></app-intern-form>
+        <app-intern-report *ngIf="activeItem.id === 'report'"></app-intern-report>
         <!-- Main Content -->
 
     </div>

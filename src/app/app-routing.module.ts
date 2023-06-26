@@ -51,13 +51,6 @@ const routes: Routes = [
                         (m) => m.ClassroomModule
                     ),
             },
-            {
-                path: 'quiz',
-                loadChildren: () =>
-                    import('./features/quiz/quiz.module').then(
-                        (m) => m.QuizModule
-                    ),
-            },
         ],
     },
 ];

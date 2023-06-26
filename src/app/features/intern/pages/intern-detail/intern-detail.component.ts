@@ -1,8 +1,9 @@
 import { Component } from '@angular/core';
 import { ActivatedRoute, Params } from '@angular/router';
-import { Student } from '../../models/intern.model';
-import { StudentService } from '../../services/intern.service';
+import { Intern } from '../../models/intern.model';
+import { InternService } from '../../services/intern.service';
 import { MenuItem } from 'primeng/api';
+import { switchMap } from 'rxjs';
 
 @Component({
     selector: 'app-student-detail',
@@ -17,32 +18,45 @@ export class StudentDetailComponent {
     ];
 
     activeItem!: MenuItem;
-
-    student!: Student;
+    isFetching = false;
+    intern!: Intern;
 
     constructor(
-        private studentService: StudentService,
+        private internService: InternService,
         private route: ActivatedRoute
     ) {}
 
     ngOnInit() {
-        this.route.params.pipe().subscribe((params: Params) => {
-            const id = +params['id'];
-            if (Number.isInteger(id)) {
-                this.studentService.getStudentById(id).subscribe((response) => {
-                    response && (this.student = response);
-                });
-            }
-        });
+        this.fetchInternById();
 
         this.route.queryParams.subscribe((queryParams) => {
             const edit = queryParams['edit'];
             if (edit) {
                 this.activeItem = this.items[1];
             } else {
-                this.activeItem = this.items[2];
+                this.activeItem = this.items[1];
             }
         });
+    }
+
+    fetchInternById() {
+        this.isFetching = true;
+        this.route.params
+            .pipe(
+                switchMap((params: Params) => {
+                    const id = params['id'];
+                    return this.internService.getInternById(id);
+                })
+            )
+            .subscribe({
+                next: (response) => {
+                    this.intern = response;
+                    this.isFetching = false;
+                },
+                error: () => {
+                    this.isFetching = false;
+                },
+            });
     }
 
     handleActiveItemChange(event: MenuItem) {

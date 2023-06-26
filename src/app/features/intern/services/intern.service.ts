@@ -1,65 +1,41 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { map } from 'rxjs';
 
-import { CreateStudentModel, Student } from '../models/intern.model';
-
-
+import { Intern, InternParams } from '../models/intern.model';
+import { ResponsePagination } from '@shared/model/common';
 
 @Injectable({
     providedIn: 'root',
 })
-export class StudentService {
+export class InternService {
     constructor(private http: HttpClient) {}
 
-    getStudentList() {
-        return this.http.get<Student[]>(
-            'https://qlsv-mu.vercel.app/api/student-list'
+    getInternList() {
+        return this.http.get<ResponsePagination<Intern>>(
+            'http://localhost:8080/api/v1/interns'
+        );
+    }
+    getInternById(id: string) {
+        return this.http.get<Intern>(
+            'http://localhost:8080/api/v1/interns/' + id
         );
     }
 
-    getStudentById(id: number) {
-        return this.http.get<Student>(
-            'https://qlsv-mu.vercel.app/api/student/',
-            {
-                params: {
-                    student_id: id,
-                },
-            }
+    createIntern(data: InternParams) {
+        return this.http.post<Intern>(
+            'http://localhost:8080/api/v1/interns',
+            data
         );
     }
 
-    createStudent(data: CreateStudentModel) {
-        return this.http
-            .post('https://qlsv-mu.vercel.app/api/student', data)
-            .pipe(
-                // Success (map: modify response, tap: handle side & not modify response)
-                map((response) => {
-                    return {
-                        code: 200,
-                        success: true,
-                        data: response,
-                    };
-                })
-            );
+    updateIntern(id: string, data: InternParams) {
+        return this.http.put<Intern>(
+            'http://localhost:8080/api/v1/interns/' + id,
+            data
+        );
     }
 
-    updateStudent(id: number, data: CreateStudentModel) {
-        return this.http.put('https://qlsv-mu.vercel.app/api/student/', data, {
-            params: {
-                student_id: id,
-            },
-        });
+    deleteIntern(id: string) {
+        return this.http.delete('http://localhost:8080/api/v1/interns/' + id);
     }
-
-    deleteStudent(id: number) {
-        return this.http.delete('https://qlsv-mu.vercel.app/api/student/', {
-            params: {
-                student_id: id,
-            },
-        });
-    }
-
-    // Temp
-
 }

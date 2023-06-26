@@ -8,9 +8,10 @@ import { NgApexchartsModule } from 'ng-apexcharts';
 import { ChartModule } from 'primeng/chart';
 import { TableModule } from 'primeng/table';
 import { AuthGuard } from '@core/guards';
+import { InternLatestComponent } from './components/intern-latest/intern-latest.component';
 
 @NgModule({
-    declarations: [HomeComponent, ChartsComponent],
+    declarations: [HomeComponent, ChartsComponent, InternLatestComponent],
     imports: [
         CommonModule,
         SharedModule,

@@ -6,11 +6,7 @@ import { NgModule } from '@angular/core';
 import { StudentRoutingModule } from './intern-routing.module';
 import { SharedModule } from '@shared/shared.module';
 
-import {
-    InternFormComponent,
-    InternCreateComponent,
-    InternReportComponent,
-} from './components';
+import { InternFormComponent, InternReportComponent } from './components';
 import { StudentDetailComponent, InternListComponent } from './pages';
 import { ButtonModule } from 'primeng/button';
 import { InputTextModule } from 'primeng/inputtext';
@@ -23,15 +19,16 @@ import { InfoInternComponent } from './components/info-intern/info-intern.compon
 import { DropdownModule } from 'primeng/dropdown';
 import { CalendarModule } from 'primeng/calendar';
 import { DynamicDialogModule } from 'primeng/dynamicdialog';
-import { jqxSchedulerModule } from 'jqwidgets-ng/jqxscheduler'
-
+import { FullCalendarModule } from '@fullcalendar/angular';
+import { DialogModule } from 'primeng/dialog';
+import { DividerModule } from 'primeng/divider';
+import { EditorModule } from 'primeng/editor';
 @NgModule({
     declarations: [
         InternListComponent,
         InternFormComponent,
         StudentDetailComponent,
         InfoInternComponent,
-        InternCreateComponent,
         InternReportComponent,
     ],
     imports: [
@@ -51,7 +48,10 @@ import { jqxSchedulerModule } from 'jqwidgets-ng/jqxscheduler'
         DropdownModule,
         CalendarModule,
         DynamicDialogModule,
-        jqxSchedulerModule,
+        FullCalendarModule,
+        DialogModule,
+        DividerModule,
+        EditorModule,
     ],
 })
 export class StudentModule {}

@@ -18,7 +18,7 @@
             [ngTemplateOutletContext]="{value: mentor?.address, key: 'Address'}"></ng-container>
 
         <ng-container [ngTemplateOutlet]="item"
-            [ngTemplateOutletContext]="{value: mentor?.birthday,key: 'Birthday'}"></ng-container>
+            [ngTemplateOutletContext]="{value: mentor?.birthday,key: 'Birthday', type: 'date'}"></ng-container>
 
     </div>
 
@@ -72,10 +72,11 @@
     </div>
 </div>
 
-<ng-template #item let-key="key" let-value="value">
+<ng-template #item let-key="key" let-value="value" let-type="type">
     <div class="flex flex-col mt-4">
         <p class="text-dark font-medium text-sm leading-5">{{key}}</p>
-        <p class="text-sidebar text-sm mt-1">{{value}}</p>
+        <p *ngIf="type === undefined" class="text-sidebar text-sm mt-1">{{value}}</p>
+        <p *ngIf="type === 'date'" class="text-sidebar text-sm mt-1">{{value | date}}</p>
     </div>
 
 

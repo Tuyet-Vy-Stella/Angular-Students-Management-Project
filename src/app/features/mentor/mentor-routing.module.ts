@@ -5,12 +5,9 @@ import { TeacherListComponent, MentorDetailComponent } from './pages';
 const routes: Routes = [
     {
         path: '',
-        children: [
-            { path: '', component: TeacherListComponent },
-            { path: 'create', component: MentorDetailComponent },
-            { path: ':id', component: MentorDetailComponent },
-        ],
+        component: TeacherListComponent,
     },
+    { path: ':id', component: MentorDetailComponent },
 ];
 
 @NgModule({

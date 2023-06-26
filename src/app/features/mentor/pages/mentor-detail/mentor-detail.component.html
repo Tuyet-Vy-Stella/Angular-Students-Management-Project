@@ -4,21 +4,20 @@
         <!-- Heading -->
         <div class="bg-light rounded-lg mb-2 border">
             <!-- Heading Info -->
-            <div *ngIf="!isFetchingToGet; else skeleton;"
+            <div *ngIf="!isFetching; else skeleton;"
                 class="flex flex-col md:flex-row items-center justify-between p-3 gap-2 md:gap-[7rem]"
                 style="background-image: url('../assets/images/bg-intern.png')">
                 <!-- Avatar -->
-                <div class="flex items-center gap-4 w-full md:w-auto">
+                <div *ngIf="mentor" class="flex items-center gap-4 w-full md:w-auto">
                     <div class="p-2 rounded-full bg-white">
                         <img src="../assets/images/avt.jpg" alt="" class="w-20 h-20  rounded-full" />
                     </div>
                     <div>
-                        <p class="text-xl text-dark font-medium">{{ mentorForm.get('name')?.value || 'No information'
-                            }}</p>
+                        <p class="text-xl text-dark font-medium">{{ mentor.name }}</p>
                         <p class="text-sm text-sidebar font-normal">
-                            <span class="capitalize">{{mentorForm.get('gender')?.value || 'Male'}}</span>
+                            <span class="capitalize">{{mentor.gender}}</span>
                             <span class="mx-2">•</span>
-                            <span class="capitalize">{{mentorForm.get('email')?.value || 'No information'}}</span>
+                            <span class="capitalize">{{mentor.email}}</span>
                         </p>
                     </div>
                 </div>
@@ -30,17 +29,10 @@
             </div>
         </div>
 
+        <app-mentor-info *ngIf="activeItem.id==='info'" [mentor]="mentor"></app-mentor-info>
+        <!-- Form -->
+        <app-mentor-form *ngIf="activeItem.id === 'edit'" [mentor]="mentor"></app-mentor-form>
 
-        <!-- <app-mentor-form #mentorForm *ngIf="!isFetching" [teacher]="teacher"></app-mentor-form> -->
-        <ng-container *ngIf="!isFetchingToGet">
-            <!-- Spinner -->
-            <app-loading-spinner *ngIf="isFetchingToCreateOrUpdateTeacher" />
-
-            <app-mentor-info *ngIf="activeItem.id==='info'" [mentor]="mentor"></app-mentor-info>
-            <!-- Form -->
-            <app-mentor-form *ngIf="activeItem.id === 'edit'" [mentorForm]="mentorForm"
-                (onSubmit)="handleSubmit()"></app-mentor-form>
-        </ng-container>
         <!-- Main Content -->
 
     </div>

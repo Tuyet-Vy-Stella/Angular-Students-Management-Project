@@ -4,13 +4,10 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 import {
     LoadingSpinnerComponent,
-    ModalComponent,
-    SkeletonComponent,
-    SkeletonOptimizeComponent,
     TabMenuComponent,
+    ListDataComponent,
+    ValidationErrorComponent,
 } from './components';
-
-import { ListDataComponent } from './layouts';
 
 import { DropdownDirective } from './directives';
 import { PascalCasePipe } from './pipes';
@@ -22,17 +19,16 @@ import { DropdownModule } from 'primeng/dropdown';
 import { PaginatorModule } from 'primeng/paginator';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { RouterModule } from '@angular/router';
+import { TagModule } from 'primeng/tag';
 
 @NgModule({
     declarations: [
         LoadingSpinnerComponent,
-        ModalComponent,
-        SkeletonComponent,
         PascalCasePipe,
-        SkeletonOptimizeComponent,
         DropdownDirective,
         ListDataComponent,
         TabMenuComponent,
+        ValidationErrorComponent,
     ],
     imports: [
         CommonModule,
@@ -45,18 +41,17 @@ import { RouterModule } from '@angular/router';
         PaginatorModule,
         ConfirmDialogModule,
         RouterModule,
+        TagModule,
     ],
     exports: [
         CommonModule,
-        SkeletonOptimizeComponent,
         LoadingSpinnerComponent,
-        ModalComponent,
-        SkeletonComponent,
         DropdownDirective,
         FontAwesomeModule,
         PascalCasePipe,
         ListDataComponent,
         TabMenuComponent,
+        ValidationErrorComponent,
     ],
 })
 export class SharedModule {}

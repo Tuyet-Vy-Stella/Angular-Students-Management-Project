@@ -1,22 +1,13 @@
-import { Component, Input } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 
-import { ClassroomService } from 'app/features/project/services/project.service';
-import { Student } from '../../models/intern.model';
-import { StudentService } from '../../services/intern.service';
-
-interface Class {
-    id: number;
-    grade: string;
-    section: string;
-    form_teacher_id: number;
-    form_teacher_name: string;
-    created_at: string;
-}
-
-//update -> student
-//create -> no student
+import { Mentor } from 'app/features/mentor/models/mentor.model';
+import { MentorService } from 'app/features/mentor/services/mentor.service';
+import { Intern } from '../../models/intern.model';
+import { InternService } from '../../services/intern.service';
+import { GENDER_DROPDOWN } from '@shared/constants';
+import { STATUS_INTERN_DROPDOWN } from '@shared/constants/status-intern';
 
 @Component({
     selector: 'app-intern-form',
@@ -24,106 +15,118 @@ interface Class {
     styleUrls: ['./intern-form.component.scss'],
 })
 export class InternFormComponent {
-    studentForm!: FormGroup;
-    isFetchingToCreateOrUpdateStudent = false;
-    classList!: Class[];
-    @Input() student!: Student;
+    genders = GENDER_DROPDOWN;
+    status = STATUS_INTERN_DROPDOWN;
+
+    internForm!: FormGroup;
+    isLoading = false;
+    mentorList!: Mentor[];
+
+    @Input() intern!: Intern;
+    @Input() isDialog = false;
+    @Output() onSubmitSuccess = new EventEmitter<Intern>();
 
     constructor(
-        private studentService: StudentService,
-        private classroomService: ClassroomService,
-        private toastrService: ToastrService
+        private internService: InternService,
+        private mentorService: MentorService,
+        private toastrService: ToastrService,
+        private fb: FormBuilder
     ) {}
 
     ngOnInit() {
         // Init create student form group
-        this.studentForm = new FormGroup({
-            name: new FormControl(null, {
-                validators: [Validators.required, this.checkFieldEmpty],
+        this.internForm = this.fb.group({
+            name: this.fb.control(null, {
+                validators: [Validators.required],
             }),
-            gender: new FormControl('male', [Validators.required]),
-            birthday: new FormControl(null, [Validators.required]),
-            address: new FormControl(null, [
-                Validators.required,
-                this.checkFieldEmpty,
-            ]),
-            phone: new FormControl(null, [
+            gender: this.fb.control('male', [Validators.required]),
+            birthday: this.fb.control(null, [Validators.required]),
+            address: this.fb.control(null, [Validators.required]),
+            phone: this.fb.control(null, [
                 Validators.required,
                 Validators.pattern('[- +()0-9]+'),
             ]),
-            email: new FormControl(null, [
+            email: this.fb.control(null, [
                 Validators.required,
                 Validators.email,
             ]),
-            class_id: new FormControl(null, [Validators.required]),
+            status: this.fb.control(null),
+            // team: this.fb.control(null, [Validators.required]),
+            mentor: this.fb.control(null, [Validators.required]),
+            technology: this.fb.control(null, [Validators.required]),
+            description: this.fb.control(null, [Validators.required]),
         });
 
         // Get class list
-        this.classroomService.getClasses().subscribe({
-            next: (classes) => {
-                this.classList = classes;
+        this.mentorService.getMentors().subscribe({
+            next: (response) => {
+                this.mentorList = response.content;
             },
         });
 
         // Handle for update mode
-        if (this.student) {
-            const { id, created_at, class_name, ...rest } = this.student;
-            this.studentForm.setValue(rest);
+        if (this.intern) {
+            const {
+                name,
+                email,
+                gender,
+                address,
+                phone,
+                birthday,
+                status,
+                description,
+                mentor,
+                technology,
+            } = this.intern;
+
+            this.internForm.setValue({
+                name,
+                email,
+                gender,
+                address,
+                phone,
+                birthday,
+                status,
+                description,
+                mentor: mentor.id,
+                technology,
+            });
         }
     }
 
-    checkFieldEmpty(
-        formControl: FormControl
-    ): { [key: string]: boolean } | null {
-        if (typeof formControl.value === 'string') {
-            return formControl.value.toString().trim() ? null : { empty: true };
-        }
-        return null;
-    }
+    handleSubmit() {
+        this.internForm.disable();
+        this.isLoading = true;
 
-    onSubmit() {
-        this.isFetchingToCreateOrUpdateStudent = true;
-        const bodyData = {
-            ...this.studentForm.value,
-            class_id: +this.studentForm.value.class_id,
-        };
-
-        if (this.student) {
-            // Update intern
-            this.studentService
-                .updateStudent(this.student.id, this.studentForm.value)
+        if (this.intern) {
+            this.internService
+                .updateIntern(this.intern.id, this.internForm.value)
                 .subscribe({
                     next: (response) => {
+                        this.isLoading = false;
                         this.toastrService.success(
-                            'Update student successfully'
+                            'Update intern successfully'
                         );
+                        this.onSubmitSuccess.emit(response);
                     },
-                    error: (error) => {
-                        this.isFetchingToCreateOrUpdateStudent = false;
-                        this.toastrService.error('Update student failure');
-                    },
-                    complete: () => {
-                        this.isFetchingToCreateOrUpdateStudent = false;
+                    error: () => {
+                        this.isLoading = false;
+                        this.toastrService.error('Update intern failure');
                     },
                 });
         } else {
-            // Create intern
-            this.studentService.createStudent(bodyData).subscribe(
-                () => {
-                    // Show success toast
-                    this.toastrService.success('Create student successfully');
-
-                    // Reset form
-                    this.studentForm.reset({
-                        gender: 'male',
-                    });
+            this.internService.createIntern(this.internForm.value).subscribe({
+                next: (response) => {
+                    this.onSubmitSuccess.emit(response);
+                    this.internForm.reset();
+                    this.isLoading = false;
+                    this.toastrService.success('Create intern successfully');
                 },
-                () => {
-                    this.isFetchingToCreateOrUpdateStudent = false;
-                    this.toastrService.error('Create student failure');
+                error: () => {
+                    this.isLoading = false;
+                    this.toastrService.error('Create intern failed');
                 },
-                () => (this.isFetchingToCreateOrUpdateStudent = false)
-            );
+            });
         }
     }
 }

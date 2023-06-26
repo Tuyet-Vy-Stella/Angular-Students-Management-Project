@@ -13,11 +13,13 @@ import { ToastrService } from 'ngx-toastr';
 import { ConfirmationService } from 'primeng/api';
 
 import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
-import { tap } from 'rxjs';
-import { InternCreateComponent } from '../../components';
-import { Student } from '../../models/intern.model';
-import { StudentService } from '../../services/intern.service';
+import { Intern } from '../../models/intern.model';
+import { InternService } from '../../services/intern.service';
 import { Router } from '@angular/router';
+import {
+    ColListData,
+    PaginationListData,
+} from '@shared/components/list-data/list-data.model';
 
 @Component({
     selector: 'app-student-list',
@@ -27,7 +29,7 @@ import { Router } from '@angular/router';
 })
 export class InternListComponent {
     constructor(
-        private studentService: StudentService,
+        private internService: InternService,
         private toastrService: ToastrService,
         private confirmationService: ConfirmationService,
         private dialogService: DialogService,
@@ -43,127 +45,115 @@ export class InternListComponent {
         faTrash,
         faMagnifyingGlass,
     };
-    studentList: Student[] = [];
-    studentListToShow: Student[] = [];
 
-    isFetchingStudentList = false;
-    isFetchingToDeleteStudent = false;
-    isDelete = false;
+    internList!: Intern[];
+    isFetching = false;
+    isDeleting = false;
+    isAddDialog = false;
+
     ref!: DynamicDialogRef;
-    // tableViewMode = true;
 
-    first: number = 0;
-    rows: number = 10;
-    page: number = 0;
+    pagination: PaginationListData = {
+        total: 0,
+        limit: 10,
+        page: 0,
+    };
 
-    cols = [
-        {
-            field: 'id',
-            header: '#',
-        },
+    cols: ColListData[] = [
         {
             field: 'name',
-            header: 'Name',
-            link: ['id'],
-        },
-        {
-            field: 'class_name',
-            header: 'Project',
-        },
-        {
-            field: 'gender',
-            header: 'Gender',
-        },
-        {
-            field: 'phone',
-            header: 'Phone',
+            type: 'link',
+            url: ['interns', 'id'],
         },
         {
             field: 'email',
-            header: 'Email',
+        },
+        {
+            field: 'gender',
+        },
+        {
+            header: 'phone number',
+            field: 'phone',
+        },
+        {
+            field: 'status',
+            type: 'status'
+        },
+        {
+            field: 'mentor',
+            type: 'child',
+            child: {
+                field: 'name',
+                url: ['mentors', 'id'],
+            },
         },
     ];
 
     ngOnInit() {
-        // Fetch student data
         this.fetchStudentList();
     }
 
     fetchStudentList() {
-        this.isFetchingStudentList = true;
-        this.studentService
-            .getStudentList()
-            .pipe(
-                tap(() => {
-                    this.isFetchingStudentList = false;
-                })
-            )
+        this.isFetching = true;
+        this.internService
+            .getInternList()
+
             .subscribe({
                 next: (response) => {
-                    if (response) {
-                        // Update student list
-                        this.studentList = response;
-
-                        // Update student list to show
-                        this.studentListToShow = this.studentList.slice(
-                            this.first,
-                            this.rows
-                        );
-                    }
+                    this.internList = response.content;
+                    this.isFetching = false;
+                    this.pagination.total = response.totalElements;
+                },
+                error: () => {
+                    this.isFetching = false;
                 },
             });
     }
 
-    confirm(student: Student) {
-        const studentId = student.id;
-        this.confirmationService.confirm({
-            header: 'Delete Intern',
-            message: 'Are you sure that you want to delete this intern?',
-            icon: 'pi pi-exclamation-triangle',
-            accept: () => {
-                const nameStudent = this.studentList.find(
-                    (student) => student.id === studentId
-                )?.name;
-                this.isFetchingToDeleteStudent = true;
+    // confirm(student: Student) {
+    //     const studentId = student.id;
+    //     this.confirmationService.confirm({
+    //         header: 'Delete Intern',
+    //         message: 'Are you sure that you want to delete this intern?',
+    //         icon: 'pi pi-exclamation-triangle',
+    //         accept: () => {
+    //             const nameStudent = this.studentList.find(
+    //                 (student) => student.id === studentId
+    //             )?.name;
+    //             this.isFetchingToDeleteStudent = true;
 
-                // Listen fetch event
-                this.studentService.deleteStudent(studentId).subscribe({
-                    next: () => {
-                        this.isFetchingToDeleteStudent = false;
-                        this.toastrService.success(
-                            `Delete intern "${nameStudent}" successfully`
-                        );
+    //             // Listen fetch event
+    //             this.studentService.deleteStudent(studentId).subscribe({
+    //                 next: () => {
+    //                     this.isFetchingToDeleteStudent = false;
+    //                     this.toastrService.success(
+    //                         `Delete intern "${nameStudent}" successfully`
+    //                     );
 
-                        // Remove this student on student list
-                        this.studentList = this.studentList.filter(
-                            (student) => student.id !== studentId
-                        );
+    //                     // Remove this student on student list
+    //                     this.studentList = this.studentList.filter(
+    //                         (student) => student.id !== studentId
+    //                     );
 
-                        // Reset student id to delete
-                    },
-                    error: () => {
-                        this.isFetchingToDeleteStudent = false;
-                        this.toastrService.error(
-                            `Delete intern "${nameStudent}" failure`
-                        );
-                    },
-                });
-            },
-        });
+    //                     // Reset student id to delete
+    //                 },
+    //                 error: () => {
+    //                     this.isFetchingToDeleteStudent = false;
+    //                     this.toastrService.error(
+    //                         `Delete intern "${nameStudent}" failure`
+    //                     );
+    //                 },
+    //             });
+    //         },
+    //     });
+    // }
+
+    handleAddInternSuccess(intern: Intern) {
+        this.internList.unshift(intern);
     }
 
-    handleAddIntern() {
-        this.ref = this.dialogService.open(InternCreateComponent, {
-            header: 'Create Intern',
-            width: '70%',
-            contentStyle: { overflow: 'auto' },
-            baseZIndex: 10000,
-            maximizable: true,
-        });
-    }
-
-    handleUpdateIntern(student: Student) {
-        this.router.navigate([`/students/${student.id}`], {
+    handleUpdateIntern(intern: Intern) {
+        this.router.navigate([`/interns/${intern.id}`], {
             queryParams: { edit: true },
         });
     }

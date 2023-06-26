@@ -16,6 +16,7 @@ import { RouterModule } from '@angular/router';
 import { MentorFormComponent, MentorInfoComponent } from './components';
 import { PaginatorModule } from 'primeng/paginator';
 import { TabMenuModule } from 'primeng/tabmenu';
+import { DialogModule } from 'primeng/dialog';
 
 @NgModule({
     declarations: [
@@ -39,7 +40,8 @@ import { TabMenuModule } from 'primeng/tabmenu';
         ConfirmDialogModule,
         RouterModule,
         PaginatorModule,
-        TabMenuModule
+        TabMenuModule,
+        DialogModule
     ],
 })
 export class TeacherModule {}
