@@ -32,7 +32,7 @@ import { AdminLayoutComponent } from './layouts';
         ButtonModule,
         AvatarModule,
         FormsModule,
-        BreadcrumbModule,
+        BreadcrumbModule
     ],
     exports: [
         HeaderComponent,

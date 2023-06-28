@@ -2,7 +2,6 @@ import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { ToastrModule } from 'ngx-toastr';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { CookieService } from 'ngx-cookie-service';
 import { AppRoutingModule } from './app-routing.module';
@@ -29,13 +28,6 @@ registerLocaleData(en);
         HttpClientModule,
         BrowserAnimationsModule,
         ReactiveFormsModule,
-        ToastrModule.forRoot({
-            timeOut: 4000,
-            positionClass: 'toast-top-center',
-            preventDuplicates: false,
-            easing: 'ease-in-out',
-            toastClass: 'custom-toastr ngx-toastr',
-        }),
         FormsModule,
         CoreModule,
     ],

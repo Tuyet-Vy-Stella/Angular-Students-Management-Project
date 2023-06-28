@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { MenuItem } from 'primeng/api';
-import { Mentor } from '../../models/mentor.model';
+import { Mentor, MentorDetail } from '../../models/mentor.model';
 import { switchMap } from 'rxjs';
 import { MentorService } from '../../services/mentor.service';
 
@@ -17,7 +17,7 @@ export class MentorDetailComponent implements OnInit {
     ) {}
 
     isFetching = false;
-    mentor?: Mentor;
+    mentor?: MentorDetail;
 
     items: MenuItem[] = [
         { label: 'Info', icon: 'pi pi-fw pi-home', id: 'info' },
@@ -32,10 +32,18 @@ export class MentorDetailComponent implements OnInit {
 
     fetchMentor() {
         this.isFetching = true;
+
+        this.route.queryParams.subscribe((query) => {
+            if (query['edit'] === 'true') {
+                this.activeItem = this.items[1];
+            }
+        });
+
         this.route.params
             .pipe(
                 switchMap((params) => {
                     const id = params['id'];
+                    console.log(params);
                     return this.mentorService.getMentorById(id);
                 })
             )

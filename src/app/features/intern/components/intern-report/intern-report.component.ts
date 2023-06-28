@@ -44,15 +44,6 @@ export class InternReportComponent implements OnInit {
                 textColor: 'white',
                 borderColor: 'green',
             },
-            {
-                start: '2023-06-24',
-                end: '2023-06-30',
-                title: 'Learn Angular 3',
-                groupId: '2',
-                backgroundColor: 'yellow',
-                textColor: 'black',
-                borderColor: 'yellow',
-            },
         ];
     }
 

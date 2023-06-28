@@ -9,6 +9,9 @@
             ],
             "@core/*": [
                 "app/core/*"
+            ],
+            "@features/*": [
+                "app/features/*"
             ]
         },
         "outDir": "./dist/out-tsc",

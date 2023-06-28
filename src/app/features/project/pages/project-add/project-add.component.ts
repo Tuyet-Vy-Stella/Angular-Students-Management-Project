@@ -9,7 +9,6 @@ import { FormBuilder, Validators } from '@angular/forms';
 import { ClassroomEditService } from '../../services/project-edit.service';
 import { BehaviorSubject, Observable, Subject, takeUntil } from 'rxjs';
 import { ITeacher } from '../../models/project.model';
-import { ToastrService } from 'ngx-toastr';
 import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
@@ -46,7 +45,6 @@ export class ClassroomAddComponent implements OnInit, OnDestroy {
     constructor(
         private fb: FormBuilder,
         private route: ActivatedRoute,
-        private toastrService: ToastrService,
         private classroomEditService: ClassroomEditService,
         private router: Router
     ) {}
@@ -75,16 +73,11 @@ export class ClassroomAddComponent implements OnInit, OnDestroy {
             .updateClass(classroom, this.currentEditID)
             .subscribe({
                 next: () => {
-                    this.toastrService.success(
-                        'Update successfully. Please stand by'
-                    );
-                    this.router.navigate(['/projects']);
+
                 },
                 error: (err) => {
                     console.log(err);
-                    this.toastrService.error(
-                        'Something went wrong. Try another time'
-                    );
+
                 },
                 complete: () => {
                     this.isLoading = false;
@@ -109,9 +102,7 @@ export class ClassroomAddComponent implements OnInit, OnDestroy {
                             this.classroomEditService.updateTeacherSearchList(
                                 this.createForm.get('teacherId')?.value ?? ''
                             );
-                            this.toastrService.success(
-                                'Create class successfully'
-                            );
+
                             this.createForm.reset();
                             this.teacherActiveOption$.next(
                                 '' +
@@ -121,9 +112,7 @@ export class ClassroomAddComponent implements OnInit, OnDestroy {
                             this.gradeSelectEl.nativeElement.selectedIndex = 0;
                         },
                         error: () => {
-                            this.toastrService.error(
-                                'Something went wrong. Try another time'
-                            );
+                            
                         },
                         complete: () => {
                             this.isLoading = false;

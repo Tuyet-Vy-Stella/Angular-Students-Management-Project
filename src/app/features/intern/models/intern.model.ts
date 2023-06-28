@@ -1,4 +1,5 @@
-import { Mentor } from 'app/features/mentor/models/mentor.model';
+import { Team } from '@features/team/models/team.model';
+import { Mentor } from '@features/mentor/models/mentor.model';
 
 export interface Intern {
     id: string;
@@ -11,10 +12,9 @@ export interface Intern {
     technology: string;
     description: string;
     status: string;
-    mentor: Mentor;
 }
 
-export interface InternParams {
+export interface InternParams extends Intern {
     name: string;
     email: string;
     phone: string;
@@ -25,4 +25,11 @@ export interface InternParams {
     description: string;
     status: string;
     mentor: string;
+    team: string;
+    account?: string;
+}
+
+export interface InternDetail extends Intern {
+    mentor: Mentor;
+    team: Team;
 }

@@ -1,9 +1,0 @@
-<app-loading-spinner *ngIf="isFetchingToCreateOrUpdate" />
-<form class="pb-4 flex flex-col items-end" [formGroup]="technologyForm">
-    <div class="w-full flex flex-col gap-2">
-        <label htmlFor="name">Technology Name</label>
-        <input placeholder="Ex: Javascript" pInputText id="name" aria-describedby="name-help" formControlName="name" />
-    </div>
-    <p-button (onClick)="handleSubmit()" [disabled]="!technologyForm.valid" class="mt-8" label="Submit"
-        type="submit"></p-button>
-</form>

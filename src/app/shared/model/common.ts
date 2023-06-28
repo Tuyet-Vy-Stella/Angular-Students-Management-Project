@@ -8,3 +8,8 @@ export interface ResponsePagination<T> {
     numberOfElements: number;
     empty: boolean;
 }
+
+export interface PageInfo {
+    limit: number;
+    page: number;
+}

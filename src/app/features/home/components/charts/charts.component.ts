@@ -1,4 +1,3 @@
-import { teams } from './../../../team/team.data';
 import { Component, OnInit } from '@angular/core';
 
 @Component({
@@ -13,7 +12,6 @@ export class ChartsComponent implements OnInit {
     options2: any;
     data3: any;
     options3: any;
-    teams: any[] = teams;
     ngOnInit(): void {
         const documentStyle = getComputedStyle(document.documentElement);
         const textColor = documentStyle.getPropertyValue('--text-color');

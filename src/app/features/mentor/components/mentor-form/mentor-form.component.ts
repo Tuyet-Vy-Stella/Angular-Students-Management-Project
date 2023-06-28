@@ -1,27 +1,28 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { ToastrService } from 'ngx-toastr';
-import { Mentor } from '../../models/mentor.model';
+import { Mentor, MentorDetail } from '../../models/mentor.model';
 import { MentorService } from '../../services/mentor.service';
 import { GENDER_DROPDOWN } from '@shared/constants';
+import { MessageService } from 'primeng/api';
 
 @Component({
     selector: 'app-mentor-form',
     templateUrl: './mentor-form.component.html',
     styleUrls: ['./mentor-form.component.scss'],
+    providers: [MessageService],
 })
 export class MentorFormComponent implements OnInit {
     constructor(
         private fb: FormBuilder,
         private mentorService: MentorService,
-        private toastrService: ToastrService
+        private messageService: MessageService
     ) {}
     mentorForm!: FormGroup;
     isLoading = false;
 
-    @Input() mentor?: Mentor;
+    @Input() mentor?: MentorDetail;
     @Input() isDialog = false;
-    @Output() onSubmitSuccess = new EventEmitter<Mentor>();
+    @Output() onSubmitSuccess = new EventEmitter<MentorDetail>();
 
     genders = GENDER_DROPDOWN;
 
@@ -68,25 +69,37 @@ export class MentorFormComponent implements OnInit {
                 })
                 .subscribe({
                     next: (response) => {
-                        this.toastrService.success(
-                            'Update mentor successfully'
-                        );
+                        this.isLoading = false;
+                        this.messageService.add({
+                            severity: 'success',
+                            detail: 'Update mentor successfully',
+                        });
                         this.onSubmitSuccess.emit(response);
                     },
-                    error: () => {},
-                    complete: () => {
+                    error: () => {
+                        this.messageService.add({
+                            severity: 'error',
+                            detail: 'Update mentor failure',
+                        });
                         this.isLoading = false;
                     },
                 });
         } else {
             this.mentorService.createMentor(this.mentorForm.value).subscribe({
                 next: (response) => {
+                    this.mentorForm.reset();
                     this.onSubmitSuccess.emit(response);
-                    this.toastrService.success('Create mentor successfully');
+                    this.messageService.add({
+                        severity: 'success',
+                        detail: 'Create mentor successfully',
+                    });
                     this.isLoading = false;
                 },
                 error: () => {
-                    this.toastrService.error('Create mentor failed');
+                    this.messageService.add({
+                        severity: 'error',
+                        detail: 'Create mentor failure',
+                    });
                     this.isLoading = false;
                 },
             });

@@ -22,6 +22,7 @@
 
             <ng-template pTemplate="header" let-columns>
                 <tr class="capitalize">
+                    <th *ngIf="isIndex">#</th>
                     <th *ngFor="let col of columns">
                         {{ col.header || col.field }}
                     </th>
@@ -31,9 +32,10 @@
                 </tr>
             </ng-template>
 
-            <ng-template pTemplate="emptymessage" let-columns>
+            <ng-template pTemplate="emptymessage" let-columns let-index>
                 <tr>
-                    <td [attr.colspan]="actions.length > 0 ? columns.length + 1 : columns.length">
+
+                    <td [attr.colspan]="recordsColSpan">
                         <div class="flex flex-col items-center gap-3">
                             <i [style]="{'font-size': '20px'}" class="pi pi-inbox"></i>
                             <span>No records found</span>
@@ -42,8 +44,9 @@
                 </tr>
             </ng-template>
 
-            <ng-template pTemplate="body" let-rowData let-columns="columns">
+            <ng-template let-rowIndex="rowIndex" pTemplate="body" let-rowData let-columns="columns">
                 <tr>
+                    <td *ngIf="isIndex"> {{rowIndex + 1}}</td>
                     <td [ngSwitch]="col.type" *ngFor="let col of columns">
                         <!-- link -->
                         <a *ngSwitchCase="'link'" class="text-blue-500 hover:underline"
@@ -95,7 +98,7 @@
         <div *ngIf="pagination" class="bg-light flex items-center justify-end">
             <span class="mx-2 text-sm text-[#6c757d] text-start">Items per page: </span>
             <p-dropdown [options]="[5, 10, 20]"></p-dropdown>
-            <p-paginator [rows]="pagination.limit" [totalRecords]="pagination.total" [showCurrentPageReport]="true"
+            <p-paginator [rows]="pagination.limit" [totalRecords]="totalRecords" [showCurrentPageReport]="true"
                 currentPageReportTemplate="{first} - {last} of {totalRecords}" [showPageLinks]="false"
                 [showFirstLastIcon]="false"></p-paginator>
         </div>

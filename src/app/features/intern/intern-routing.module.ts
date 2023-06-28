@@ -4,8 +4,14 @@ import { NgModule } from '@angular/core';
 import { StudentDetailComponent, InternListComponent } from './pages';
 
 const routes: Routes = [
-    { path: '', component: InternListComponent },
-    { path: ':id', component: StudentDetailComponent },
+    {
+        path: '',
+        component: InternListComponent,
+    },
+    {
+        path: ':id',
+        component: StudentDetailComponent,
+    },
 ];
 
 @NgModule({

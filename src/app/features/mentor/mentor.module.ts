@@ -1,9 +1,9 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
-import { TeacherListComponent, MentorDetailComponent } from './pages';
+import { MentorListComponent, MentorDetailComponent } from './pages';
 import { SharedModule } from '@shared/shared.module';
-import { TeacherRoutingModule } from './mentor-routing.module';
+import { MentorRoutingModule } from './mentor-routing.module';
 import { FormsModule } from '@angular/forms';
 import { InputTextModule } from 'primeng/inputtext';
 import { DropdownModule } from 'primeng/dropdown';
@@ -20,7 +20,7 @@ import { DialogModule } from 'primeng/dialog';
 
 @NgModule({
     declarations: [
-        TeacherListComponent,
+        MentorListComponent,
         MentorDetailComponent,
         MentorFormComponent,
         MentorInfoComponent,
@@ -29,7 +29,7 @@ import { DialogModule } from 'primeng/dialog';
         TableModule,
         CommonModule,
         SharedModule,
-        TeacherRoutingModule,
+        MentorRoutingModule,
         ReactiveFormsModule,
         FormsModule,
         InputTextModule,
@@ -44,4 +44,4 @@ import { DialogModule } from 'primeng/dialog';
         DialogModule
     ],
 })
-export class TeacherModule {}
+export class MentorModule {}

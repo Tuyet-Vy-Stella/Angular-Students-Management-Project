@@ -20,6 +20,7 @@ import { PaginatorModule } from 'primeng/paginator';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { RouterModule } from '@angular/router';
 import { TagModule } from 'primeng/tag';
+import { ToastModule } from 'primeng/toast';
 
 @NgModule({
     declarations: [
@@ -42,9 +43,11 @@ import { TagModule } from 'primeng/tag';
         ConfirmDialogModule,
         RouterModule,
         TagModule,
+        ToastModule,
     ],
     exports: [
         CommonModule,
+        ToastModule,
         LoadingSpinnerComponent,
         DropdownDirective,
         FontAwesomeModule,

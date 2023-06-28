@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { NavigationEnd, Router } from '@angular/router';
+import { Router, Scroll } from '@angular/router';
 import { MenuItem } from 'primeng/api';
 import { filter } from 'rxjs';
+
+const BREAD_CRUMB = ['interns', 'mentors', 'teams'];
 
 @Component({
     selector: 'app-breadcrumb',
@@ -17,29 +19,21 @@ export class BreadcrumbComponent implements OnInit {
 
     ngOnInit() {
         this.router.events
-            .pipe(filter((event) => event instanceof NavigationEnd))
+            .pipe(filter((event) => event instanceof Scroll))
             .subscribe((event: any) => {
-                const url: string = event.url;
+                const url: string = event.routerEvent.url;
                 if (!url) return;
                 const urls = url.split('/').filter((url) => url);
                 this.isDisplay = !urls.includes('home');
                 this.items = urls.map((url) => {
                     return {
-                        label: Number.isInteger(Number(url))
-                            ? `${urls[0]} detail`
-                            : url,
-                        routerLink: Number.isInteger(Number(url)) ? false : url,
+                        label: BREAD_CRUMB.includes(url)
+                            ? url
+                            : urls[0] + ' Detail',
+                        routerLink: BREAD_CRUMB.includes(url) ? url : null,
                     };
                 });
             });
-
-        this.items = [
-            { label: 'computer' },
-            { label: 'Notebook' },
-            { label: 'Accessories' },
-            { label: 'Backpacks' },
-            { label: 'Item' },
-        ];
 
         this.home = { icon: 'pi pi-home', routerLink: '/home' };
     }

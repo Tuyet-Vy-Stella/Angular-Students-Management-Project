@@ -1,18 +1,21 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { ToastrService } from 'ngx-toastr';
 
 import { Mentor } from 'app/features/mentor/models/mentor.model';
 import { MentorService } from 'app/features/mentor/services/mentor.service';
-import { Intern } from '../../models/intern.model';
+import { InternDetail } from '../../models/intern.model';
 import { InternService } from '../../services/intern.service';
 import { GENDER_DROPDOWN } from '@shared/constants';
 import { STATUS_INTERN_DROPDOWN } from '@shared/constants/status-intern';
+import { MessageService } from 'primeng/api';
+import { Team } from '@features/team/models/team.model';
+import { TeamService } from '@features/team/services/team.service';
 
 @Component({
     selector: 'app-intern-form',
     templateUrl: './intern-form.component.html',
     styleUrls: ['./intern-form.component.scss'],
+    providers: [MessageService],
 })
 export class InternFormComponent {
     genders = GENDER_DROPDOWN;
@@ -21,15 +24,17 @@ export class InternFormComponent {
     internForm!: FormGroup;
     isLoading = false;
     mentorList!: Mentor[];
+    teamList!: Team[];
 
-    @Input() intern!: Intern;
+    @Input() intern!: InternDetail;
     @Input() isDialog = false;
-    @Output() onSubmitSuccess = new EventEmitter<Intern>();
+    @Output() onSubmitSuccess = new EventEmitter<InternDetail>();
 
     constructor(
         private internService: InternService,
         private mentorService: MentorService,
-        private toastrService: ToastrService,
+        private teamService: TeamService,
+        private messageService: MessageService,
         private fb: FormBuilder
     ) {}
 
@@ -51,7 +56,7 @@ export class InternFormComponent {
                 Validators.email,
             ]),
             status: this.fb.control(null),
-            // team: this.fb.control(null, [Validators.required]),
+            team: this.fb.control(null, [Validators.required]),
             mentor: this.fb.control(null, [Validators.required]),
             technology: this.fb.control(null, [Validators.required]),
             description: this.fb.control(null, [Validators.required]),
@@ -61,6 +66,12 @@ export class InternFormComponent {
         this.mentorService.getMentors().subscribe({
             next: (response) => {
                 this.mentorList = response.content;
+            },
+        });
+
+        this.teamService.getList().subscribe({
+            next: (response) => {
+                this.teamList = response.content;
             },
         });
 
@@ -77,6 +88,7 @@ export class InternFormComponent {
                 description,
                 mentor,
                 technology,
+                team,
             } = this.intern;
 
             this.internForm.setValue({
@@ -90,6 +102,7 @@ export class InternFormComponent {
                 description,
                 mentor: mentor.id,
                 technology,
+                team: team.id,
             });
         }
     }
@@ -104,14 +117,18 @@ export class InternFormComponent {
                 .subscribe({
                     next: (response) => {
                         this.isLoading = false;
-                        this.toastrService.success(
-                            'Update intern successfully'
-                        );
+                        this.messageService.add({
+                            severity: 'success',
+                            detail: 'Update intern successfully',
+                        });
                         this.onSubmitSuccess.emit(response);
                     },
                     error: () => {
                         this.isLoading = false;
-                        this.toastrService.error('Update intern failure');
+                        this.messageService.add({
+                            severity: 'error',
+                            detail: 'Update intern failure',
+                        });
                     },
                 });
         } else {
@@ -120,11 +137,17 @@ export class InternFormComponent {
                     this.onSubmitSuccess.emit(response);
                     this.internForm.reset();
                     this.isLoading = false;
-                    this.toastrService.success('Create intern successfully');
+                    this.messageService.add({
+                        severity: 'success',
+                        detail: 'Create intern successfully',
+                    });
                 },
                 error: () => {
                     this.isLoading = false;
-                    this.toastrService.error('Create intern failed');
+                    this.messageService.add({
+                        severity: 'error',
+                        detail: 'Update intern failure',
+                    });
                 },
             });
         }

@@ -2,7 +2,7 @@
     <div class="flex gap-4">
         <div [ngClass]="{'p-0': isDialog, 'px-4 py-6': !isDialog}" class="flex-1 bg-light rounded-md border-1">
             <h3 class="text-lg mb-4 font-medium">Basic Information</h3>
-            <div class="grid grid-cols-2 gap-x-2 gap-y-4">
+            <div class="flex flex-col gap-4">
                 <!-- Name -->
                 <div class="flex flex-col gap-2 ">
                     <label class="text-sm text-gray-500 font-medium" htmlFor="username">Full Name</label>
@@ -52,7 +52,7 @@
             </div>
         </div>
     </div>
-    <div class="w-full flex justify-end mt-4 px-4">
+    <div class="w-full flex justify-end mt-4">
         <p-button type="submit" label="Submit" [disabled]="!mentorForm.valid"></p-button>
     </div>
 </form>

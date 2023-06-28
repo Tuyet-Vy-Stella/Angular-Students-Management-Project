@@ -2,7 +2,7 @@
     <!-- Content -->
     <div class="min-h-[37.5rem] rounded-lg ">
         <!-- Heading -->
-        <div class="bg-light rounded-lg mb-6 border">
+        <div class="bg-light rounded-lg mb-6 shadow">
             <!-- Heading Info -->
             <div *ngIf="intern; else skeleton;"
                 class="flex flex-col md:flex-row items-center justify-between p-3 gap-2 md:gap-[7rem]"
@@ -15,7 +15,7 @@
                     <div>
                         <p class="text-xl text-dark font-medium">{{ intern.name }}</p>
                         <p class="text-sm text-sidebar font-normal">
-                            <!-- <span class="capitalize">{{student}}</span> -->
+                            <span>{{intern.email}}</span>
                             <span class="mx-2">•</span>
                             <span class="capitalize">{{intern.gender}}</span>
                         </p>
@@ -31,10 +31,11 @@
 
 
         <!-- Left -->
-        <app-info-intern *ngIf="activeItem.id === 'info'" [intern]="intern"></app-info-intern>
-
-        <app-intern-form *ngIf="activeItem.id === 'edit'" [intern]="intern"></app-intern-form>
-        <app-intern-report *ngIf="activeItem.id === 'report'"></app-intern-report>
+        <ng-container *ngIf="intern">
+            <app-info-intern *ngIf="activeItem.id === 'info'" [intern]="intern"></app-info-intern>
+            <app-intern-form *ngIf="activeItem.id === 'edit'" [intern]="intern"></app-intern-form>
+            <app-intern-report *ngIf="activeItem.id === 'report'"></app-intern-report>
+        </ng-container>
         <!-- Main Content -->
 
     </div>

@@ -29,9 +29,11 @@
             </div>
         </div>
 
-        <app-mentor-info *ngIf="activeItem.id==='info'" [mentor]="mentor"></app-mentor-info>
-        <!-- Form -->
-        <app-mentor-form *ngIf="activeItem.id === 'edit'" [mentor]="mentor"></app-mentor-form>
+        <ng-container *ngIf="mentor">
+            <app-mentor-info *ngIf="activeItem.id==='info'" [mentor]="mentor"></app-mentor-info>
+            <!-- Form -->
+            <app-mentor-form *ngIf="activeItem.id === 'edit'" [mentor]="mentor"></app-mentor-form>
+        </ng-container>
 
         <!-- Main Content -->
 

@@ -9,7 +9,6 @@ import {
     Subject,
     takeUntil,
 } from 'rxjs';
-import { ToastrService } from 'ngx-toastr';
 import { ConfirmationService, MenuItem } from 'primeng/api';
 import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { ClassroomAddComponent } from '../project-add/project-add.component';
@@ -24,7 +23,6 @@ import { InternListComponent } from 'app/features/intern/pages';
 export class ClassroomDetailsComponent implements OnInit, OnDestroy {
     constructor(
         private classroomService: ClassroomService,
-        private toastrService: ToastrService,
         private dialogService: DialogService,
         private confirmService: ConfirmationService
     ) {}
@@ -161,16 +159,7 @@ export class ClassroomDetailsComponent implements OnInit, OnDestroy {
             .addNewTeacherToClass(event)
             .pipe(takeUntil(this.destroy$))
             .subscribe({
-                next: (value) => {
-                    this.toastrService.success('Add teacher successfully !!!');
-                },
-                error: (err) => {
-                    console.log(err);
-                    this.toastrService.error(err.error.detail);
-                },
-                complete: () => {
-                    this.showAddModal = false;
-                },
+
             });
     }
 
@@ -214,30 +203,18 @@ export class ClassroomDetailsComponent implements OnInit, OnDestroy {
                 .deleteClass(this.currentDeletedId)
                 .pipe(takeUntil(this.destroy$))
                 .subscribe({
-                    next: (value) => {
-                        this.toastrService.success(value.message);
-                    },
-                    error: (err) => {
-                        console.log(err);
-                        this.toastrService.error(
-                            "Class still have students. Can't be deleted"
-                        );
-                    },
+
                 });
         } else if (this.currentDeletedType === 3) {
             this.classroomService
                 .deleteTeacher(this.currentDeletedId)
                 .subscribe({
                     next: () => {
-                        this.toastrService.success(
-                            'Update successfully. Please stand by'
-                        );
+
                     },
                     error: (err) => {
                         console.log(err);
-                        this.toastrService.error(
-                            'Something went wrong. Try another time'
-                        );
+                       
                     },
                 });
         }

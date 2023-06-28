@@ -2,7 +2,7 @@
 <form [formGroup]="internForm" (ngSubmit)="handleSubmit()">
     <div class="flex gap-4">
         <!-- Basic -->
-        <div [ngClass]="{'p-0': isDialog, 'px-4 py-6': !isDialog}" class="flex-1  rounded-md border-1">
+        <div [ngClass]="{'p-0': isDialog, 'px-4 py-6': !isDialog}" class="flex-1 bg-light  rounded-md border-1">
             <h3 class="text-lg mb-2 font-medium">Basic Information</h3>
             <div class="grid grid-cols-2 gap-x-2 gap-y-4">
                 <div class="flex flex-col gap-2 ">
@@ -29,7 +29,7 @@
             </div>
         </div>
         <!-- Communications -->
-        <div [ngClass]="{'p-0': isDialog, 'px-4 py-6': !isDialog}" class="flex-1  rounded-md border-1">
+        <div [ngClass]="{'p-0': isDialog, 'px-4 py-6': !isDialog}" class="flex-1 bg-light rounded-md border-1">
             <h3 class="text-lg mb-2 font-medium">Contact Information</h3>
             <div class="flex-1 flex flex-col gap-4">
                 <div class="flex flex-col gap-2">
@@ -47,36 +47,37 @@
 
     <ng-container [ngTemplateOutlet]="divider"></ng-container>
     <!-- Management -->
-    <div>
-        <h3 class="text-lg mb-2 font-medium">Manager Information</h3>
-        <div class="flex gap-4">
-            <div class="flex-1" [ngClass]="{'p-0': isDialog, 'px-4 py-6': !isDialog}">
-                <div class="flex-1 flex flex-col gap-4">
-                    <div class="flex flex-col gap-2">
-                        <label class="text-sm text-gray-500 font-medium" htmlFor="mentor">Mentor</label>
-                        <p-dropdown placeholder="Mentor" id="mentor" formControlName="mentor" [options]="mentorList"
-                            optionValue="id" optionLabel="name"></p-dropdown>
-                    </div>
 
-                    <div class="flex flex-col gap-2">
-                        <label class="text-sm text-gray-500 font-medium" htmlFor="team">Team</label>
-                        <p-dropdown placeholder="Team" formControlName="mentor" [options]="mentorList" optionValue="id"
-                            optionLabel="name"></p-dropdown>
-                    </div>
-                </div>
+
+
+    <div class="flex-1 bg-light" [ngClass]="{'p-0': isDialog, 'px-4 py-6': !isDialog}">
+        <h3 class="text-lg mb-2 font-medium">Manager Information</h3>
+        <div class="flex-1 flex flex-col gap-4">
+            <div class="flex flex-col gap-2">
+                <label class="text-sm text-gray-500 font-medium" htmlFor="mentor">Mentor</label>
+                <p-dropdown placeholder="Mentor" id="mentor" formControlName="mentor" [options]="mentorList"
+                    optionValue="id" optionLabel="name"></p-dropdown>
             </div>
-            <div class="flex-1">
-                <div class="flex flex-col gap-2">
-                    <label class="text-sm text-gray-500 font-medium" htmlFor="status">Status</label>
-                    <p-dropdown placeholder="Status" formControlName="status" [options]="status" optionValue="value"
-                        optionLabel="title"></p-dropdown>
-                </div>
+
+            <div class="flex flex-col gap-2">
+                <label class="text-sm text-gray-500 font-medium" htmlFor="team">Team</label>
+                <p-dropdown placeholder="Team" formControlName="team" [options]="teamList" optionValue="id"
+                    optionLabel="name"></p-dropdown>
+            </div>
+
+            <div class="flex flex-col gap-2">
+                <label class="text-sm text-gray-500 font-medium" htmlFor="status">Status</label>
+                <p-dropdown placeholder="Status" formControlName="status" [options]="status" optionValue="value"
+                    optionLabel="title"></p-dropdown>
             </div>
         </div>
     </div>
 
+
+
+
     <ng-container [ngTemplateOutlet]="divider"></ng-container>
-    <div>
+    <div [ngClass]="{'p-0': isDialog, 'px-4 py-6': !isDialog}" class="flex-1 bg-light rounded-md border-1">
         <h3 class="text-lg mb-2 font-medium">Other Information</h3>
         <div class="flex flex-col gap-4">
             <div class="flex flex-col">
@@ -103,7 +104,7 @@
 
 
 <ng-template #divider>
-    <div class="mt-8">
+    <div [class]="{'mt-8': isDialog}">
         <p-divider></p-divider>
     </div>
 </ng-template>

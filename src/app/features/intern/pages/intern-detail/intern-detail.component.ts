@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { ActivatedRoute, Params } from '@angular/router';
-import { Intern } from '../../models/intern.model';
+import { Intern, InternDetail } from '../../models/intern.model';
 import { InternService } from '../../services/intern.service';
 import { MenuItem } from 'primeng/api';
 import { switchMap } from 'rxjs';
@@ -19,7 +19,7 @@ export class StudentDetailComponent {
 
     activeItem!: MenuItem;
     isFetching = false;
-    intern!: Intern;
+    intern!: InternDetail;
 
     constructor(
         private internService: InternService,

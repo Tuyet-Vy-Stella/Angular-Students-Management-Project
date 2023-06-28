@@ -3,22 +3,22 @@
         class="sticky top-[70px] bg-light w-full md:w-1/4 h-fit border-1 border-solid border-secondary rounded-lg p-6 first">
         <h3 class="font-medium text-lg">Mentor Info</h3>
         <ng-container [ngTemplateOutlet]="item"
-            [ngTemplateOutletContext]="{value: mentor?.name, key: 'Name'}"></ng-container>
+            [ngTemplateOutletContext]="{value: mentor.name, key: 'Name'}"></ng-container>
 
         <ng-container [ngTemplateOutlet]="item"
-            [ngTemplateOutletContext]="{value: mentor?.gender, key: 'Gender'}"></ng-container>
+            [ngTemplateOutletContext]="{value: mentor.gender, key: 'Gender'}"></ng-container>
 
         <ng-container [ngTemplateOutlet]="item"
-            [ngTemplateOutletContext]="{value: mentor?.phone, key: 'Phone'}"></ng-container>
+            [ngTemplateOutletContext]="{value: mentor.phone, key: 'Phone'}"></ng-container>
 
         <ng-container [ngTemplateOutlet]="item"
-            [ngTemplateOutletContext]="{value: mentor?.email, key: 'Email'}"></ng-container>
+            [ngTemplateOutletContext]="{value: mentor.email, key: 'Email'}"></ng-container>
 
         <ng-container [ngTemplateOutlet]="item"
-            [ngTemplateOutletContext]="{value: mentor?.address, key: 'Address'}"></ng-container>
+            [ngTemplateOutletContext]="{value: mentor.address, key: 'Address'}"></ng-container>
 
         <ng-container [ngTemplateOutlet]="item"
-            [ngTemplateOutletContext]="{value: mentor?.birthday,key: 'Birthday', type: 'date'}"></ng-container>
+            [ngTemplateOutletContext]="{value: mentor.birthday,key: 'Birthday', type: 'date'}"></ng-container>
 
     </div>
 

@@ -1,7 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { Mentor } from '../../models/mentor.model';
 import { mentors } from '../../mentor.data';
-import { teams } from 'app/features/team/team.data';
 import { MenuItem } from 'primeng/api';
 
 @Component({
@@ -10,10 +9,8 @@ import { MenuItem } from 'primeng/api';
     styleUrls: ['./mentor-info.component.scss'],
 })
 export class MentorInfoComponent {
-    @Input() mentor?: Mentor;
+    @Input() mentor!: Mentor;
     mentors = mentors;
-    teams = teams;
-
     rows = 10;
 
     items: MenuItem[] = [

@@ -33,15 +33,15 @@ const routes: Routes = [
             {
                 path: 'teams',
                 loadChildren: () =>
-                    import('./features/technology/technology.module').then(
-                        (m) => m.SubjectModule
+                    import('./features/team/team.module').then(
+                        (m) => m.TeamModule
                     ),
             },
             {
                 path: 'mentors',
                 loadChildren: () =>
                     import('./features/mentor/mentor.module').then(
-                        (m) => m.TeacherModule
+                        (m) => m.MentorModule
                     ),
             },
             {
@@ -59,6 +59,7 @@ const routes: Routes = [
     imports: [
         RouterModule.forRoot(routes, {
             preloadingStrategy: PreloadAllModules,
+            scrollPositionRestoration: 'enabled',
         }),
     ],
     exports: [RouterModule],

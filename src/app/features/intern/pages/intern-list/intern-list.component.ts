@@ -1,62 +1,39 @@
 import { Component } from '@angular/core';
-import {
-    faBorderAll,
-    faChevronLeft,
-    faChevronRight,
-    faList,
-    faMagnifyingGlass,
-    faPenToSquare,
-    faPlus,
-    faTrash,
-} from '@fortawesome/free-solid-svg-icons';
-import { ToastrService } from 'ngx-toastr';
-import { ConfirmationService } from 'primeng/api';
+import { ConfirmationService, MessageService } from 'primeng/api';
 
 import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
-import { Intern } from '../../models/intern.model';
+import { InternDetail } from '../../models/intern.model';
 import { InternService } from '../../services/intern.service';
 import { Router } from '@angular/router';
-import {
-    ColListData,
-    PaginationListData,
-} from '@shared/components/list-data/list-data.model';
+import { ColListData } from '@shared/components/list-data/list-data.model';
+import { PageInfo } from '@shared/model/common';
 
 @Component({
     selector: 'app-student-list',
     templateUrl: './intern-list.component.html',
     styleUrls: ['./intern-list.component.scss'],
-    providers: [ConfirmationService, DialogService],
+    providers: [ConfirmationService, DialogService, MessageService],
 })
 export class InternListComponent {
     constructor(
         private internService: InternService,
-        private toastrService: ToastrService,
+        private messageService: MessageService,
         private confirmationService: ConfirmationService,
         private dialogService: DialogService,
         private router: Router
     ) {}
-    icons = {
-        faList,
-        faBorderAll,
-        faPlus,
-        faChevronLeft,
-        faChevronRight,
-        faPenToSquare,
-        faTrash,
-        faMagnifyingGlass,
-    };
 
-    internList!: Intern[];
+    internList!: InternDetail[];
+    totalRecords = 0;
     isFetching = false;
     isDeleting = false;
     isAddDialog = false;
 
     ref!: DynamicDialogRef;
 
-    pagination: PaginationListData = {
-        total: 0,
-        limit: 10,
+    pagination: PageInfo = {
         page: 0,
+        limit: 10,
     };
 
     cols: ColListData[] = [
@@ -77,7 +54,7 @@ export class InternListComponent {
         },
         {
             field: 'status',
-            type: 'status'
+            type: 'status',
         },
         {
             field: 'mentor',
@@ -100,9 +77,9 @@ export class InternListComponent {
 
             .subscribe({
                 next: (response) => {
-                    this.internList = response.content;
                     this.isFetching = false;
-                    this.pagination.total = response.totalElements;
+                    this.internList = response.content;
+                    this.totalRecords = response.totalElements;
                 },
                 error: () => {
                     this.isFetching = false;
@@ -148,11 +125,11 @@ export class InternListComponent {
     //     });
     // }
 
-    handleAddInternSuccess(intern: Intern) {
+    handleAddInternSuccess(intern: InternDetail) {
         this.internList.unshift(intern);
     }
 
-    handleUpdateIntern(intern: Intern) {
+    handleUpdateIntern(intern: InternDetail) {
         this.router.navigate([`/interns/${intern.id}`], {
             queryParams: { edit: true },
         });

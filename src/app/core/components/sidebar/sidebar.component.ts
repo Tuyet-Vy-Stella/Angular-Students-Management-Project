@@ -24,9 +24,10 @@ export class SidebarComponent {
 
     ngOnInit() {
         // Listen url path when first access
-        this.router.events.subscribe((event) => {
-            if (event instanceof NavigationEnd) {
-                const prefix = event.url.split('/')[1];
+
+        this.router.events.subscribe((event: any) => {
+            if (event.routerEvent) {
+                const prefix = event.routerEvent.url.split('/')[1];
                 const tab = this.sidebarTabs.find(
                     (tab) => tab.prefix === prefix
                 );
