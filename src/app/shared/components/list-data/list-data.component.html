@@ -3,7 +3,8 @@
 
     <!-- Header Section -->
     <div class="rounded-t bg-light shadow">
-        <p-table [loading]="fetching" [columns]="cols" [value]="data" [tableStyle]="{ 'min-width': '50rem' }">
+        <p-table [showLoader]="false" [loading]="fetching" [columns]="cols" [value]="data"
+            [tableStyle]="{ 'min-width': '50rem' }">
             <ng-template *ngIf="isCaption" pTemplate="caption">
                 <h4 class="text-lg font-medium mb-4">{{title}} Management</h4>
                 <!-- Search box -->
@@ -22,7 +23,7 @@
 
             <ng-template pTemplate="header" let-columns>
                 <tr class="capitalize">
-                    <th *ngIf="isIndex">#</th>
+                    <th>#</th>
                     <th *ngFor="let col of columns">
                         {{ col.header || col.field }}
                     </th>
@@ -44,9 +45,17 @@
                 </tr>
             </ng-template>
 
+            <ng-template pTemplate="loadingbody" let-columns>
+                <tr>
+                    <td><p-skeleton></p-skeleton></td>
+                    <td *ngFor="let column of columns"><p-skeleton></p-skeleton></td>
+                    <td *ngIf="actions.length > 0"><p-skeleton></p-skeleton></td>
+                </tr>
+            </ng-template>
+
             <ng-template let-rowIndex="rowIndex" pTemplate="body" let-rowData let-columns="columns">
                 <tr>
-                    <td *ngIf="isIndex"> {{rowIndex + 1}}</td>
+                    <td> {{rowIndex + 1}}</td>
                     <td [ngSwitch]="col.type" *ngFor="let col of columns">
                         <!-- link -->
                         <a *ngSwitchCase="'link'" class="text-blue-500 hover:underline"
@@ -70,10 +79,6 @@
                                 class="text-xs text-white py-[3px] px-2 rounded font-medium">
                                 {{ rowData[col.field] }}
                             </span>
-                            <!-- <p-tag *ngIf="rowData[col.field] ==='candidate'" severity="warning"
-                                value="candidate"></p-tag>
-                            <p-tag *ngIf="rowData[col.field] ==='internship'" severity="warning"
-                                value="internship"></p-tag> -->
                         </ng-container>
 
                         <!-- default -->
@@ -97,8 +102,9 @@
 
         <div *ngIf="pagination" class="bg-light flex items-center justify-end">
             <span class="mx-2 text-sm text-[#6c757d] text-start">Items per page: </span>
-            <p-dropdown [options]="[5, 10, 20]"></p-dropdown>
-            <p-paginator [rows]="pagination.limit" [totalRecords]="totalRecords" [showCurrentPageReport]="true"
+            <p-dropdown [(ngModel)]="rows" (onChange)="onSizeChange.emit($event)" [options]="[5, 10, 20]"></p-dropdown>
+            <p-paginator (onPageChange)="handlePageChange($event)" [first]="first" [rows]="rows"
+                [totalRecords]="totalRecords" [showCurrentPageReport]="true"
                 currentPageReportTemplate="{first} - {last} of {totalRecords}" [showPageLinks]="false"
                 [showFirstLastIcon]="false"></p-paginator>
         </div>

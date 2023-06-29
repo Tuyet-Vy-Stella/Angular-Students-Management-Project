@@ -26,7 +26,7 @@ export class TeamListComponent implements OnInit {
     isAddDialog = false;
 
     pageInfo: PageInfo = {
-        limit: 10,
+        size: 10,
         page: 0,
     };
 

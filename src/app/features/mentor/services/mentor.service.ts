@@ -12,7 +12,7 @@ export class MentorService {
     getMentors(
         pr: PageInfo = {
             page: 0,
-            limit: 10,
+            size: 10,
         }
     ) {
         return this.http.get<ResponsePagination<MentorDetail>>(

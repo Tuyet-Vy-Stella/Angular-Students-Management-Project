@@ -15,6 +15,7 @@ import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { registerLocaleData } from '@angular/common';
 import { JWT_OPTIONS, JwtHelperService } from '@auth0/angular-jwt';
 import en from '@angular/common/locales/en';
+import { ToastrModule } from 'ngx-toastr';
 
 registerLocaleData(en);
 
@@ -30,6 +31,7 @@ registerLocaleData(en);
         ReactiveFormsModule,
         FormsModule,
         CoreModule,
+        ToastrModule.forRoot(),
     ],
     providers: [
         [CookieService, JwtHelperService],

@@ -12,7 +12,7 @@ export class TeamService {
     getList(
         pr: PageInfo = {
             page: 0,
-            limit: 10,
+            size: 10,
         }
     ) {
         return this.http.get<ResponsePagination<TeamDetail>>(

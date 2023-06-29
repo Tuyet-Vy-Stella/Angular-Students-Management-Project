@@ -10,6 +10,7 @@ import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { DialogModule } from 'primeng/dialog';
 import { TeamFormComponent } from './components/team-form/team-form.component';
 import { DropdownModule } from 'primeng/dropdown';
+import { RouterModule } from '@angular/router';
 
 @NgModule({
     declarations: [TeamListComponent, TeamFormComponent, TeamDetailComponent],
@@ -23,7 +24,8 @@ import { DropdownModule } from 'primeng/dropdown';
         ConfirmDialogModule,
         DialogModule,
         InputTextModule,
-        DropdownModule
+        DropdownModule,
+        RouterModule,
     ],
 })
 export class TeamModule {}

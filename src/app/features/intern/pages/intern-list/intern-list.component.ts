@@ -33,7 +33,7 @@ export class InternListComponent {
 
     pagination: PageInfo = {
         page: 0,
-        limit: 10,
+        size: 10,
     };
 
     cols: ColListData[] = [

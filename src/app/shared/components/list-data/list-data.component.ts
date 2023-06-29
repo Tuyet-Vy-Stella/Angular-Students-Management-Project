@@ -18,7 +18,6 @@ export class ListDataComponent implements OnInit {
     @Input() deleting!: boolean;
     @Input() isCaption = true;
     @Input() totalRecords = 0;
-    @Input() isIndex = false;
 
     recordsColSpan!: number;
 
@@ -26,15 +25,23 @@ export class ListDataComponent implements OnInit {
     @Output() onDelete = new EventEmitter<any>();
     @Output() onUpdate = new EventEmitter<any>();
     @Output() onPageChange = new EventEmitter<number>();
+    @Output() onSizeChange = new EventEmitter<number>();
     @Output() onSearch = new EventEmitter<any>();
 
+    rows = 10;
+    first = 0;
+
     ngOnInit(): void {
-        this.recordsColSpan = this.cols.length;
+        this.recordsColSpan = this.cols.length + 1;
         if (this.actions.length > 0) {
             this.recordsColSpan++;
         }
-        if(this.isIndex) {
-            this.recordsColSpan++;
-        }
+    }
+
+    handlePageChange(event: any) {
+        console.log(event);
+        this.first = event.first;
+        this.rows = event.rows;
+        this.onPageChange.emit(event);
     }
 }

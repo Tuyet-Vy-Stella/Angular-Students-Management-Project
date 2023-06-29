@@ -10,6 +10,6 @@ export interface ResponsePagination<T> {
 }
 
 export interface PageInfo {
-    limit: number;
+    size: number;
     page: number;
 }

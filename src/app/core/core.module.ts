@@ -15,6 +15,7 @@ import { AvatarModule } from 'primeng/avatar';
 import { FormsModule } from '@angular/forms';
 import { BreadcrumbModule } from 'primeng/breadcrumb';
 import { AdminLayoutComponent } from './layouts';
+import { ToastModule } from 'primeng/toast';
 @NgModule({
     declarations: [
         HeaderComponent,
@@ -32,7 +33,8 @@ import { AdminLayoutComponent } from './layouts';
         ButtonModule,
         AvatarModule,
         FormsModule,
-        BreadcrumbModule
+        BreadcrumbModule,
+        ToastModule
     ],
     exports: [
         HeaderComponent,

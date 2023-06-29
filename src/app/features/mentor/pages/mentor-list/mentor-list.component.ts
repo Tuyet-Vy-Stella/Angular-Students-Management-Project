@@ -29,7 +29,7 @@ export class MentorListComponent {
     totalRecords = 0;
 
     pagination: PageInfo = {
-        limit: 10,
+        size: 10,
         page: 0,
     };
 
@@ -71,25 +71,35 @@ export class MentorListComponent {
 
     fetchMentors() {
         this.isFetching = true;
-        this.mentorService.getMentors().subscribe({
+        this.mentorService.getMentors(this.pagination).subscribe({
             next: (response) => {
+                console.log(response);
+                this.isFetching = false;
                 this.mentorList = response.content;
                 this.totalRecords = response.totalElements;
             },
             error: () => {
+                this.isFetching = false;
                 this.messageService.add({
                     severity: 'error',
                     detail: 'Get teacher list failed. Please try again later',
                 });
             },
-            complete: () => {
-                this.isFetching = false;
-            },
         });
     }
 
-    handleSubmitSuccess(mentor: MentorDetail) {
-        this.mentorList.unshift(mentor);
+    handlePageChange(event: any) {
+        this.pagination.page = event.page;
+        this.fetchMentors();
+    }
+
+    handleSizeChange(event: any) {
+        this.pagination.size = event.value;
+        this.fetchMentors();
+    }
+
+    handleSubmitSuccess() {
+        this.fetchMentors();
     }
 
     handleUpdateMentor(mentor: MentorDetail) {
